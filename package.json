@@ -1,8 +1,8 @@
 {
 	"name": "nativescript-intro-slides",
 	"version": "1.0.0",
-	"description": "Your awesome NativeScript plugin.",
-	"main": "yourplugin.js",
+	"description": "NativeScript intro slides plugin.",
+	"main": "nativescript-intro-slides.js",
 	"nativescript": {
 		"platforms": {
 			"android": "1.7.0",
@@ -27,8 +27,8 @@
 		"iOS"
 	],
 	"author": {
-		"name": "Your Name",
-		"email": "youremail@yourdomain.com"
+		"name": "Josh Sommer",
+		"email": "joshdsommer@gmail.com"
 	},
 	"bugs": {
 		"url": "https://github.com/TheOriginalJosh/nativescript-intro-slides/issues"
