@@ -3,6 +3,6 @@ import * as pages from 'ui/page';
 
 // Event handler for Page "loaded" event attached in main-page.xml
 export function pageLoaded(args: observable.EventData) {
-    // Get the event sender
-    var page = <pages.Page>args.object;
+	// Get the event sender
+	var page = <pages.Page>args.object;
 }
