@@ -61,7 +61,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
 				panelMap1.panel.width = pageWidth;
 				if (isNaN(footer.height)) {
-					footer.height = 76;
+					footer.height = 76; //footer min height
 				}
 				AbsoluteLayout.setTop(footer, (pageHeight - footer.height));
 				SlideUtilities.applySwipe(this, pageWidth, panelMap1, btnPrevious, btnNext);
@@ -97,8 +97,8 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		this.setwidthPercent(footerInnerWrapLeft, 30);
 		this.setwidthPercent(footerInnerWrapMiddle, 40);
 
-		footerInnerWrapLeft.addChild(this.newButtoner('Previous'));
-		footerInnerWrapRight.addChild(this.newButtoner('Next'));
+		footerInnerWrapLeft.addChild(this.newFooterButton('Previous'));
+		footerInnerWrapRight.addChild(this.newFooterButton('Next'));
 
 		footerInnerWrap.addChild(footerInnerWrapLeft);
 		footerInnerWrap.addChild(footerInnerWrapMiddle);
@@ -112,7 +112,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
 	}
 
-	private newButtoner(name: string): Button {
+	private newFooterButton(name: string): Button {
 		let button = new Button();
 		button.id = 'btn-info-' + name.toLowerCase();
 		button.text = name;
