@@ -13,5 +13,5 @@ export declare class IntroSlides extends AbsoluteLayout implements AddChildFromB
     _addChildFromBuilder: (name: string, value: any) => void;
     private buildFooter();
     private setwidthPercent(view, percentage);
-    private newButtoner(name);
+    private newFooterButton(name);
 }
