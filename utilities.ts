@@ -74,7 +74,9 @@ export class SlideUtilities {
 					return;
 				}
 				if (this.direction === 'right' && panelMap.panel.width > (pageWidth / 2)) {
+					panelMap.left.panel.width = 0;
 					panelMap.panel.width = pageWidth;
+					// AbsoluteLayout.setLeft(panelMap.right.panel, pageWidth);
 					AbsoluteLayout.setLeft(panelMap.panel, 0);
 					this.direction = null;
 					return;

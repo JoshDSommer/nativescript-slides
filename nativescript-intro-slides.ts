@@ -30,6 +30,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 	constructView(): void {
 
 		this._loaded = false;
+		this._childSlides = [];
 
 		const pageWidth = Platform.screen.mainScreen.widthDIPs;
 		const pageHeight = Platform.screen.mainScreen.heightDIPs;
@@ -90,7 +91,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 			if (value instanceof Slide) {
 				this._childSlides.push(value);
 			}
-			this.addChild(value)
+			this.addChild(value);
 		}
 	};
 
