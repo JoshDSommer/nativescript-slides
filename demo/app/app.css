@@ -1,1 +1,18 @@
-﻿
+﻿.intro-slide-1{
+  background-color: darkslateblue;
+}
+
+.intro-slide-2{
+  background-color: lightcyan;
+}
+.intro-slide-3{
+  background-color: darkgreen;
+}
+
+.intro-slide-4{
+  background-color: darkgoldenrod;
+}
+.intro-slide-5{
+  background-color: darkslategray;
+}
+

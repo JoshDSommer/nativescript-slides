@@ -1,18 +1,18 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IntroSlides="nativescript-intro-slides" loaded="pageLoaded">
 	<IntroSlides:IntroSlides>
-		<IntroSlides:Slide id="Page1" top="0" left="0">
+		<IntroSlides:Slide class="intro-slide-1">
 			<Label text="This is Panel 1"  />
 		</IntroSlides:Slide>
-		<IntroSlides:Slide id="Page2" top="0" left="0">
+		<IntroSlides:Slide class="intro-slide-2">
 			<Label text="This is Panel 2"  />
 		</IntroSlides:Slide>
-		<IntroSlides:Slide id="Page3" top="0" left="0">
+		<IntroSlides:Slide class="intro-slide-3">
 			<Label text="This is Panel 3"  />
 		</IntroSlides:Slide>
-		<IntroSlides:Slide id="Page4" top="0" left="0">
+		<IntroSlides:Slide class="intro-slide-4">
 			<Label text="This is Panel 4"  />
 		</IntroSlides:Slide>
-		<IntroSlides:Slide id="Page5" top="0" left="0">
+		<IntroSlides:Slide class="intro-slide-5">
 			<Label text="This is Panel 5"  />
 		</IntroSlides:Slide>
 	</IntroSlides:IntroSlides>
