@@ -12,6 +12,7 @@ export class Slide extends StackLayout {
 
 export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 	private _childSlides: View[];
+	private _loaded: boolean;
 
 	get android(): any {
 		return;
@@ -27,50 +28,61 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 	}
 
 	constructView(): void {
-		let footer = this.buildFooter();
-		this.addChild(footer);
+
+		this._loaded = false;
 
 		const pageWidth = Platform.screen.mainScreen.widthDIPs;
 		const pageHeight = Platform.screen.mainScreen.heightDIPs;
-		let btnPrevious = <Button>footer.getViewById('btn-info-previous');
-		let btnNext = <Button>footer.getViewById('btn-info-next');
-		// let page1 = <StackLayout>page.getViewById('Page1');
-		// let page2 = <StackLayout>page.getViewById('Page2');
-		// let page3 = <StackLayout>page.getViewById('Page3');
-		let slides: StackLayout[] = [];
-		this.eachLayoutChild((view: View) => {
-			if (view instanceof StackLayout) {
-				if (slides.length !== 0) {
-					AbsoluteLayout.setLeft(<any>view, pageWidth);
+
+		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
+			if (!this._loaded) {
+				this._loaded = true;
+
+				let footer = this.buildFooter();
+				this.addChild(footer);
+
+				let btnPrevious = <Button>footer.getViewById('btn-info-previous');
+				let btnNext = <Button>footer.getViewById('btn-info-next');
+				// let page1 = <StackLayout>page.getViewById('Page1');
+				// let page2 = <StackLayout>page.getViewById('Page2');
+				// let page3 = <StackLayout>page.getViewById('Page3');
+				let slides: StackLayout[] = [];
+				this.eachLayoutChild((view: View) => {
+					if (view instanceof StackLayout) {
+						if (slides.length !== 0) {
+							AbsoluteLayout.setLeft(<any>view, pageWidth);
+						}
+						view.width = pageWidth;
+						(<any>view).height = '100%'; //get around compiler
+						slides.push(view);
+					}
+				});
+
+				let panelMap1 = SlideUtilities.buildSlideMap(slides);
+				// let panelMap1: ISlideMap = {
+				//     panel: page1,
+				// }
+				// let panelMap2: ISlideMap = {
+				//     panel: page2,
+				// }
+				// let panelMap3: ISlideMap = {
+				//     panel: page3,
+				// }
+
+				// panelMap1.right = panelMap2;
+				// panelMap2.left = panelMap1;
+				// panelMap2.right = panelMap3;
+				// panelMap3.left = panelMap2;
+
+				panelMap1.panel.width = pageWidth;
+				if (isNaN(footer.height)) {
+					footer.height = 76;
 				}
-				view.width = pageWidth;
-				(<any>view).height = '100%'; //get around compiler
-				slides.push(view);
+				AbsoluteLayout.setTop(footer, (pageHeight - footer.height));
+				SlideUtilities.applySwipe(this, pageWidth, panelMap1, btnPrevious, btnNext);
 			}
 		});
 
-		let panelMap1 = SlideUtilities.buildSlideMap(slides);
-		// let panelMap1: ISlideMap = {
-		//     panel: page1,
-		// }
-		// let panelMap2: ISlideMap = {
-		//     panel: page2,
-		// }
-		// let panelMap3: ISlideMap = {
-		//     panel: page3,
-		// }
-
-		// panelMap1.right = panelMap2;
-		// panelMap2.left = panelMap1;
-		// panelMap2.right = panelMap3;
-		// panelMap3.left = panelMap2;
-
-		panelMap1.panel.width = pageWidth;
-		if (isNaN(footer.height)) {
-			footer.height = 76;
-		}
-		AbsoluteLayout.setTop(footer, (pageHeight - footer.height));
-		SlideUtilities.applySwipe(this, pageWidth, panelMap1, btnPrevious, btnNext);
 	}
 
 	_addChildFromBuilder = (name: string, value: any) => {

@@ -1,5 +1,5 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:introSlides="nativescript-intro-slides" loaded="pageLoaded">
-	<introSlides:IntroSlides id="wrapper">
+	<introSlides:IntroSlides>
 		<introSlides:Slide id="Page1" top="0" left="0">
 			<Label text="This is Panel 1"  />
 		</introSlides:Slide>

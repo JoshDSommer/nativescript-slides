@@ -5,6 +5,7 @@ export declare class Slide extends StackLayout {
 }
 export declare class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
     private _childSlides;
+    private _loaded;
     android: any;
     ios: any;
     constructor();
