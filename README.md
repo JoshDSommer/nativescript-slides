@@ -1,7 +1,7 @@
-# Nativescript-Intro-Slides
+# Nativescript Intro Slides for iOS and Android
 
 
-Beta ....
+Beta
 
 Include `xmlns:IntroSlides="nativescript-intro-slides"` in your Page
 
