@@ -4,13 +4,13 @@
         "module": "commonjs",
         "removeComments": true,
         "experimentalDecorators": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "declaration": true
     },
     "files": [
-      "demo/node_modules/tns-core-modules/tns-core-modules.d.ts",
-      "yourplugin.common.ts",
-      "yourplugin.android.ts", 
-      "yourplugin.ios.ts"
+        "demo/node_modules/tns-core-modules/tns-core-modules.d.ts",
+        "nativescript-intro-slides.ts",
+        "utilities.ts"
     ],
     "compileOnSave": false
 }

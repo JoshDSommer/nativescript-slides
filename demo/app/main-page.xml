@@ -1,5 +1,21 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded">
-  <StackLayout>
-    <Label text="{{ message }}" class="message" textWrap="true"/>
-  </StackLayout>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+xmlns:is='nativescript-intro-slides'
+loaded="pageLoaded">
+	<is:IntroSlides id="wrapper">
+		<is:Slide id="Page1" top="0" left="0">
+			<Label text="This is Panel 1"  />
+		</is:Slide>
+		<is:Slide id="Page2" top="0" left="0">
+			<Label text="This is Panel 2"  />
+		</is:Slide>
+		<is:Slide id="Page3" top="0" left="0">
+			<Label text="This is Panel 3"  />
+		</is:Slide>
+		<is:Slide id="Page4" top="0" left="0">
+			<Label text="This is Panel 4"  />
+		</is:Slide>
+		<is:Slide id="Page5" top="0" left="0">
+			<Label text="This is Panel 5"  />
+		</is:Slide>
+	</is:IntroSlides>
 </Page>
