@@ -16,3 +16,10 @@
   background-color: darkslategray;
 }
 
+Label{
+  text-align: center;
+  width: 100%;
+  font-size: 35;
+  margin-top: 35;
+}
+

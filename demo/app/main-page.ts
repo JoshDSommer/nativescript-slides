@@ -5,4 +5,5 @@ import * as pages from 'ui/page';
 export function pageLoaded(args: observable.EventData) {
 	// Get the event sender
 	var page = <pages.Page>args.object;
+	page.actionBarHidden = true;
 }

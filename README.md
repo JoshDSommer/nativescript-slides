@@ -1,5 +1,6 @@
 # Nativescript Intro Slides for iOS and Android
 
+[![Nativescript Intro Slides. Click to Play](https://img.youtube.com/vi/5GGGiNA98TU/0.jpg)](https://www.youtube.com/embed/5GGGiNA98TU)
 
 Beta
 ###XML
@@ -43,9 +44,16 @@ Beta
 .intro-slide-5{
   background-color: darkslategray;
 }
+Label{
+  text-align: center;
+  width: 100%;
+  font-size: 35;
+  margin-top: 35;
+}
+
 ```
 #Usage
-To use the intro slide plugin you need to first import it into your xml layout with  `xmlns:parallax="nativescript-intro-slides"`
+To use the intro slide plugin you need to first import it into your xml layout with  `xmlns:IntroSlides="nativescript-intro-slides"`
 
 when using the intro slide plugin you need at least two ``<IntroSlides:Slide>`` views inside of the ``<IntroSlides:IntroSlides>``.
 

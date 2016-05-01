@@ -44,9 +44,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
 				let btnPrevious = <Button>footer.getViewById('btn-info-previous');
 				let btnNext = <Button>footer.getViewById('btn-info-next');
-				// let page1 = <StackLayout>page.getViewById('Page1');
-				// let page2 = <StackLayout>page.getViewById('Page2');
-				// let page3 = <StackLayout>page.getViewById('Page3');
+
 				let slides: StackLayout[] = [];
 				this.eachLayoutChild((view: View) => {
 					if (view instanceof StackLayout) {
@@ -60,20 +58,6 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 				});
 
 				let panelMap1 = SlideUtilities.buildSlideMap(slides);
-				// let panelMap1: ISlideMap = {
-				//     panel: page1,
-				// }
-				// let panelMap2: ISlideMap = {
-				//     panel: page2,
-				// }
-				// let panelMap3: ISlideMap = {
-				//     panel: page3,
-				// }
-
-				// panelMap1.right = panelMap2;
-				// panelMap2.left = panelMap1;
-				// panelMap2.right = panelMap3;
-				// panelMap3.left = panelMap2;
 
 				panelMap1.panel.width = pageWidth;
 				if (isNaN(footer.height)) {
