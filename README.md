@@ -1,7 +1,7 @@
 # Nativescript-Intro-Slides
 
 
-Beta...
+Beta ....
 
 Include `xmlns:IntroSlides="nativescript-intro-slides"` in your Page
 
@@ -28,6 +28,12 @@ Include `xmlns:IntroSlides="nativescript-intro-slides"` in your Page
 ```
 
 
+### Planned additions
+
+* disable/enable previous and next buttons
+* Add function and property for button text, for next button on the last slide.
+* add properties to override previous and next buttons text.
+
 add as many slides as you want, top down order, minimum of two.
 
-for {N} version 2.0.0+
+for {N} version 1.7.0+
