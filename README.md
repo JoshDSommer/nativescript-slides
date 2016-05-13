@@ -81,4 +81,8 @@ add as many ``<IntroSlides:Slide>`` as you want.
 Thanks to [Nathan Walker](https://github.com/NathanWalker) for setting up the {N} plugin seed that I used to help get this plugin up and running. More info can be found about it here:
 https://github.com/NathanWalker/nativescript-plugin-seed
 
-for {N} version 1.7.0+
+##License
+
+[MIT](/LICENSE)
+
+for {N} version 2.0.0+

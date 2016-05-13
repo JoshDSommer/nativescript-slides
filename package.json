@@ -1,12 +1,12 @@
 {
 	"name": "nativescript-intro-slides",
-	"version": "0.0.6",
+	"version": "0.1.0",
 	"description": "NativeScript intro slides plugin.",
 	"main": "nativescript-intro-slides.js",
 	"nativescript": {
 		"platforms": {
-			"android": "1.7.0",
-			"ios": "1.7.0"
+			"android": "2.0.0",
+			"ios": "2.0.0"
 		}
 	},
 	"scripts": {
@@ -16,7 +16,8 @@
 		"preparedemo": "npm run build && cd demo && tns plugin remove nativescript-intro-slides && tns plugin add .. && tns install",
 		"setup": "cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
 		"livesync.ios":"cd demo  && tns livesync ios --watch",
-		"livesync.android":"cd demo  && tns livesync android --watch"
+		"livesync.android":"cd demo  && tns livesync android --watch",
+		"ios": "xcproj --project platforms/ios/YourApp.xcodeproj touch; xcproj --project platforms/ios/Pods/Pods.xcodeproj touch; tns livesync ios --emulator --watch"
 	},
 	"repository": {
 		"type": "git",
