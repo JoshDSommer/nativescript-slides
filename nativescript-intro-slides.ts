@@ -5,14 +5,40 @@ import {StackLayout} from 'ui/layouts/stack-layout';
 import {View, AddChildFromBuilder} from 'ui/core/view';
 import { Button } from 'ui/button';
 import {SlideUtilities, ISlideMap} from './utilities';
+import {Label} from 'ui/label';
+import * as AnimationModule from 'ui/animation';
+import * as gestures from 'ui/gestures';
 
 export class Slide extends StackLayout {
 
 }
-
+enum direction {
+	none,
+	left,
+	right
+}
 export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
+
 	private _childSlides: View[];
 	private _loaded: boolean;
+	private currentPanel: ISlideMap;
+	private _pageWidth: number;
+	private _btnNext: Button;
+	private _btnPrevious: Button;
+	private transitioning: boolean;
+	private direction: direction = direction.none;
+
+	get btnNext() {
+		return this._btnNext;
+	}
+
+	get btnPrevious() {
+		return this._btnPrevious;
+	}
+
+	get pageWidth() {
+		return this._pageWidth;
+	}
 
 	get android(): any {
 		return;
@@ -30,9 +56,10 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 	constructView(): void {
 
 		this._loaded = false;
+		this.transitioning = false;
 		this._childSlides = [];
 
-		const pageWidth = Platform.screen.mainScreen.widthDIPs;
+		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 		const pageHeight = Platform.screen.mainScreen.heightDIPs;
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
@@ -40,34 +67,74 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 				this._loaded = true;
 
 				let footer = this.buildFooter();
-				this.addChild(footer);
 
-				let btnPrevious = <Button>footer.getViewById('btn-info-previous');
-				let btnNext = <Button>footer.getViewById('btn-info-next');
+				this._btnPrevious = <Button>footer.getViewById('btn-info-previous');
+				this._btnNext = <Button>footer.getViewById('btn-info-next');
 
+				let info = <Label>footer.getViewById('info');
 				let slides: StackLayout[] = [];
+
 				this.eachLayoutChild((view: View) => {
 					if (view instanceof StackLayout) {
-						if (slides.length !== 0) {
-							AbsoluteLayout.setLeft(<any>view, pageWidth);
-						}
-						view.width = pageWidth;
+						AbsoluteLayout.setLeft(view, this.pageWidth);
+						view.width = this.pageWidth;
 						(<any>view).height = '100%'; //get around compiler
 						slides.push(view);
 					}
 				});
+				this.currentPanel = SlideUtilities.buildSlideMap(slides);
 
-				let panelMap1 = SlideUtilities.buildSlideMap(slides);
+				this.btnNext.on('tap', () => {
+					this.transitioning = true;
+					this.showRightSlide(this.currentPanel).then(() => {
+						console.log('right button done');
+						this.setupRightPanel();
 
-				panelMap1.panel.width = pageWidth;
+					});
+				});
+				this.btnPrevious.on('tap', () => {
+					this.transitioning = true;
+					this.showLeftSlide(this.currentPanel).then(() => {
+						this.setupLeftPanel();
+					});
+				});
+				//	this.addChild(footer);
+
 				if (isNaN(footer.height)) {
 					footer.height = 76; //footer min height
 				}
 				AbsoluteLayout.setTop(footer, (pageHeight - footer.height));
-				SlideUtilities.applySwipe(this, pageWidth, panelMap1, btnPrevious, btnNext);
+				this.currentPanel.panel.translateX = -this.pageWidth;
+				this.btnPrevious.visibility = 'collapse';
+				this.applySwipe(this.pageWidth);
 			}
 		});
 
+	}
+	private setupLeftPanel() {
+		this.direction = direction.none;
+		this.transitioning = false;
+		this.btnNext.visibility = 'visible';
+		this.btnPrevious.visibility = 'visible';
+		this.currentPanel.panel.off('touch,pan');
+		this.currentPanel = this.currentPanel.left;
+		this.applySwipe(this.pageWidth);
+		if (this.currentPanel.left == null) {
+			this.btnPrevious.visibility = 'collapse';
+		}
+	}
+
+	private setupRightPanel() {
+		this.direction = direction.none;
+		this.transitioning = false;
+		this.btnNext.visibility = 'visible';
+		this.btnPrevious.visibility = 'visible';
+		this.currentPanel.panel.off('touch,pan');
+		this.currentPanel = this.currentPanel.right;
+		this.applySwipe(this.pageWidth);
+		if (this.currentPanel.right == null) {
+			this.btnNext.visibility = 'collapse';
+		}
 	}
 
 	_addChildFromBuilder = (name: string, value: any) => {
@@ -79,6 +146,121 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		}
 	};
 
+	private applySwipe(pageWidth: number) {
+		let previousDelta = -1; //hack to get around ios firing pan event after release
+
+		this.currentPanel.panel.on('pan, touch', (args: any): void => {
+			if ((<gestures.TouchGestureEventData>args).action === gestures.TouchAction.up) {
+				if (this.transitioning == false) {
+					this.transitioning = true;
+					console.log('leaving screen....');
+
+
+					// let transition = new Array();
+					// transition.push({
+					// 	target: this.currentPanel.right.panel,
+					// 	translate: { x: this.pageWidth, y: 0 },
+					// 	duration: 150,
+					// });
+					// transition.push({
+					// 	target: this.currentPanel.panel,
+					// 	translate: { x: -this.pageWidth, y: 0 },
+					// 	duration: 150,
+					// });
+
+					// let animationSet = new AnimationModule.Animation(transition, false);
+					// animationSet.play().then(() => {
+					// 	return;
+					// });
+
+					this.currentPanel.panel.translateX = -this.pageWidth;
+					if (this.currentPanel.right != null) {
+						this.currentPanel.right.panel.translateX = -this.pageWidth;
+						this.currentPanel.right.panel.translateX = this.pageWidth;
+					}
+					this.transitioning = false;
+
+				}
+			} else if (args.eventName = 'pan') {
+				if (!this.transitioning && previousDelta !== args.deltaX && args.deltaX != null && args.deltaX < -5) {
+					if (this.currentPanel.right != null) {
+
+						console.log('panning l - r....' + this.currentPanel.right);
+						this.direction = direction.left;
+						//start sliding panes to the left
+						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
+						this.currentPanel.right.panel.translateX = args.deltaX;
+
+						if (args.deltaX < ((pageWidth / 3) * -1)) {
+							this.transitioning = true;
+							this.showRightSlide(this.currentPanel, args.deltaX).then(() => {
+								this.setupRightPanel();
+							});;
+						}
+					}
+				}
+
+				if (!this.transitioning && previousDelta !== args.deltaX && args.deltaX != null && args.deltaX > 5) {
+					if (this.currentPanel.left != null) {
+						console.log('panning r - l....' + this.currentPanel.left);
+						this.direction = direction.right;
+						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
+						this.currentPanel.left.panel.translateX = -(this.pageWidth * 2) + args.deltaX;
+						if (args.deltaX > pageWidth / 3) { ///swiping left to right.
+							this.transitioning = true;
+							this.showLeftSlide(this.currentPanel, args.deltaX).then(() => {
+								this.setupLeftPanel();
+							});
+						}
+					}
+				}
+				if (args.deltaX !== 0) {
+					previousDelta = args.deltaX;
+				}
+
+			}
+		});
+	}
+
+	public showRightSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
+		let transition = new Array();
+		transition.push({
+			target: panelMap.right.panel,
+			translate: { x: -this.pageWidth, y: 0 },
+			duration: 300,
+		});
+		transition.push({
+			target: panelMap.panel,
+			translate: { x: -this.pageWidth * 2, y: 0 },
+			duration: 300,
+		});
+
+		let animationSet = new AnimationModule.Animation(transition, false);
+
+		return animationSet.play();
+		// panelMap.panel.off('pan');
+		//	this.applySwipe(info, wrapper, pageWidth, panelMap.right, this.btnPrevious, btnNext);
+	}
+
+	public showLeftSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
+		let transition = new Array();
+		transition.push({
+			target: panelMap.left.panel,
+			translate: { x: -this.pageWidth, y: 0 },
+			duration: 500,
+		});
+		transition.push({
+			target: panelMap.panel,
+			translate: { x: 0, y: 0 },
+			duration: 500,
+		});
+
+		let animationSet = new AnimationModule.Animation(transition, false);
+
+
+		return animationSet.play();
+
+	}
 
 	private buildFooter(): AbsoluteLayout {
 		let footer = new AbsoluteLayout();
@@ -109,7 +291,6 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
 	private setwidthPercent(view: View, percentage: number) {
 		(<any>view).width = percentage + '%';
-
 	}
 
 	private newFooterButton(name: string): Button {
