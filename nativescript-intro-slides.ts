@@ -149,30 +149,10 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 	private applySwipe(pageWidth: number) {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
 
-		this.currentPanel.panel.on('pan, touch', (args: any): void => {
-			if ((<gestures.TouchGestureEventData>args).action === gestures.TouchAction.up) {
-				if (this.transitioning == false) {
+		this.currentPanel.panel.on('pan', (args: gestures.PanGestureEventData): void => {
+			if (args.state === gestures.GestureStateTypes.ended) {
+				if (this.transitioning === false) {
 					this.transitioning = true;
-					console.log('leaving screen....');
-
-
-					// let transition = new Array();
-					// transition.push({
-					// 	target: this.currentPanel.right.panel,
-					// 	translate: { x: this.pageWidth, y: 0 },
-					// 	duration: 150,
-					// });
-					// transition.push({
-					// 	target: this.currentPanel.panel,
-					// 	translate: { x: -this.pageWidth, y: 0 },
-					// 	duration: 150,
-					// });
-
-					// let animationSet = new AnimationModule.Animation(transition, false);
-					// animationSet.play().then(() => {
-					// 	return;
-					// });
-
 					this.currentPanel.panel.translateX = -this.pageWidth;
 					if (this.currentPanel.right != null) {
 						this.currentPanel.right.panel.translateX = -this.pageWidth;
@@ -181,13 +161,12 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 					this.transitioning = false;
 
 				}
-			} else if (args.eventName = 'pan') {
+			} else {
 				if (!this.transitioning && previousDelta !== args.deltaX && args.deltaX != null && args.deltaX < -5) {
+					// console.log('android ' + (<android.view.MotionEvent>(<gestures.tou>args).android).;
 					if (this.currentPanel.right != null) {
 
-						console.log('panning l - r....' + this.currentPanel.right);
 						this.direction = direction.left;
-						//start sliding panes to the left
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
 						this.currentPanel.right.panel.translateX = args.deltaX;
 
@@ -202,7 +181,6 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
 				if (!this.transitioning && previousDelta !== args.deltaX && args.deltaX != null && args.deltaX > 5) {
 					if (this.currentPanel.left != null) {
-						console.log('panning r - l....' + this.currentPanel.left);
 						this.direction = direction.right;
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
 						this.currentPanel.left.panel.translateX = -(this.pageWidth * 2) + args.deltaX;
@@ -301,5 +279,4 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		return button;
 	}
 }
-
 
