@@ -2,39 +2,33 @@ import * as app from 'application';
 import * as Platform from 'platform';
 import {AbsoluteLayout} from 'ui/layouts/absolute-layout';
 import {StackLayout} from 'ui/layouts/stack-layout';
-import {View, AddChildFromBuilder} from 'ui/core/view';
+import {View} from 'ui/core/view';
 import { Button } from 'ui/button';
-import {SlideUtilities, ISlideMap} from './utilities';
 import {Label} from 'ui/label';
 import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
 
-export class Slide extends StackLayout {
+export class Slide extends StackLayout { }
 
-}
 enum direction {
 	none,
 	left,
 	right
 }
-export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
-	private _childSlides: View[];
+export interface ISlideMap {
+	panel: StackLayout;
+	left?: ISlideMap;
+	right?: ISlideMap;
+}
+
+export class IntroSlides extends AbsoluteLayout {
 	private _loaded: boolean;
 	private currentPanel: ISlideMap;
 	private _pageWidth: number;
-	private _btnNext: Button;
-	private _btnPrevious: Button;
 	private transitioning: boolean;
 	private direction: direction = direction.none;
 
-	get btnNext() {
-		return this._btnNext;
-	}
-
-	get btnPrevious() {
-		return this._btnPrevious;
-	}
 
 	get pageWidth() {
 		return this._pageWidth;
@@ -48,6 +42,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		return;
 	}
 
+
 	constructor() {
 		super();
 		this.constructView();
@@ -57,21 +52,15 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 
 		this._loaded = false;
 		this.transitioning = false;
-		this._childSlides = [];
 
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
-		const pageHeight = Platform.screen.mainScreen.heightDIPs;
+
+
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
 				this._loaded = true;
 
-				let footer = this.buildFooter();
-
-				this._btnPrevious = <Button>footer.getViewById('btn-info-previous');
-				this._btnNext = <Button>footer.getViewById('btn-info-next');
-
-				let info = <Label>footer.getViewById('info');
 				let slides: StackLayout[] = [];
 
 				this.eachLayoutChild((view: View) => {
@@ -82,69 +71,55 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 						slides.push(view);
 					}
 				});
-				this.currentPanel = SlideUtilities.buildSlideMap(slides);
-
-				this.btnNext.on('tap', () => {
-					this.transitioning = true;
-					this.showRightSlide(this.currentPanel).then(() => {
-						console.log('right button done');
-						this.setupRightPanel();
-
-					});
-				});
-				this.btnPrevious.on('tap', () => {
-					this.transitioning = true;
-					this.showLeftSlide(this.currentPanel).then(() => {
-						this.setupLeftPanel();
-					});
-				});
-				//	this.addChild(footer);
-
-				if (isNaN(footer.height)) {
-					footer.height = 76; //footer min height
-				}
-				AbsoluteLayout.setTop(footer, (pageHeight - footer.height));
+				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
-				this.btnPrevious.visibility = 'collapse';
 				this.applySwipe(this.pageWidth);
+
+				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
+					this._pageWidth = Platform.screen.mainScreen.widthDIPs;
+					this.eachLayoutChild((view: View) => {
+						if (view instanceof StackLayout) {
+							AbsoluteLayout.setLeft(view, this.pageWidth);
+							view.width = this.pageWidth;
+						}
+					});
+					this.applySwipe(this.pageWidth);
+					this.currentPanel.panel.translateX = -this.pageWidth;
+				});
+
 			}
 		});
 
 	}
+
+	public nextSlide() {
+		this.transitioning = true;
+		this.showRightSlide(this.currentPanel).then(() => {
+			this.setupRightPanel();
+		});
+	}
+	public previousSlide() {
+		this.transitioning = true;
+		this.showRightSlide(this.currentPanel).then(() => {
+			this.setupRightPanel();
+		});
+	}
+
 	private setupLeftPanel() {
 		this.direction = direction.none;
 		this.transitioning = false;
-		this.btnNext.visibility = 'visible';
-		this.btnPrevious.visibility = 'visible';
-		this.currentPanel.panel.off('touch,pan');
+		this.currentPanel.panel.off('pan');
 		this.currentPanel = this.currentPanel.left;
 		this.applySwipe(this.pageWidth);
-		if (this.currentPanel.left == null) {
-			this.btnPrevious.visibility = 'collapse';
-		}
 	}
 
 	private setupRightPanel() {
 		this.direction = direction.none;
 		this.transitioning = false;
-		this.btnNext.visibility = 'visible';
-		this.btnPrevious.visibility = 'visible';
-		this.currentPanel.panel.off('touch,pan');
+		this.currentPanel.panel.off('pan');
 		this.currentPanel = this.currentPanel.right;
 		this.applySwipe(this.pageWidth);
-		if (this.currentPanel.right == null) {
-			this.btnNext.visibility = 'collapse';
-		}
 	}
-
-	_addChildFromBuilder = (name: string, value: any) => {
-		if (value instanceof View) {
-			if (value instanceof Slide) {
-				this._childSlides.push(value);
-			}
-			this.addChild(value);
-		}
-	};
 
 	private applySwipe(pageWidth: number) {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
@@ -153,11 +128,30 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 			if (args.state === gestures.GestureStateTypes.ended) {
 				if (this.transitioning === false) {
 					this.transitioning = true;
-					this.currentPanel.panel.translateX = -this.pageWidth;
+					this.currentPanel.panel.animate({
+						translate: { x: -this.pageWidth, y: 0 },
+						duration: 250,
+					});
 					if (this.currentPanel.right != null) {
-						this.currentPanel.right.panel.translateX = -this.pageWidth;
-						this.currentPanel.right.panel.translateX = this.pageWidth;
+						this.currentPanel.right.panel.animate({
+							translate: { x: 0, y: 0 },
+							duration: 250,
+						});
+						if (app.ios) //for some reason i have to set these in ios or there is some sort of bounce back.
+							this.currentPanel.right.panel.translateX = 0;
 					}
+					if (this.currentPanel.left != null) {
+						this.currentPanel.left.panel.animate({
+							translate: { x: -this.pageWidth * 2, y: 0 },
+							duration: 250,
+						});
+						if (app.ios)
+							this.currentPanel.left.panel.translateX = -this.pageWidth;
+
+					}
+					if (app.ios)
+						this.currentPanel.panel.translateX = -this.pageWidth;
+
 					this.transitioning = false;
 
 				}
@@ -200,7 +194,7 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		});
 	}
 
-	public showRightSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
+	private showRightSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
 		let transition = new Array();
 		transition.push({
 			target: panelMap.right.panel,
@@ -216,21 +210,19 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		let animationSet = new AnimationModule.Animation(transition, false);
 
 		return animationSet.play();
-		// panelMap.panel.off('pan');
-		//	this.applySwipe(info, wrapper, pageWidth, panelMap.right, this.btnPrevious, btnNext);
 	}
 
-	public showLeftSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
+	private showLeftSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
 		let transition = new Array();
 		transition.push({
 			target: panelMap.left.panel,
 			translate: { x: -this.pageWidth, y: 0 },
-			duration: 500,
+			duration: 300,
 		});
 		transition.push({
 			target: panelMap.panel,
 			translate: { x: 0, y: 0 },
-			duration: 500,
+			duration: 300,
 		});
 
 		let animationSet = new AnimationModule.Animation(transition, false);
@@ -277,6 +269,22 @@ export class IntroSlides extends AbsoluteLayout implements AddChildFromBuilder {
 		button.text = name;
 		this.setwidthPercent(button, 100);
 		return button;
+	}
+
+	private buildSlideMap(views: StackLayout[]) {
+		let slideMap: ISlideMap[] = [];
+		views.forEach((view: StackLayout) => {
+			slideMap.push({
+				panel: view
+			});
+		});
+		slideMap.forEach((mapping: ISlideMap, index: number) => {
+			if (slideMap[index - 1] != null)
+				mapping.left = slideMap[index - 1];
+			if (slideMap[index + 1] != null)
+				mapping.right = slideMap[index + 1];
+		});
+		return slideMap[0];
 	}
 }
 

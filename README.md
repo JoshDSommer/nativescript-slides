@@ -1,6 +1,6 @@
 # Nativescript Intro Slides for iOS and Android
 
-[![Nativescript Intro Slides. Click to Play](https://img.youtube.com/vi/5GGGiNA98TU/0.jpg)](https://www.youtube.com/embed/5GGGiNA98TU)
+[![Nativescript Intro Slides. Click to Play](https://img.youtube.com/vi/1AatGtPA6J8/0.jpg)](https://www.youtube.com/embed/1AatGtPA6J8)
 
 Beta
 ###XML
@@ -59,22 +59,55 @@ when using the intro slide plugin you need at least two ``<IntroSlides:Slide>`` 
 
 add as many ``<IntroSlides:Slide>`` as you want.
 
-### Planned additions:
-
-* disable/enable previous and next buttons
-* Add function and property for button text, for next button on the last slide.
-* add properties to override previous and next buttons text.
-
-### Known Issues:
-* Breaks on screen rotation. will be fixed.
+the `IntroSlides` class also has public `nextSlide` and `previousSlide` functions so you can add your own previous and next buttons as needed.
 
 ###Plugin Development Work Flow:
 
 * Clone repository to your machine.
-* First run `npm install`
-* Then run `npm run setup` to prepare the demo project
+* Run `npm run setup` to prepare the demo project
 * Build with `npm run build`
 * Run and deploy to your device or emulator with `npm run demo.android` or `npm run demo.ios`
+
+
+### Smoother panning on Android.
+
+To achieve a much smoother drag on android simply go into the gestures.android.js file in the tns-core-modules here
+
+
+`/node_modules/tns-core-modules/ui/gestures/gestures.android.js`
+
+and change
+
+```javascript
+    CustomPanGestureDetector.prototype.getMotionEventCenter = function (event) {
+        var count = event.getPointerCount();
+        var res = { x: 0, y: 0 };
+        for (var i = 0; i < count; i++) {
+            res.x += event.getX(i);
+            res.y += event.getY(i);
+        }
+        res.x /= (count * this.density);
+        res.y /= (count * this.density);
+        return res;
+    };
+```
+
+to
+```javascript
+  CustomPanGestureDetector.prototype.getMotionEventCenter = function (event) {
+        var count = event.getPointerCount();
+        var res = { x: 0, y: 0 };
+        for (var i = 0; i < count; i++) {
+            res.x += event.getRawX();
+            res.y += event.getRawY();
+        }
+        res.x /= (count * this.density);
+        res.y /= (count * this.density);
+        return res;
+    };
+```
+
+_please note this will change the panning gesture for your entire project._
 
 
 ###Special thanks to:
