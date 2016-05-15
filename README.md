@@ -2,7 +2,7 @@
 
 [![Nativescript Intro Slides. Click to Play](https://img.youtube.com/vi/1AatGtPA6J8/0.jpg)](https://www.youtube.com/embed/1AatGtPA6J8)
 
-Beta
+##Example Usage:
 ###XML
 ```xml
 
@@ -52,7 +52,7 @@ Label{
 }
 
 ```
-#Usage
+
 To use the intro slide plugin you need to first import it into your xml layout with  `xmlns:IntroSlides="nativescript-intro-slides"`
 
 when using the intro slide plugin you need at least two ``<IntroSlides:Slide>`` views inside of the ``<IntroSlides:IntroSlides>``.
