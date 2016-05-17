@@ -1,4 +1,5 @@
 # Nativescript Intro Slides for iOS and Android
+###_Not just for intro slides any more! Great for **Image Carousels** too!_ ###
 
 [![Nativescript Intro Slides. Click to Play](https://img.youtube.com/vi/1AatGtPA6J8/0.jpg)](https://www.youtube.com/embed/1AatGtPA6J8)
 
@@ -61,7 +62,7 @@ add as many ``<IntroSlides:Slide>`` as you want.
 
 the `IntroSlides` class also has public `nextSlide` and `previousSlide` functions so you can add your own previous and next buttons as needed.
 
-the `<IntroSlides:IntroSlides>` element also has a property called `loop` which is a boolean value and if set will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
+the `<IntroSlides:IntroSlides>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
 ###Plugin Development Work Flow:
 

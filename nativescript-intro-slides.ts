@@ -297,8 +297,8 @@ export class IntroSlides extends AbsoluteLayout {
 		});
 
 		if (this.loop) {
-			slideMap[0].left = slideMap[slideMap.length];
-			slideMap[slideMap.length].right = slideMap[0];
+			slideMap[0].left = slideMap[slideMap.length - 1];
+			slideMap[slideMap.length - 1].right = slideMap[0];
 		}
 		return slideMap[0];
 	}
