@@ -100,8 +100,8 @@ export class IntroSlides extends AbsoluteLayout {
 	}
 	public previousSlide() {
 		this.transitioning = true;
-		this.showRightSlide(this.currentPanel).then(() => {
-			this.setupRightPanel();
+		this.showLeftSlide(this.currentPanel).then(() => {
+			this.setupLeftPanel();
 		});
 	}
 
@@ -287,4 +287,3 @@ export class IntroSlides extends AbsoluteLayout {
 		return slideMap[0];
 	}
 }
-
