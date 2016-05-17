@@ -13,6 +13,8 @@ export declare class IntroSlides extends AbsoluteLayout {
     private _pageWidth;
     private transitioning;
     private direction;
+    private _loop;
+    loop: boolean;
     pageWidth: number;
     android: any;
     ios: any;

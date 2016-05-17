@@ -28,7 +28,15 @@ export class IntroSlides extends AbsoluteLayout {
 	private _pageWidth: number;
 	private transitioning: boolean;
 	private direction: direction = direction.none;
+	private _loop: boolean
 
+	get loop() {
+		return this._loop;
+	}
+
+	set loop(value: boolean) {
+		this._loop = value;
+	}
 
 	get pageWidth() {
 		return this._pageWidth;
@@ -51,6 +59,9 @@ export class IntroSlides extends AbsoluteLayout {
 	constructView(): void {
 
 		this._loaded = false;
+		if (this._loop == null) {
+			this.loop = false;
+		}
 		this.transitioning = false;
 
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
@@ -284,6 +295,11 @@ export class IntroSlides extends AbsoluteLayout {
 			if (slideMap[index + 1] != null)
 				mapping.right = slideMap[index + 1];
 		});
+
+		if (this.loop) {
+			slideMap[0].left = slideMap[slideMap.length];
+			slideMap[slideMap.length].right = slideMap[0];
+		}
 		return slideMap[0];
 	}
 }
