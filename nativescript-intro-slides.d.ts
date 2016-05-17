@@ -14,12 +14,16 @@ export declare class IntroSlides extends AbsoluteLayout {
     private transitioning;
     private direction;
     private _loop;
+    private _interval;
+    timer_is_set: boolean;
+    interval: number;
     loop: boolean;
     pageWidth: number;
     android: any;
     ios: any;
     constructor();
     constructView(): void;
+    carousel(isenabled, time): void;
     nextSlide(): void;
     previousSlide(): void;
     private setupLeftPanel();

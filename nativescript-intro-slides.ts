@@ -28,7 +28,16 @@ export class IntroSlides extends AbsoluteLayout {
 	private _pageWidth: number;
 	private transitioning: boolean;
 	private direction: direction = direction.none;
-	private _loop: boolean
+	private _loop: boolean;
+	private _interval: number;
+
+	get interval() {
+		return this._interval;
+	}
+
+	set interval(value: boolean) {
+		this._interval = value;
+	}
 
 	get loop() {
 		return this._loop;
@@ -61,6 +70,9 @@ export class IntroSlides extends AbsoluteLayout {
 		this._loaded = false;
 		if (this._loop == null) {
 			this.loop = false;
+		}
+		if (this._interval == null) {
+			this.interval = 0;
 		}
 		this.transitioning = false;
 
@@ -103,6 +115,20 @@ export class IntroSlides extends AbsoluteLayout {
 
 	}
 
+	public carousel(isenabled: boolean,time: number) {
+		if (this.timer_is_set) {
+			return ;
+		}
+		if (isenabled) {
+			this.timer_reference = setInterval(function(){
+				this.nextSlide();
+				this.timer_is_set = true;
+			},time);
+		}else {
+			clearTimeout(this.timer_reference);
+			this.timer_is_set = false;
+		}
+	}
 	public nextSlide() {
 		this.transitioning = true;
 		this.showRightSlide(this.currentPanel).then(() => {
@@ -300,6 +326,9 @@ export class IntroSlides extends AbsoluteLayout {
 			slideMap[0].left = slideMap[slideMap.length - 1];
 			slideMap[slideMap.length - 1].right = slideMap[0];
 		}
+		if (this.interval !== 0) {
+      this.carousel(true,this.interval);
+    }
 		return slideMap[0];
 	}
 }
