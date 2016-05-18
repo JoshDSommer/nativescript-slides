@@ -1,3 +1,4 @@
+# NativeScript Slides for iOS and Android
 ###_The plugin formally known as nativescript-intro-slides_
 [![Nativescript Slides. Click to Play](https://img.youtube.com/vi/1AatGtPA6J8/0.jpg)](https://www.youtube.com/embed/1AatGtPA6J8)
 
