@@ -1,48 +1,46 @@
-# Nativescript Intro Slides for iOS and Android
-###_Not just for intro slides any more! Great for **Image Carousels** too!_ ###
-
-[![Nativescript Intro Slides. Click to Play](https://img.youtube.com/vi/1AatGtPA6J8/0.jpg)](https://www.youtube.com/embed/1AatGtPA6J8)
+###_The plugin formally known as nativescript-intro-slides_
+[![Nativescript Slides. Click to Play](https://img.youtube.com/vi/1AatGtPA6J8/0.jpg)](https://www.youtube.com/embed/1AatGtPA6J8)
 
 ##Example Usage:
 ###XML
 ```xml
 
-	<IntroSlides:IntroSlides>
-		<IntroSlides:Slide class="intro-slide-1">
+	<Slides:SlideContainer>
+		<Slides:Slide class="slide-1">
 			<Label text="This is Panel 1"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-2">
+		</Slides:Slide>
+		<Slides:Slide class="slide-2">
 			<Label text="This is Panel 2"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-3">
+		</Slides:Slide>
+		<Slides:Slide class="slide-3">
 			<Label text="This is Panel 3"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-4">
+		</Slides:Slide>
+		<Slides:Slide class="slide-4">
 			<Label text="This is Panel 4"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-5">
+		</Slides:Slide>
+		<Slides:Slide class="slide-5">
 			<Label text="This is Panel 5"  />
-		</IntroSlides:Slide>
-	</IntroSlides:IntroSlides>
+		</Slides:Slide>
+	</Slides:SlideContainer>
 
 ```
 ###CSS
 ```css
-.intro-slide-1{
+.slide-1{
   background-color: darkslateblue;
 }
 
-.intro-slide-2{
+.slide-2{
   background-color: darkcyan;
 }
-.intro-slide-3{
+.slide-3{
   background-color: darkgreen;
 }
 
-.intro-slide-4{
+.slide-4{
   background-color: darkgoldenrod;
 }
-.intro-slide-5{
+.slide-5{
   background-color: darkslategray;
 }
 Label{
@@ -53,16 +51,17 @@ Label{
 }
 
 ```
+Great for Intros/Tutorials to Image Carousels.
 
-To use the intro slide plugin you need to first import it into your xml layout with  `xmlns:IntroSlides="nativescript-intro-slides"`
+To use the intro slide plugin you need to first import it into your xml layout with  `xmlns:Slides="nativescript-slides"`
 
-when using the intro slide plugin you need at least two ``<IntroSlides:Slide>`` views inside of the ``<IntroSlides:IntroSlides>``.
+when using the intro slide plugin you need at least two ``<Slides:Slide>`` views inside of the ``<Slides:SlideContainer>``.
 
-add as many ``<IntroSlides:Slide>`` as you want.
+add as many ``<Slides:Slide>`` as you want.
 
-the `IntroSlides` class also has public `nextSlide` and `previousSlide` functions so you can add your own previous and next buttons as needed.
+the `Slides` class also has public `nextSlide` and `previousSlide` functions so you can add your own previous and next buttons as needed.
 
-the `<IntroSlides:IntroSlides>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
+the `<Slides:SlideContainer>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
 ###Plugin Development Work Flow:
 

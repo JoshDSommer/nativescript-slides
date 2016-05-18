@@ -1,19 +1,19 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IntroSlides="nativescript-intro-slides" loaded="pageLoaded">
-	<IntroSlides:IntroSlides loop="true">
-		<IntroSlides:Slide class="intro-slide-1">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" loaded="pageLoaded">
+	<Slides:SlideContainer loop="true">
+		<Slides:Slide class="slide-1">
 			<Label text="This is Panel 1"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-2">
+		</Slides:Slide>
+		<Slides:Slide class="slide-2">
 			<Label text="This is Panel 2"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-3">
+		</Slides:Slide>
+		<Slides:Slide class="slide-3">
 			<Label text="This is Panel 3"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-4">
+		</Slides:Slide>
+		<Slides:Slide class="slide-4">
 			<Label text="This is Panel 4"  />
-		</IntroSlides:Slide>
-		<IntroSlides:Slide class="intro-slide-5">
+		</Slides:Slide>
+		<Slides:Slide class="slide-5">
 			<Label text="This is Panel 5"  />
-		</IntroSlides:Slide>
-	</IntroSlides:IntroSlides>
+		</Slides:Slide>
+	</Slides:SlideContainer>
 </Page>
