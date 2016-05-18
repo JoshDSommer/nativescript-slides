@@ -33,6 +33,13 @@
 		"name": "Josh Sommer",
 		"email": "joshdsommer@gmail.com"
 	},
+	"contributors": [
+    {
+      "name": "Abhijith Reddy",
+      "email": "mabhijith95a10@gmail.com",
+      "url": "https://github.com/mabhijith95a10"
+    }
+  ],
 	"bugs": {
 		"url": "https://github.com/TheOriginalJosh/nativescript-intro-slides/issues"
 	},
