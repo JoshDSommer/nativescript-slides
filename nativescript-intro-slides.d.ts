@@ -14,8 +14,8 @@ export declare class IntroSlides extends AbsoluteLayout {
     private transitioning;
     private direction;
     private _loop;
+    private timer_reference;
     private _interval;
-    timer_is_set: boolean;
     interval: number;
     loop: boolean;
     pageWidth: number;
@@ -23,7 +23,7 @@ export declare class IntroSlides extends AbsoluteLayout {
     ios: any;
     constructor();
     constructView(): void;
-    carousel(isenabled, time): void;
+    stopSlideshow(): void;
     nextSlide(): void;
     previousSlide(): void;
     private setupLeftPanel();
@@ -35,4 +35,5 @@ export declare class IntroSlides extends AbsoluteLayout {
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
+    private carousel(isenabled, time);
 }

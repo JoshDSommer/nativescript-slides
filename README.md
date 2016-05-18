@@ -64,7 +64,7 @@ the `IntroSlides` class also has public `nextSlide` and `previousSlide` function
 
 the `<IntroSlides:IntroSlides>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
-the `<IntroSlides:IntroSlides>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. It also has a function carousel(isenabled,time) if isenabled is true it enables the carousel feature and time sets the interval in millisecond. In unloaded function call carousel(false,0) to unregister it.
+the `<IntroSlides:IntroSlides>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call page.getViewById("your_id").carousel(false,0) to unregister it (your_id is the id given to `<IntroSlides:IntroSlides>`).
 
 ###Plugin Development Work Flow:
 

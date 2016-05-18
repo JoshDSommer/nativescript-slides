@@ -115,19 +115,17 @@ export class IntroSlides extends AbsoluteLayout {
 
 	}
 
-	public carousel(isenabled: boolean,time: number) {
-		if (this.timer_is_set) {
-			return ;
-		}
+	private carousel(isenabled: boolean,time: number) {
 		if (isenabled) {
-			this.timer_reference = setInterval(function(){
+			this.timer_reference = setInterval(() => {
 				this.nextSlide();
-				this.timer_is_set = true;
 			},time);
 		}else {
 			clearTimeout(this.timer_reference);
-			this.timer_is_set = false;
 		}
+	}
+	public stopSlideshow() {
+	  this.carousel(false,0);
 	}
 	public nextSlide() {
 		this.transitioning = true;
