@@ -31,6 +31,8 @@ export class SlideContainer extends AbsoluteLayout {
 	private _loop: boolean;
 	private _interval: number;
 	private _AndroidTransparentStatusBar: boolean;
+	private _loop: boolean
+	private _AndroidTransparentStatusBar: boolean;
 
 	get interval() {
 		return this._interval;

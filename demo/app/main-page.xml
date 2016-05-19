@@ -1,5 +1,5 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" loaded="pageLoaded">
-	<Slides:SlideContainer loop="true">
+	<Slides:SlideContainer loop="true" AndroidTransparentStatusBar="true">
 		<Slides:Slide class="slide-1">
 			<Label text="This is Panel 1"  />
 		</Slides:Slide>
