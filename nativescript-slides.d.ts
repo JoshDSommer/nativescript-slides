@@ -7,7 +7,7 @@ export interface ISlideMap {
     left?: ISlideMap;
     right?: ISlideMap;
 }
-export declare class IntroSlides extends AbsoluteLayout {
+export declare class SlideContainer extends AbsoluteLayout {
     private _loaded;
     private currentPanel;
     private _pageWidth;
