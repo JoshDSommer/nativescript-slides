@@ -14,7 +14,9 @@ export declare class SlideContainer extends AbsoluteLayout {
     private transitioning;
     private direction;
     private _loop;
+    private _AndroidTransparentStatusBar;
     loop: boolean;
+    AndroidTransparentStatusBar: boolean;
     pageWidth: number;
     android: any;
     ios: any;
