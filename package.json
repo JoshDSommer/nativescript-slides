@@ -27,12 +27,23 @@
 		"NativeScript",
 		"JavaScript",
 		"Android",
-		"iOS"
+		"iOS",
+		"TypeScript",
+		"swipe slides",
+		"Slides",
+		"Carousel"
 	],
 	"author": {
 		"name": "Josh Sommer",
 		"email": "joshdsommer@gmail.com"
 	},
+	"contributors": [
+		{
+			"name": "Brad Martin",
+			"email": "bradwaynemartin@gmail.com",
+			"url": "https://github.com/bradmartin"
+		}
+	],
 	"bugs": {
 		"url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"
 	},

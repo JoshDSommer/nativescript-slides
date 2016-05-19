@@ -64,6 +64,9 @@ the `SlideContainer` class also has public `nextSlide` and `previousSlide` funct
 
 the `<Slides:SlideContainer>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
+#### Android Optional Attribute
+- `AndroidTransparentStatusBar`: boolean - If true, the Android status  bar will be transparent on devices that support it. Typically this is API >=21 (Lollipop).
+
 ###Plugin Development Work Flow:
 
 * Clone repository to your machine.
