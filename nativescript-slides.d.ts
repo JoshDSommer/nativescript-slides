@@ -7,17 +7,19 @@ export interface ISlideMap {
     left?: ISlideMap;
     right?: ISlideMap;
 }
-export declare class IntroSlides extends AbsoluteLayout {
+export declare class SlideContainer extends AbsoluteLayout {
     private _loaded;
     private currentPanel;
     private _pageWidth;
     private transitioning;
     private direction;
     private _loop;
+    private _AndroidTransparentStatusBar;
     private timer_reference;
     private _interval;
     interval: number;
     loop: boolean;
+    AndroidTransparentStatusBar: boolean;
     pageWidth: number;
     android: any;
     ios: any;

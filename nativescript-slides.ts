@@ -22,7 +22,7 @@ export interface ISlideMap {
 	right?: ISlideMap;
 }
 
-export class IntroSlides extends AbsoluteLayout {
+export class SlideContainer extends AbsoluteLayout {
 	private _loaded: boolean;
 	private currentPanel: ISlideMap;
 	private _pageWidth: number;
@@ -30,6 +30,7 @@ export class IntroSlides extends AbsoluteLayout {
 	private direction: direction = direction.none;
 	private _loop: boolean;
 	private _interval: number;
+	private _AndroidTransparentStatusBar: boolean;
 
 	get interval() {
 		return this._interval;
@@ -45,6 +46,14 @@ export class IntroSlides extends AbsoluteLayout {
 
 	set loop(value: boolean) {
 		this._loop = value;
+	}
+
+	get AndroidTransparentStatusBar() {
+		return this._AndroidTransparentStatusBar;
+	}
+
+	set AndroidTransparentStatusBar(value: boolean) {
+		this._AndroidTransparentStatusBar = value;
 	}
 
 	get pageWidth() {
@@ -71,9 +80,6 @@ export class IntroSlides extends AbsoluteLayout {
 		if (this._loop == null) {
 			this.loop = false;
 		}
-		if (this._interval == null) {
-			this.interval = 0;
-		}
 		this.transitioning = false;
 
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
@@ -83,6 +89,16 @@ export class IntroSlides extends AbsoluteLayout {
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
 				this._loaded = true;
+
+				// Android Transparent Status Bar
+				if (this.AndroidTransparentStatusBar === true && app.android && Platform.device.sdkVersion >= '21') {
+					const View = android.view.View;
+					let window = app.android.startActivity.getWindow();
+					// set the status bar to Color.Transparent
+					window.setStatusBarColor(0x000000);
+				}
+
+
 
 				let slides: StackLayout[] = [];
 

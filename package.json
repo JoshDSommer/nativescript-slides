@@ -1,8 +1,8 @@
 {
-	"name": "nativescript-intro-slides",
-	"version": "1.0.3",
-	"description": "NativeScript intro slides plugin.",
-	"main": "nativescript-intro-slides.js",
+	"name": "nativescript-slides",
+	"version": "1.0.2",
+	"description": "NativeScript Slides plugin.",
+	"main": "nativescript-slides.js",
 	"nativescript": {
 		"platforms": {
 			"android": "2.0.0",
@@ -13,7 +13,7 @@
 		"build": "tsc",
 		"demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
 		"demo.android": "npm run preparedemo && cd demo && tns run android",
-		"preparedemo": "npm run build && cd demo && tns plugin remove nativescript-intro-slides && tns plugin add .. && tns install",
+		"preparedemo": "npm run build && cd demo && tns plugin remove nativescript-slides && tns plugin add .. && tns install",
 		"setup": "npm install && cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
 		"livesync.ios":"cd demo  && tns livesync ios --watch",
 		"livesync.android":"cd demo  && tns livesync android --watch",
@@ -21,33 +21,42 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/TheOriginalJosh/nativescript-intro-slides.git"
+		"url": "https://github.com/TheOriginalJosh/nativescript-slides.git"
 	},
 	"keywords": [
 		"NativeScript",
 		"JavaScript",
 		"Android",
-		"iOS"
+		"iOS",
+		"TypeScript",
+		"swipe slides",
+		"Slides",
+		"Carousel"
 	],
 	"author": {
 		"name": "Josh Sommer",
 		"email": "joshdsommer@gmail.com"
 	},
 	"contributors": [
-    {
+		{
+			"name": "Brad Martin",
+			"email": "bradwaynemartin@gmail.com",
+			"url": "https://github.com/bradmartin"
+		},
+		{
       "name": "Obsessive Inc/Abhijith Reddy",
       "email": "mabhijith95a10@gmail.com",
       "url": "https://github.com/Obsessive"
     }
-  ],
+	],
 	"bugs": {
-		"url": "https://github.com/TheOriginalJosh/nativescript-intro-slides/issues"
+		"url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"
 	},
 	"license": {
 		"type": "MIT",
-		"url": "https://github.com/TheOriginalJosh/nativescript-intro-slides/blob/master/LICENSE"
+		"url": "https://github.com/TheOriginalJosh/nativescript-slides/blob/master/LICENSE"
 	},
-	"homepage": "https://github.com/TheOriginalJosh/nativescript-intro-slides",
+	"homepage": "https://github.com/TheOriginalJosh/nativescript-slides",
 	"readmeFilename": "README.md",
 	"devDependencies": {
 		"typescript": "^1.8.7"
