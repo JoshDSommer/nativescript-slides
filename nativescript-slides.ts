@@ -22,7 +22,7 @@ export interface ISlideMap {
 	right?: ISlideMap;
 }
 
-export class SlideContainer extends AbsoluteLayout {
+export class IntroSlides extends AbsoluteLayout {
 	private _loaded: boolean;
 	private currentPanel: ISlideMap;
 	private _pageWidth: number;
