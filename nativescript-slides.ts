@@ -28,8 +28,19 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageWidth: number;
 	private transitioning: boolean;
 	private direction: direction = direction.none;
+	private _loop: boolean;
+	private _interval: number;
+	private _AndroidTransparentStatusBar: boolean;
 	private _loop: boolean
 	private _AndroidTransparentStatusBar: boolean;
+
+	get interval() {
+		return this._interval;
+	}
+
+	set interval(value: boolean) {
+		this._interval = value;
+	}
 
 	get loop() {
 		return this._loop;
@@ -122,6 +133,18 @@ export class SlideContainer extends AbsoluteLayout {
 
 	}
 
+	private carousel(isenabled: boolean,time: number) {
+		if (isenabled) {
+			this.timer_reference = setInterval(() => {
+				this.nextSlide();
+			},time);
+		}else {
+			clearTimeout(this.timer_reference);
+		}
+	}
+	public stopSlideshow() {
+	  this.carousel(false,0);
+	}
 	public nextSlide() {
 		this.transitioning = true;
 		this.showRightSlide(this.currentPanel).then(() => {
@@ -319,6 +342,9 @@ export class SlideContainer extends AbsoluteLayout {
 			slideMap[0].left = slideMap[slideMap.length - 1];
 			slideMap[slideMap.length - 1].right = slideMap[0];
 		}
+		if (this.interval !== 0) {
+      this.carousel(true,this.interval);
+    }
 		return slideMap[0];
 	}
 }

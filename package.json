@@ -42,7 +42,12 @@
 			"name": "Brad Martin",
 			"email": "bradwaynemartin@gmail.com",
 			"url": "https://github.com/bradmartin"
-		}
+		},
+		{
+      "name": "Obsessive Inc/Abhijith Reddy",
+      "email": "mabhijith95a10@gmail.com",
+      "url": "https://github.com/Obsessive"
+    }
 	],
 	"bugs": {
 		"url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"

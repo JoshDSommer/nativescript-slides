@@ -64,6 +64,8 @@ the `SlideContainer` class also has public `nextSlide` and `previousSlide` funct
 
 the `<Slides:SlideContainer>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
+the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call page.getViewById("your_id").stopSlideshow() to unregister it (your_id is the id given to `<Slides:SlideContainer>`).
+
 #### Android Optional Attribute
 - `AndroidTransparentStatusBar`: boolean - If true, the Android status  bar will be transparent on devices that support it. Typically this is API >=21 (Lollipop).
 

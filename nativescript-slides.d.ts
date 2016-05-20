@@ -15,6 +15,9 @@ export declare class SlideContainer extends AbsoluteLayout {
     private direction;
     private _loop;
     private _AndroidTransparentStatusBar;
+    private timer_reference;
+    private _interval;
+    interval: number;
     loop: boolean;
     AndroidTransparentStatusBar: boolean;
     pageWidth: number;
@@ -22,6 +25,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     ios: any;
     constructor();
     constructView(): void;
+    stopSlideshow(): void;
     nextSlide(): void;
     previousSlide(): void;
     private setupLeftPanel();
@@ -33,4 +37,5 @@ export declare class SlideContainer extends AbsoluteLayout {
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
+    private carousel(isenabled, time);
 }
