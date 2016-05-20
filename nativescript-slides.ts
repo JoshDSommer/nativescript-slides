@@ -7,6 +7,7 @@ import { Button } from 'ui/button';
 import {Label} from 'ui/label';
 import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
+import {AnimationCurve} from 'ui/enums';
 
 export class Slide extends StackLayout { }
 
@@ -199,11 +200,13 @@ export class SlideContainer extends AbsoluteLayout {
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },
 						duration: 250,
+						curve: AnimationCurve.linear
 					});
 					if (this.currentPanel.right != null) {
 						this.currentPanel.right.panel.animate({
 							translate: { x: 0, y: 0 },
 							duration: 250,
+							curve: AnimationCurve.linear
 						});
 						if (app.ios) //for some reason i have to set these in ios or there is some sort of bounce back.
 							this.currentPanel.right.panel.translateX = 0;
@@ -212,6 +215,7 @@ export class SlideContainer extends AbsoluteLayout {
 						this.currentPanel.left.panel.animate({
 							translate: { x: -this.pageWidth * 2, y: 0 },
 							duration: 250,
+							curve: AnimationCurve.linear
 						});
 						if (app.ios)
 							this.currentPanel.left.panel.translateX = -this.pageWidth;
@@ -268,11 +272,13 @@ export class SlideContainer extends AbsoluteLayout {
 			target: panelMap.right.panel,
 			translate: { x: -this.pageWidth, y: 0 },
 			duration: 300,
+			curve: AnimationCurve.linear
 		});
 		transition.push({
 			target: panelMap.panel,
 			translate: { x: -this.pageWidth * 2, y: 0 },
 			duration: 300,
+			curve: AnimationCurve.linear
 		});
 		let animationSet = new AnimationModule.Animation(transition, false);
 
@@ -285,11 +291,13 @@ export class SlideContainer extends AbsoluteLayout {
 			target: panelMap.left.panel,
 			translate: { x: -this.pageWidth, y: 0 },
 			duration: 300,
+			curve: AnimationCurve.linear
 		});
 		transition.push({
 			target: panelMap.panel,
 			translate: { x: 0, y: 0 },
 			duration: 300,
+			curve: AnimationCurve.linear
 		});
 		let animationSet = new AnimationModule.Animation(transition, false);
 
