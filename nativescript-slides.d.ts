@@ -8,15 +8,15 @@ export interface ISlideMap {
     right?: ISlideMap;
 }
 export declare class SlideContainer extends AbsoluteLayout {
-    private _loaded;
     private currentPanel;
-    private _pageWidth;
     private transitioning;
     private direction;
+    private _loaded;
+    private _pageWidth;
     private _loop;
+    private _interval;
     private _AndroidTransparentStatusBar;
     private timer_reference;
-    private _interval;
     interval: number;
     loop: boolean;
     AndroidTransparentStatusBar: boolean;
@@ -25,7 +25,10 @@ export declare class SlideContainer extends AbsoluteLayout {
     ios: any;
     constructor();
     constructView(): void;
+    private carousel(isenabled, time);
+    private rebindSlideShow();
     stopSlideshow(): void;
+    startSlideshow(): void;
     nextSlide(): void;
     previousSlide(): void;
     private setupLeftPanel();
@@ -37,5 +40,4 @@ export declare class SlideContainer extends AbsoluteLayout {
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
-    private carousel(isenabled, time);
 }

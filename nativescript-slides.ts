@@ -23,22 +23,21 @@ export interface ISlideMap {
 }
 
 export class SlideContainer extends AbsoluteLayout {
-	private _loaded: boolean;
 	private currentPanel: ISlideMap;
-	private _pageWidth: number;
 	private transitioning: boolean;
 	private direction: direction = direction.none;
+	private _loaded: boolean;
+	private _pageWidth: number;
 	private _loop: boolean;
 	private _interval: number;
 	private _AndroidTransparentStatusBar: boolean;
-	private _loop: boolean
-	private _AndroidTransparentStatusBar: boolean;
+	private timer_reference: number;
 
 	get interval() {
 		return this._interval;
 	}
 
-	set interval(value: boolean) {
+	set interval(value: number) {
 		this._interval = value;
 	}
 
@@ -70,7 +69,6 @@ export class SlideContainer extends AbsoluteLayout {
 		return;
 	}
 
-
 	constructor() {
 		super();
 		this.constructView();
@@ -86,7 +84,9 @@ export class SlideContainer extends AbsoluteLayout {
 
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 
-
+		if (this._interval == null) {
+			this._interval = 0;
+		}
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
@@ -100,8 +100,6 @@ export class SlideContainer extends AbsoluteLayout {
 					window.setStatusBarColor(0x000000);
 				}
 
-
-
 				let slides: StackLayout[] = [];
 
 				this.eachLayoutChild((view: View) => {
@@ -112,6 +110,7 @@ export class SlideContainer extends AbsoluteLayout {
 						slides.push(view);
 					}
 				});
+
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
 				this.applySwipe(this.pageWidth);
@@ -127,54 +126,70 @@ export class SlideContainer extends AbsoluteLayout {
 					this.applySwipe(this.pageWidth);
 					this.currentPanel.panel.translateX = -this.pageWidth;
 				});
-
 			}
 		});
-
 	}
 
-	private carousel(isenabled: boolean,time: number) {
+	private carousel(isenabled: boolean, time: number) {
 		if (isenabled) {
 			this.timer_reference = setInterval(() => {
 				this.nextSlide();
-			},time);
-		}else {
+			}, time);
+		} else {
 			clearTimeout(this.timer_reference);
 		}
 	}
-	public stopSlideshow() {
-	  this.carousel(false,0);
+	private rebindSlideShow(): void {
+		if (this.timer_reference != null) {
+			this.stopSlideshow();
+			this.startSlideshow();
+		}
 	}
-	public nextSlide() {
+
+	public stopSlideshow(): void {
+		this.carousel(false, 0);
+	}
+
+	public startSlideshow(): void {
+		if (this.interval !== 0) {
+			this.carousel(true, this.interval);
+		}
+	}
+
+	public nextSlide(): void {
+		this.direction = direction.left;
 		this.transitioning = true;
 		this.showRightSlide(this.currentPanel).then(() => {
 			this.setupRightPanel();
 		});
 	}
-	public previousSlide() {
+	public previousSlide(): void {
+		this.direction = direction.right;
 		this.transitioning = true;
 		this.showLeftSlide(this.currentPanel).then(() => {
 			this.setupLeftPanel();
 		});
 	}
 
-	private setupLeftPanel() {
+	private setupLeftPanel(): void {
 		this.direction = direction.none;
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = this.currentPanel.left;
 		this.applySwipe(this.pageWidth);
+		this.rebindSlideShow();
 	}
 
-	private setupRightPanel() {
+	private setupRightPanel(): void {
 		this.direction = direction.none;
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = this.currentPanel.right;
 		this.applySwipe(this.pageWidth);
+		this.rebindSlideShow();
 	}
 
-	private applySwipe(pageWidth: number) {
+	private applySwipe(pageWidth: number): void {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
 
 		this.currentPanel.panel.on('pan', (args: gestures.PanGestureEventData): void => {
@@ -259,7 +274,6 @@ export class SlideContainer extends AbsoluteLayout {
 			translate: { x: -this.pageWidth * 2, y: 0 },
 			duration: 300,
 		});
-
 		let animationSet = new AnimationModule.Animation(transition, false);
 
 		return animationSet.play();
@@ -277,9 +291,7 @@ export class SlideContainer extends AbsoluteLayout {
 			translate: { x: 0, y: 0 },
 			duration: 300,
 		});
-
 		let animationSet = new AnimationModule.Animation(transition, false);
-
 
 		return animationSet.play();
 
@@ -342,9 +354,7 @@ export class SlideContainer extends AbsoluteLayout {
 			slideMap[0].left = slideMap[slideMap.length - 1];
 			slideMap[slideMap.length - 1].right = slideMap[0];
 		}
-		if (this.interval !== 0) {
-      this.carousel(true,this.interval);
-    }
+		this.startSlideshow();
 		return slideMap[0];
 	}
 }
