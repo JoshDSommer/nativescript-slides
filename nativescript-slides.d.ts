@@ -15,11 +15,13 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _pageWidth;
     private _loop;
     private _interval;
-    private _AndroidTransparentStatusBar;
+    private _androidTranslucentStatusBar;
+    private _androidTranslucentNavBar;
     private timer_reference;
     interval: number;
     loop: boolean;
-    AndroidTransparentStatusBar: boolean;
+    androidTranslucentStatusBar: boolean;
+    androidTranslucentNavBar: boolean;
     pageWidth: number;
     android: any;
     ios: any;
@@ -31,6 +33,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     startSlideshow(): void;
     nextSlide(): void;
     previousSlide(): void;
+    resetAndroidTranslucentFlags(): void;
     private setupLeftPanel();
     private setupRightPanel();
     private applySwipe(pageWidth);
