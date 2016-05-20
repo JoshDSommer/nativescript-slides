@@ -9,7 +9,7 @@ import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
 import {AnimationCurve} from 'ui/enums';
 
-const LayoutParams = android.view.WindowManager.LayoutParams;
+const LayoutParams = <any>android.view.WindowManager.LayoutParams;
 
 export class Slide extends StackLayout { }
 
@@ -200,7 +200,7 @@ export class SlideContainer extends AbsoluteLayout {
 			window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
 		}
 		if (this._androidTranslucentNavBar === true) {
-			window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			(<any>window).clearFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 		}
 	}
 
