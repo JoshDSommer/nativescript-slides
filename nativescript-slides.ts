@@ -152,7 +152,11 @@ export class SlideContainer extends AbsoluteLayout {
 	private carousel(isenabled: boolean, time: number) {
 		if (isenabled) {
 			this.timer_reference = setInterval(() => {
-				this.nextSlide();
+				if(typeof this.currentPanel.right !== "undefined") {
+					this.nextSlide();
+				}else {
+					clearTimeout(this.timer_reference);
+				}
 			}, time);
 		} else {
 			clearTimeout(this.timer_reference);
