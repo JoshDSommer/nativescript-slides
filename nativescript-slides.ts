@@ -9,7 +9,12 @@ import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
 import {AnimationCurve} from 'ui/enums';
 
-const LayoutParams = android.view.WindowManager.LayoutParams;
+let LayoutParams: any;
+if (app.android) {
+	LayoutParams = <any>android.view.WindowManager.LayoutParams;
+} else {
+	LayoutParams = {};
+}
 
 export class Slide extends StackLayout { }
 
@@ -152,9 +157,9 @@ export class SlideContainer extends AbsoluteLayout {
 	private carousel(isenabled: boolean, time: number) {
 		if (isenabled) {
 			this.timer_reference = setInterval(() => {
-				if(typeof this.currentPanel.right !== "undefined") {
+				if (typeof this.currentPanel.right !== "undefined") {
 					this.nextSlide();
-				}else {
+				} else {
 					clearTimeout(this.timer_reference);
 				}
 			}, time);
@@ -200,7 +205,7 @@ export class SlideContainer extends AbsoluteLayout {
 			window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
 		}
 		if (this._androidTranslucentNavBar === true) {
-			window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			(<any>window).clearFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 		}
 	}
 
