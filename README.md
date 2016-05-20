@@ -1,11 +1,13 @@
 # NativeScript Slides for iOS and Android
 ###_The plugin formally known as nativescript-intro-slides_
-###Intro slides example:
-[![Nativescript Slides. Click to Play](https://img.youtube.com/vi/kGby8qtSDjM/0.jpg)](https://www.youtube.com/embed/kGby8qtSDjM)
 
 ###Intro slides example:
 [![Nativescript Slides. Click to Play](https://img.youtube.com/vi/kGby8qtSDjM/0.jpg)](https://www.youtube.com/embed/kGby8qtSDjM)
 
+###Image carousel example:
+[![Nativescript Slides. Click to Play](https://img.youtube.com/vi/RsEqGAKm62k/0.jpg)](https://www.youtube.com/embed/RsEqGAKm62k)
+
+_videos by [Brad Martin](https://github.com/bradmartin)_
 
 ##Example Usage:
 ###XML
@@ -83,7 +85,7 @@ the `<Slides:SlideContainer>` element also has a property called `interval` whic
 * Run and deploy to your device or emulator with `npm run demo.android` or `npm run demo.ios`
 
 
-### Smoother panning on Android.
+### Smoother panning on Android (For {N} v2.0.0 and below __only__).
 
 To achieve a much smoother drag on android simply go into the gestures.android.js file in the tns-core-modules here
 
