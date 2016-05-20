@@ -66,8 +66,9 @@ the `<Slides:SlideContainer>` element also has a property called `loop` which is
 
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
-#### Android Optional Attribute
-- `AndroidTransparentStatusBar`: boolean - If true, the Android status  bar will be transparent on devices that support it. Typically this is API >=21 (Lollipop).
+#### Android Optional Attributes
+- `androidTranslucentStatusBar`: boolean - If true, the Android status bar will be translucent on devices that support it. (Android sdk >= 19).
+- `androidTranslucentNavBar`: boolean - If true, the Android navigation bar will be translucent on devices that support it. (Android sdk >= 19).
 
 ###Plugin Development Work Flow:
 
