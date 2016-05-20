@@ -9,6 +9,8 @@ import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
 import {AnimationCurve} from 'ui/enums';
 
+const LayoutParams = android.view.WindowManager.LayoutParams;
+
 export class Slide extends StackLayout { }
 
 enum direction {
@@ -31,7 +33,8 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageWidth: number;
 	private _loop: boolean;
 	private _interval: number;
-	private _AndroidTransparentStatusBar: boolean;
+	private _androidTranslucentStatusBar: boolean;
+	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
 
 	get interval() {
@@ -50,12 +53,20 @@ export class SlideContainer extends AbsoluteLayout {
 		this._loop = value;
 	}
 
-	get AndroidTransparentStatusBar() {
-		return this._AndroidTransparentStatusBar;
+	get androidTranslucentStatusBar() {
+		return this._androidTranslucentStatusBar;
 	}
 
-	set AndroidTransparentStatusBar(value: boolean) {
-		this._AndroidTransparentStatusBar = value;
+	set androidTranslucentStatusBar(value: boolean) {
+		this._androidTranslucentStatusBar = value;
+	}
+
+	get androidTranslucentNavBar() {
+		return this._androidTranslucentNavBar;
+	}
+
+	set androidTranslucentNavBar(value: boolean) {
+		this._androidTranslucentNavBar = value;
 	}
 
 	get pageWidth() {
@@ -93,12 +104,19 @@ export class SlideContainer extends AbsoluteLayout {
 			if (!this._loaded) {
 				this._loaded = true;
 
-				// Android Transparent Status Bar
-				if (this.AndroidTransparentStatusBar === true && app.android && Platform.device.sdkVersion >= '21') {
-					const View = android.view.View;
+				// Android Translucent bars API >= 19 only
+				if (this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && app.android && Platform.device.sdkVersion >= '19') {
 					let window = app.android.startActivity.getWindow();
-					// set the status bar to Color.Transparent
-					window.setStatusBarColor(0x000000);
+
+					// check for status bar
+					if (this._androidTranslucentStatusBar === true) {
+						window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
+					}
+
+					// check for nav bar
+					if (this._androidTranslucentNavBar === true) {
+						window.addFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+					}
 				}
 
 				let slides: StackLayout[] = [];
@@ -170,6 +188,16 @@ export class SlideContainer extends AbsoluteLayout {
 		this.showLeftSlide(this.currentPanel).then(() => {
 			this.setupLeftPanel();
 		});
+	}
+
+	public resetAndroidTranslucentFlags(): void {
+		if (this._androidTranslucentStatusBar === true) {
+			let window = app.android.startActivity.getWindow();
+			window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		}
+		if (this._androidTranslucentNavBar === true) {
+			window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+		}
 	}
 
 	private setupLeftPanel(): void {
