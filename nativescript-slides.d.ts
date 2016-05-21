@@ -15,6 +15,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _pageWidth;
     private _loop;
     private _interval;
+    private _velocityScrolling;
     private _androidTranslucentStatusBar;
     private _androidTranslucentNavBar;
     private timer_reference;
@@ -24,10 +25,12 @@ export declare class SlideContainer extends AbsoluteLayout {
     loop: boolean;
     androidTranslucentStatusBar: boolean;
     androidTranslucentNavBar: boolean;
+    velocityScrolling: boolean;
     pageWidth: number;
     android: any;
     ios: any;
     constructor();
+    private setupDefaultValues();
     constructView(): void;
     private carousel(isenabled, time);
     private rebindSlideShow();

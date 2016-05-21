@@ -38,18 +38,19 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageWidth: number;
 	private _loop: boolean;
 	private _interval: number;
+	private _velocityScrolling: boolean;
 	private _androidTranslucentStatusBar: boolean;
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
-	
-	get hasNext () : boolean {
+
+	get hasNext(): boolean {
 		return !!this.currentPanel.right;
 	}
-	
-	get hasPrevious () : boolean {
+
+	get hasPrevious(): boolean {
 		return !!this.currentPanel.left;
 	}
-	
+
 	get interval() {
 		return this._interval;
 	}
@@ -82,6 +83,12 @@ export class SlideContainer extends AbsoluteLayout {
 		this._androidTranslucentNavBar = value;
 	}
 
+	get velocityScrolling(): boolean {
+		return this._velocityScrolling;
+	}
+	set velocityScrolling(value: boolean) {
+		this._velocityScrolling = value;
+	}
 	get pageWidth() {
 		return this._pageWidth;
 	}
@@ -99,8 +106,7 @@ export class SlideContainer extends AbsoluteLayout {
 		this.constructView();
 	}
 
-	constructView(): void {
-
+	private setupDefaultValues(): void {
 		this._loaded = false;
 		if (this._loop == null) {
 			this.loop = false;
@@ -112,6 +118,14 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._interval == null) {
 			this._interval = 0;
 		}
+
+		if (this._velocityScrolling == null) {
+			this._velocityScrolling = false;
+		}
+
+	}
+	constructView(): void {
+		this.setupDefaultValues();
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
@@ -147,6 +161,7 @@ export class SlideContainer extends AbsoluteLayout {
 				this.currentPanel.panel.translateX = -this.pageWidth;
 				this.applySwipe(this.pageWidth);
 
+				//handles application orientation change
 				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
 					this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 					this.eachLayoutChild((view: View) => {
@@ -193,9 +208,9 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public nextSlide(): void {
-		if(!this.hasNext)
+		if (!this.hasNext)
 			return;
-		
+
 		this.direction = direction.left;
 		this.transitioning = true;
 		this.showRightSlide(this.currentPanel).then(() => {
@@ -203,9 +218,9 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 	}
 	public previousSlide(): void {
-		if(!this.hasPrevious)
+		if (!this.hasPrevious)
 			return;
-			
+
 		this.direction = direction.right;
 		this.transitioning = true;
 		this.showLeftSlide(this.currentPanel).then(() => {
@@ -242,31 +257,29 @@ export class SlideContainer extends AbsoluteLayout {
 			if (args.state === gestures.GestureStateTypes.began) {
 				startTime = Date.now();
 				previousDelta = 0;
-				endingVelocity = 0;
+				endingVelocity = 250;
 			} else if (args.state === gestures.GestureStateTypes.ended) {
 				deltaTime = Date.now() - startTime;
+				// if velocityScrolling is enabled then calculate the velocitty
+				if (this.velocityScrolling) {
+					endingVelocity = (args.deltaX / deltaTime) * 100;
+				}
 
-				endingVelocity = (args.deltaX / deltaTime) * 100;
-
-				if (args.deltaX > (pageWidth / 3) || endingVelocity > 32) { ///swiping left to right.
-
+				if (args.deltaX > (pageWidth / 3) || (this.velocityScrolling && endingVelocity > 32)) { ///swiping left to right.
 					if (this.hasPrevious) {
 						this.transitioning = true;
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
 						});
 					}
-
 					return;
-				} else if (args.deltaX < (-pageWidth / 3) || endingVelocity < -32) {
-
+				} else if (args.deltaX < (-pageWidth / 3) || (this.velocityScrolling && endingVelocity < -32)) {
 					if (this.hasNext) {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
 						});
 					}
-
 					return;
 				}
 
@@ -274,13 +287,13 @@ export class SlideContainer extends AbsoluteLayout {
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },
-						duration: 100,
+						duration: 200,
 						curve: AnimationCurve.easeOut
 					});
 					if (this.hasNext) {
 						this.currentPanel.right.panel.animate({
 							translate: { x: 0, y: 0 },
-							duration: 100,
+							duration: 200,
 							curve: AnimationCurve.easeOut
 						});
 						if (app.ios) //for some reason i have to set these in ios or there is some sort of bounce back.
@@ -289,7 +302,7 @@ export class SlideContainer extends AbsoluteLayout {
 					if (this.hasPrevious) {
 						this.currentPanel.left.panel.animate({
 							translate: { x: -this.pageWidth * 2, y: 0 },
-							duration: 100,
+							duration: 200,
 							curve: AnimationCurve.easeOut
 						});
 						if (app.ios)
@@ -300,10 +313,8 @@ export class SlideContainer extends AbsoluteLayout {
 						this.currentPanel.panel.translateX = -this.pageWidth;
 
 					this.transitioning = false;
-
 				}
 			} else {
-
 				if (!this.transitioning
 					&& previousDelta !== args.deltaX
 					&& args.deltaX != null
@@ -337,11 +348,16 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	private showRightSlide(panelMap: ISlideMap, offset: number = this.pageWidth, endingVelocity: number = 32): AnimationModule.AnimationPromise {
-		
-		let elapsedTime = Math.abs(offset / endingVelocity) * 100;		
-		let animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
+		let animationDuration: number;
+		if (this.velocityScrolling) {
+			let elapsedTime = Math.abs(offset / endingVelocity) * 100;
+			animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
+		} else {
+			animationDuration = 250; // default value
+		}
+
 		let transition = new Array();
-		
+
 		transition.push({
 			target: panelMap.right.panel,
 			translate: { x: -this.pageWidth, y: 0 },
@@ -360,11 +376,17 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	private showLeftSlide(panelMap: ISlideMap, offset: number = this.pageWidth, endingVelocity: number = 32): AnimationModule.AnimationPromise {
-		
-		let elapsedTime = Math.abs(offset / endingVelocity) * 100;
-		let animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
+
+		let animationDuration: number;
+		if (this.velocityScrolling) {
+			let elapsedTime = Math.abs(offset / endingVelocity) * 100;
+			animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
+		} else {
+			animationDuration = 250; // default value
+		}
+
 		let transition = new Array();
-		
+
 		transition.push({
 			target: panelMap.left.panel,
 			translate: { x: -this.pageWidth, y: 0 },
@@ -383,6 +405,9 @@ export class SlideContainer extends AbsoluteLayout {
 
 	}
 
+	/**
+	 * currently deprecated.... will come back to life for navigation dots.
+	 *  */
 	private buildFooter(): AbsoluteLayout {
 		let footer = new AbsoluteLayout();
 		let footerInnerWrap = new StackLayout();
