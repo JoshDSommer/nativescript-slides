@@ -321,7 +321,6 @@ export class SlideContainer extends AbsoluteLayout {
 					&& args.deltaX < 0) {
 
 					if (this.hasNext) {
-
 						this.direction = direction.left;
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
 						this.currentPanel.right.panel.translateX = args.deltaX;
