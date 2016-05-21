@@ -322,7 +322,7 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 	}
 
-	private showRightSlide(panelMap: ISlideMap, offset: number = 0, endingVelocity: number = 32): AnimationModule.AnimationPromise {
+	private showRightSlide(panelMap: ISlideMap, offset: number = this.pageWidth, endingVelocity: number = 32): AnimationModule.AnimationPromise {
 		
 		let elapsedTime = Math.abs(offset / endingVelocity) * 100;		
 		let animationDuration = Math.min(elapsedTime, 100);
@@ -345,7 +345,7 @@ export class SlideContainer extends AbsoluteLayout {
 		return animationSet.play();
 	}
 
-	private showLeftSlide(panelMap: ISlideMap, offset: number = 0, endingVelocity: number = 32): AnimationModule.AnimationPromise {
+	private showLeftSlide(panelMap: ISlideMap, offset: number = this.pageWidth, endingVelocity: number = 32): AnimationModule.AnimationPromise {
 		
 		let elapsedTime = Math.abs(offset / endingVelocity) * 100;
 		let animationDuration = Math.min(elapsedTime, 100);
