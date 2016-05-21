@@ -1,19 +1,27 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" loaded="pageLoaded">
-	<Slides:SlideContainer>
-		<Slides:Slide class="slide-1">
-			<Label text="This is Panel 1"  />
-		</Slides:Slide>
-		<Slides:Slide class="slide-2">
-			<Label text="This is Panel 2"  />
-		</Slides:Slide>
-		<Slides:Slide class="slide-3">
-			<Label text="This is Panel 3"  />
-		</Slides:Slide>
-		<Slides:Slide class="slide-4">
-			<Label text="This is Panel 4"  />
-		</Slides:Slide>
-		<Slides:Slide class="slide-5">
-			<Label text="This is Panel 5"  />
-		</Slides:Slide>
-	</Slides:SlideContainer>
+	
+	<GridLayout rows="* auto">
+		<Slides:SlideContainer id="slides" row="0">
+			<Slides:Slide class="slide-1">
+				<Label text="This is Panel 1"  />
+			</Slides:Slide>
+			<Slides:Slide class="slide-2">
+				<Label text="This is Panel 2"  />
+			</Slides:Slide>
+			<Slides:Slide class="slide-3">
+				<Label text="This is Panel 3"  />
+			</Slides:Slide>
+			<Slides:Slide class="slide-4">
+				<Label text="This is Panel 4"  />
+			</Slides:Slide>
+			<Slides:Slide class="slide-5">
+				<Label text="This is Panel 5"  />
+			</Slides:Slide>
+		</Slides:SlideContainer>
+		
+		<StackLayout row="1">
+			<button tap="next" text="Next"/>
+			<button tap="prev" text="Prev"/>
+		</StackLayout>
+	</GridLayout>
 </Page>

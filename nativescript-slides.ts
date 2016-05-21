@@ -41,7 +41,15 @@ export class SlideContainer extends AbsoluteLayout {
 	private _androidTranslucentStatusBar: boolean;
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
-
+	
+	get hasNext () : boolean {
+		return !!this.currentPanel.right;
+	}
+	
+	get hasPrevious () : boolean {
+		return !!this.currentPanel.left;
+	}
+	
 	get interval() {
 		return this._interval;
 	}
@@ -185,6 +193,9 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public nextSlide(): void {
+		if(!this.hasNext)
+			return;
+		
 		this.direction = direction.left;
 		this.transitioning = true;
 		this.showRightSlide(this.currentPanel).then(() => {
@@ -192,6 +203,9 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 	}
 	public previousSlide(): void {
+		if(!this.hasPrevious)
+			return;
+			
 		this.direction = direction.right;
 		this.transitioning = true;
 		this.showLeftSlide(this.currentPanel).then(() => {
@@ -236,7 +250,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 				if (args.deltaX > (pageWidth / 3) || endingVelocity > 32) { ///swiping left to right.
 
-					if (this.currentPanel.left != null) {
+					if (this.hasPrevious) {
 						this.transitioning = true;
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
@@ -246,7 +260,7 @@ export class SlideContainer extends AbsoluteLayout {
 					return;
 				} else if (args.deltaX < (-pageWidth / 3) || endingVelocity < -32) {
 
-					if (this.currentPanel.right != null) {
+					if (this.hasNext) {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
@@ -263,7 +277,7 @@ export class SlideContainer extends AbsoluteLayout {
 						duration: 100,
 						curve: AnimationCurve.easeOut
 					});
-					if (this.currentPanel.right != null) {
+					if (this.hasNext) {
 						this.currentPanel.right.panel.animate({
 							translate: { x: 0, y: 0 },
 							duration: 100,
@@ -272,7 +286,7 @@ export class SlideContainer extends AbsoluteLayout {
 						if (app.ios) //for some reason i have to set these in ios or there is some sort of bounce back.
 							this.currentPanel.right.panel.translateX = 0;
 					}
-					if (this.currentPanel.left != null) {
+					if (this.hasPrevious) {
 						this.currentPanel.left.panel.animate({
 							translate: { x: -this.pageWidth * 2, y: 0 },
 							duration: 100,
@@ -295,7 +309,7 @@ export class SlideContainer extends AbsoluteLayout {
 					&& args.deltaX != null
 					&& args.deltaX < 0) {
 
-					if (this.currentPanel.right != null) {
+					if (this.hasNext) {
 
 						this.direction = direction.left;
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
@@ -307,7 +321,7 @@ export class SlideContainer extends AbsoluteLayout {
 					&& args.deltaX != null
 					&& args.deltaX > 0) {
 
-					if (this.currentPanel.left != null) {
+					if (this.hasPrevious) {
 						this.direction = direction.right;
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
 						this.currentPanel.left.panel.translateX = -(this.pageWidth * 2) + args.deltaX;

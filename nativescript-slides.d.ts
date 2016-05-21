@@ -18,6 +18,8 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _androidTranslucentStatusBar;
     private _androidTranslucentNavBar;
     private timer_reference;
+    hasNext: boolean;
+    hasPrevious: boolean;
     interval: number;
     loop: boolean;
     androidTranslucentStatusBar: boolean;
