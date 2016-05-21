@@ -1,7 +1,7 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" loaded="pageLoaded">
 	
 	<GridLayout rows="* auto">
-		<Slides:SlideContainer id="slides" row="0">
+		<Slides:SlideContainer id="slides" row="0" loop="true">
 			<Slides:Slide class="slide-1">
 				<Label text="This is Panel 1"  />
 			</Slides:Slide>
