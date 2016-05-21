@@ -325,7 +325,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private showRightSlide(panelMap: ISlideMap, offset: number = this.pageWidth, endingVelocity: number = 32): AnimationModule.AnimationPromise {
 		
 		let elapsedTime = Math.abs(offset / endingVelocity) * 100;		
-		let animationDuration = Math.min(elapsedTime, 100);
+		let animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
 		let transition = new Array();
 		
 		transition.push({
@@ -348,7 +348,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private showLeftSlide(panelMap: ISlideMap, offset: number = this.pageWidth, endingVelocity: number = 32): AnimationModule.AnimationPromise {
 		
 		let elapsedTime = Math.abs(offset / endingVelocity) * 100;
-		let animationDuration = Math.min(elapsedTime, 100);
+		let animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
 		let transition = new Array();
 		
 		transition.push({
