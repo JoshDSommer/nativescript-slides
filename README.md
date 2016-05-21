@@ -71,7 +71,7 @@ the `SlideContainer` class also has public `nextSlide` and `previousSlide` funct
 
 the `<Slides:SlideContainer>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
-the `<Slides:SlideContainer>` element also has a property called `velocityScrolling` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
+the `<Slides:SlideContainer>` element also has a property called `velocityScrolling` which is a boolean value and if set to true will calculate transitions speeds based on the finger movement speed.
 
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
@@ -86,6 +86,9 @@ the `<Slides:SlideContainer>` element also has a property called `interval` whic
 * Build with `npm run build`
 * Run and deploy to your device or emulator with `npm run demo.android` or `npm run demo.ios`
 
+###Known issues
+
+  * There apears to be a bug with the loop resulting in bad transitions going right to left.
 
 ### Smoother panning on Android (For {N} v2.0.0 and below __only__).
 
