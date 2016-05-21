@@ -188,14 +188,14 @@ export class SlideContainer extends AbsoluteLayout {
 		this.direction = direction.left;
 		this.transitioning = true;
 		this.showRightSlide(this.currentPanel).then(() => {
-			this.setupRightPanel();
+			this.setupPanel(this.currentPanel.right);
 		});
 	}
 	public previousSlide(): void {
 		this.direction = direction.right;
 		this.transitioning = true;
 		this.showLeftSlide(this.currentPanel).then(() => {
-			this.setupLeftPanel();
+			this.setupPanel(this.currentPanel.left);
 		});
 	}
 
@@ -209,41 +209,65 @@ export class SlideContainer extends AbsoluteLayout {
 		}
 	}
 
-	private setupLeftPanel(): void {
+	private setupPanel(panel: ISlideMap) {
 		this.direction = direction.none;
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
-		this.currentPanel = this.currentPanel.left;
-		this.applySwipe(this.pageWidth);
-		this.rebindSlideShow();
-	}
-
-	private setupRightPanel(): void {
-		this.direction = direction.none;
-		this.transitioning = false;
-		this.currentPanel.panel.off('pan');
-		this.currentPanel = this.currentPanel.right;
+		this.currentPanel = panel;
 		this.applySwipe(this.pageWidth);
 		this.rebindSlideShow();
 	}
 
 	private applySwipe(pageWidth: number): void {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
+		let endingVelocity = 0;
+		let startTime, deltaTime;
 
 		this.currentPanel.panel.on('pan', (args: gestures.PanGestureEventData): void => {
-			if (args.state === gestures.GestureStateTypes.ended) {
+
+			if (args.state === gestures.GestureStateTypes.began) {
+				startTime = Date.now();
+				previousDelta = 0;
+				endingVelocity = 0;
+			} else if (args.state === gestures.GestureStateTypes.ended) {
+				deltaTime = Date.now() - startTime;
+
+				endingVelocity = (args.deltaX / deltaTime) * 100;
+
+				if (args.deltaX > (pageWidth / 3) || endingVelocity > 32) { ///swiping left to right.
+
+					if (this.currentPanel.left != null) {
+						this.transitioning = true;
+						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
+							this.setupPanel(this.currentPanel.left);
+						});
+					}
+
+					return;
+				} else if (args.deltaX < (-pageWidth / 3) || endingVelocity < -32) {
+
+					if (this.currentPanel.right != null) {
+						this.transitioning = true;
+						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
+							this.setupPanel(this.currentPanel.right);
+						});
+					}
+
+					return;
+				}
+
 				if (this.transitioning === false) {
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },
-						duration: 250,
-						curve: AnimationCurve.linear
+						duration: 100,
+						curve: AnimationCurve.easeOut
 					});
 					if (this.currentPanel.right != null) {
 						this.currentPanel.right.panel.animate({
 							translate: { x: 0, y: 0 },
-							duration: 250,
-							curve: AnimationCurve.linear
+							duration: 100,
+							curve: AnimationCurve.easeOut
 						});
 						if (app.ios) //for some reason i have to set these in ios or there is some sort of bounce back.
 							this.currentPanel.right.panel.translateX = 0;
@@ -251,8 +275,8 @@ export class SlideContainer extends AbsoluteLayout {
 					if (this.currentPanel.left != null) {
 						this.currentPanel.left.panel.animate({
 							translate: { x: -this.pageWidth * 2, y: 0 },
-							duration: 250,
-							curve: AnimationCurve.linear
+							duration: 100,
+							curve: AnimationCurve.easeOut
 						});
 						if (app.ios)
 							this.currentPanel.left.panel.translateX = -this.pageWidth;
@@ -265,36 +289,31 @@ export class SlideContainer extends AbsoluteLayout {
 
 				}
 			} else {
-				if (!this.transitioning && previousDelta !== args.deltaX && args.deltaX != null && args.deltaX < -5) {
-					// console.log('android ' + (<android.view.MotionEvent>(<gestures.tou>args).android).;
+
+				if (!this.transitioning
+					&& previousDelta !== args.deltaX
+					&& args.deltaX != null
+					&& args.deltaX < 0) {
+
 					if (this.currentPanel.right != null) {
 
 						this.direction = direction.left;
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
 						this.currentPanel.right.panel.translateX = args.deltaX;
 
-						if (args.deltaX < ((pageWidth / 3) * -1)) {
-							this.transitioning = true;
-							this.showRightSlide(this.currentPanel, args.deltaX).then(() => {
-								this.setupRightPanel();
-							});;
-						}
 					}
-				}
+				} else if (!this.transitioning
+					&& previousDelta !== args.deltaX
+					&& args.deltaX != null
+					&& args.deltaX > 0) {
 
-				if (!this.transitioning && previousDelta !== args.deltaX && args.deltaX != null && args.deltaX > 5) {
 					if (this.currentPanel.left != null) {
 						this.direction = direction.right;
 						this.currentPanel.panel.translateX = args.deltaX - this.pageWidth;
 						this.currentPanel.left.panel.translateX = -(this.pageWidth * 2) + args.deltaX;
-						if (args.deltaX > pageWidth / 3) { ///swiping left to right.
-							this.transitioning = true;
-							this.showLeftSlide(this.currentPanel, args.deltaX).then(() => {
-								this.setupLeftPanel();
-							});
-						}
 					}
 				}
+
 				if (args.deltaX !== 0) {
 					previousDelta = args.deltaX;
 				}
@@ -303,38 +322,46 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 	}
 
-	private showRightSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
+	private showRightSlide(panelMap: ISlideMap, offset: number = 0, endingVelocity: number = 32): AnimationModule.AnimationPromise {
+		
+		let elapsedTime = Math.abs(offset / endingVelocity) * 100;		
+		let animationDuration = Math.min(elapsedTime, 100);
 		let transition = new Array();
+		
 		transition.push({
 			target: panelMap.right.panel,
 			translate: { x: -this.pageWidth, y: 0 },
-			duration: 300,
-			curve: AnimationCurve.linear
+			duration: animationDuration,
+			curve: AnimationCurve.easeOut
 		});
 		transition.push({
 			target: panelMap.panel,
 			translate: { x: -this.pageWidth * 2, y: 0 },
-			duration: 300,
-			curve: AnimationCurve.linear
+			duration: animationDuration,
+			curve: AnimationCurve.easeOut
 		});
 		let animationSet = new AnimationModule.Animation(transition, false);
 
 		return animationSet.play();
 	}
 
-	private showLeftSlide(panelMap: ISlideMap, offset: number = 0): AnimationModule.AnimationPromise {
+	private showLeftSlide(panelMap: ISlideMap, offset: number = 0, endingVelocity: number = 32): AnimationModule.AnimationPromise {
+		
+		let elapsedTime = Math.abs(offset / endingVelocity) * 100;
+		let animationDuration = Math.min(elapsedTime, 100);
 		let transition = new Array();
+		
 		transition.push({
 			target: panelMap.left.panel,
 			translate: { x: -this.pageWidth, y: 0 },
-			duration: 300,
-			curve: AnimationCurve.linear
+			duration: animationDuration,
+			curve: AnimationCurve.easeOut
 		});
 		transition.push({
 			target: panelMap.panel,
 			translate: { x: 0, y: 0 },
-			duration: 300,
-			curve: AnimationCurve.linear
+			duration: animationDuration,
+			curve: AnimationCurve.easeOut
 		});
 		let animationSet = new AnimationModule.Animation(transition, false);
 

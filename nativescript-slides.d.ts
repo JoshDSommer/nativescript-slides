@@ -34,11 +34,10 @@ export declare class SlideContainer extends AbsoluteLayout {
     nextSlide(): void;
     previousSlide(): void;
     resetAndroidTranslucentFlags(): void;
-    private setupLeftPanel();
-    private setupRightPanel();
+    private setupPanel(panel);
     private applySwipe(pageWidth);
-    private showRightSlide(panelMap, offset?);
-    private showLeftSlide(panelMap, offset?);
+    private showRightSlide(panelMap, offset?, endingVelocity?);
+    private showLeftSlide(panelMap, offset?, endingVelocity?);
     private buildFooter();
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
