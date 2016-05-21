@@ -71,6 +71,8 @@ the `SlideContainer` class also has public `nextSlide` and `previousSlide` funct
 
 the `<Slides:SlideContainer>` element also has a property called `loop` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
+the `<Slides:SlideContainer>` element also has a property called `velocityScrolling` which is a boolean value and if set to true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
+
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
 #### Android Optional Attributes
@@ -131,6 +133,8 @@ _please note this will change the panning gesture for your entire project._
 [Brad Martin](https://github.com/bradmartin)
 
 [Obsessive Inc/Abhijith Reddy](https://github.com/Obsessive)
+
+[Victor Nascimento](https://github.com/vjoao)
 
 And thanks to [Nathan Walker](https://github.com/NathanWalker) for setting up the {N} plugin seed that was used to help get this plugin up and running. More info can be found about it here:
 https://github.com/NathanWalker/nativescript-plugin-seed

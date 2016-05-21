@@ -353,7 +353,7 @@ export class SlideContainer extends AbsoluteLayout {
 			let elapsedTime = Math.abs(offset / endingVelocity) * 100;
 			animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
 		} else {
-			animationDuration = 250; // default value
+			animationDuration = 300; // default value
 		}
 
 		let transition = new Array();
@@ -382,7 +382,7 @@ export class SlideContainer extends AbsoluteLayout {
 			let elapsedTime = Math.abs(offset / endingVelocity) * 100;
 			animationDuration = Math.max(Math.min(elapsedTime, 100), 64);
 		} else {
-			animationDuration = 250; // default value
+			animationDuration = 300; // default value
 		}
 
 		let transition = new Array();
