@@ -142,6 +142,9 @@ _please note this will change the panning gesture for your entire project._
 And thanks to [Nathan Walker](https://github.com/NathanWalker) for setting up the {N} plugin seed that was used to help get this plugin up and running. More info can be found about it here:
 https://github.com/NathanWalker/nativescript-plugin-seed
 
+##Contributing guidelines
+[Contributing guidelines](https://github.com/TheOriginalJosh/nativescript-swiss-army-knife/blob/master/CONTRIBUTING.md)
+
 ##License
 
 [MIT](/LICENSE)
