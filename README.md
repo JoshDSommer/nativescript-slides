@@ -75,22 +75,25 @@ the `<Slides:SlideContainer>` element also has a property called `velocityScroll
 
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
+#### Angular 2 compatibility
+To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
+
 #### Android Optional Attributes
 - `androidTranslucentStatusBar`: boolean - If true, the Android status bar will be translucent on devices that support it. (Android sdk >= 19).
 - `androidTranslucentNavBar`: boolean - If true, the Android navigation bar will be translucent on devices that support it. (Android sdk >= 19).
 
-###Plugin Development Work Flow:
+#### Plugin Development Work Flow:
 
 * Clone repository to your machine.
 * Run `npm run setup` to prepare the demo project
 * Build with `npm run build`
 * Run and deploy to your device or emulator with `npm run demo.android` or `npm run demo.ios`
 
-###Known issues
+#### Known issues
 
   * There apears to be a bug with the loop resulting in bad transitions going right to left.
 
-### Smoother panning on Android (For {N} v2.0.0 and below __only__).
+#### Smoother panning on Android (For {N} v2.0.0 and below __only__).
 
 To achieve a much smoother drag on android simply go into the gestures.android.js file in the tns-core-modules here
 
