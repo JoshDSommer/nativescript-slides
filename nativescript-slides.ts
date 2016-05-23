@@ -42,6 +42,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _androidTranslucentStatusBar: boolean;
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
+	private _ng2: boolean;
 
 	get hasNext(): boolean {
 		return !!this.currentPanel.right;
@@ -93,6 +94,14 @@ export class SlideContainer extends AbsoluteLayout {
 		return this._pageWidth;
 	}
 
+	get ng2(): boolean {
+		return this._ng2;
+	}
+
+	set ng2(value: boolean) {
+		this._ng2 = value;
+	}
+
 	get android(): any {
 		return;
 	}
@@ -122,10 +131,19 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._velocityScrolling == null) {
 			this._velocityScrolling = false;
 		}
+		if (this._ng2 == null) {
+			this._ng2 = false;
+		}
 
 	}
-	constructView(): void {
+
+	public constructView(): void {
 		this.setupDefaultValues();
+		// if being used in an ng2 app we want to prevent it from excuting the constructView
+		// until it is called manually in ngAfterViewInit.
+		if (this.ng2) {
+			return;
+		}
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
