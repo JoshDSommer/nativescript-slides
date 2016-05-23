@@ -42,7 +42,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _androidTranslucentStatusBar: boolean;
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
-	private _ng2: boolean;
+	private _angular: boolean;
 
 	get hasNext(): boolean {
 		return !!this.currentPanel.right;
@@ -94,12 +94,12 @@ export class SlideContainer extends AbsoluteLayout {
 		return this._pageWidth;
 	}
 
-	get ng2(): boolean {
-		return this._ng2;
+	get angular(): boolean {
+		return this._angular;
 	}
 
-	set ng2(value: boolean) {
-		this._ng2 = value;
+	set angular(value: boolean) {
+		this._angular = value;
 	}
 
 	get android(): any {
@@ -112,7 +112,12 @@ export class SlideContainer extends AbsoluteLayout {
 
 	constructor() {
 		super();
-		this.constructView();
+		this.setupDefaultValues();
+		// if being used in an ng2 app we want to prevent it from excuting the constructView
+		// until it is called manually in ngAfterViewInit.
+
+		this.constructView(true);
+
 	}
 
 	private setupDefaultValues(): void {
@@ -120,35 +125,33 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._loop == null) {
 			this.loop = false;
 		}
+
 		this.transitioning = false;
 
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 
 		if (this._interval == null) {
-			this._interval = 0;
+			this.interval = 0;
 		}
 
 		if (this._velocityScrolling == null) {
 			this._velocityScrolling = false;
 		}
-		if (this._ng2 == null) {
-			this._ng2 = false;
+		if (this._angular == null) {
+			this.angular = false;
 		}
 
 	}
 
-	public constructView(): void {
-		this.setupDefaultValues();
-		// if being used in an ng2 app we want to prevent it from excuting the constructView
-		// until it is called manually in ngAfterViewInit.
-		if (this.ng2) {
-			return;
-		}
+	public constructView(constructor: boolean = false): void {
+
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
 				this._loaded = true;
-
+				if (this.angular === true && constructor === true) {
+					return;
+				}
 				// Android Translucent bars API >= 19 only
 				if (this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && app.android && Platform.device.sdkVersion >= '19') {
 					let window = app.android.startActivity.getWindow();

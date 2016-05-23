@@ -76,7 +76,7 @@ the `<Slides:SlideContainer>` element also has a property called `velocityScroll
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
 #### Angular 2 compatibility
-To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `ng2` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
+To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
 
 #### Android Optional Attributes
 - `androidTranslucentStatusBar`: boolean - If true, the Android status bar will be translucent on devices that support it. (Android sdk >= 19).
