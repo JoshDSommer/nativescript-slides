@@ -131,6 +131,64 @@ to
     };
 ```
 
+#### Smoother panning on Android (For {N} v2.0.1 __only__).
+
+To achieve a much smoother drag on android simply go into the gestures.android.js file in the tns-core-modules here
+
+
+`/node_modules/tns-core-modules/ui/gestures/gestures.android.js`
+
+and change
+
+```javascript
+CustomPanGestureDetector.prototype.getEventCoordinates = function (event) {
+		var count = event.getPointerCount();
+		if (count === 1) {
+				return {
+						x: event.getRawX() / this.density,
+						y: event.getRawY() / this.density
+				};
+		}
+		else {
+				var offX = event.getRawX() - event.getX();
+				var offY = event.getRawY() - event.getY();
+				var res = { x: 0, y: 0 };
+				for (var i = 0; i < count; i++) {
+						res.x += event.getX(i) + offX;
+						res.y += event.getY(i) + offY;
+				}
+				res.x /= (count * this.density);
+				res.y /= (count * this.density);
+				return res;
+		}
+};
+```
+
+to
+```javascript
+CustomPanGestureDetector.prototype.getEventCoordinates = function (event) {
+			var count = event.getPointerCount();
+			if (count === 1) {
+					return {
+							x: event.getRawX() / this.density,
+							y: event.getRawY() / this.density
+					};
+			}
+			else {
+					var offX = event.getRawX() - event.getX();
+					var offY = event.getRawY() - event.getY();
+					var res = { x: 0, y: 0 };
+					for (var i = 0; i < count; i++) {
+							res.x += event.getRawX(i) + offX;
+							res.y += event.getRawY(i) + offY;
+					}
+					res.x /= (count * this.density);
+					res.y /= (count * this.density);
+					return res;
+			}
+	};
+```
+
 _please note this will change the panning gesture for your entire project._
 
 
