@@ -75,6 +75,8 @@ the `<Slides:SlideContainer>` element also has a property called `velocityScroll
 
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
+the `<Slides:SlideContainer>` element also has a property called `disablePan` which is used to disable panning when set to true. So that you can call nextSlide() function to change the slide. If slides is used to get details about users like email, phone number ,username etc in this case you don't want users to move from one slide to another slide without filling details. So, you can disablePan option.
+
 #### Angular 2 compatibility
 To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
 
