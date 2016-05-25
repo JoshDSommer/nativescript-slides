@@ -20,10 +20,12 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _androidTranslucentNavBar;
     private timer_reference;
     private _angular;
+    private _disablePan;
     hasNext: boolean;
     hasPrevious: boolean;
     interval: number;
     loop: boolean;
+    disablePan: boolean;
     androidTranslucentStatusBar: boolean;
     androidTranslucentNavBar: boolean;
     velocityScrolling: boolean;

@@ -43,6 +43,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
 	private _angular: boolean;
+	private _disablePan: boolean;
 
 	get hasNext(): boolean {
 		return !!this.currentPanel.right;
@@ -66,6 +67,14 @@ export class SlideContainer extends AbsoluteLayout {
 
 	set loop(value: boolean) {
 		this._loop = value;
+	}
+
+	get disablePan() {
+		return this._disablePan;
+	}
+
+	set disablePan(value: boolean) {
+		this._disablePan = value;
 	}
 
 	get androidTranslucentStatusBar() {
@@ -134,6 +143,10 @@ export class SlideContainer extends AbsoluteLayout {
 			this.interval = 0;
 		}
 
+		if (this._disablePan == null) {
+			this.disablePan = false;
+		}
+
 		if (this._velocityScrolling == null) {
 			this._velocityScrolling = false;
 		}
@@ -180,7 +193,9 @@ export class SlideContainer extends AbsoluteLayout {
 
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
-				this.applySwipe(this.pageWidth);
+				if(disablePan == false) {
+					this.applySwipe(this.pageWidth);
+				}
 
 				//handles application orientation change
 				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
@@ -191,7 +206,9 @@ export class SlideContainer extends AbsoluteLayout {
 							view.width = this.pageWidth;
 						}
 					});
-					this.applySwipe(this.pageWidth);
+					if(disablePan == false) {
+						this.applySwipe(this.pageWidth);
+					}
 					this.currentPanel.panel.translateX = -this.pageWidth;
 				});
 			}
