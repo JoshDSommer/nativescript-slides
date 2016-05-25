@@ -281,7 +281,9 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = panel;
-		this.applySwipe(this.pageWidth);
+		if(disablePan == false) {
+			this.applySwipe(this.pageWidth);
+		}
 		this.rebindSlideShow();
 	}
 
