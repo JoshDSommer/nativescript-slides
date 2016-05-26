@@ -19,9 +19,6 @@
 			</Slides:Slide>
 		</Slides:SlideContainer>
 
-		<StackLayout row="1">
-			<button tap="next" text="Next"/>
-			<button tap="prev" text="Prev"/>
-		</StackLayout>
+
 	</GridLayout>
 </Page>
