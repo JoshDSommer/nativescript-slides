@@ -24,12 +24,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _angular;
     private _footer;
     private _pageIndicators;
-    private _pageIndicatorsColor;
-    private _pageIndicatorsActiveImage;
-    private indicatorImage;
     pageIndicators: boolean;
-    pageIndicatorsColor: string;
-    pageIndicatorsActiveImage: string;
     hasNext: boolean;
     hasPrevious: boolean;
     interval: number;

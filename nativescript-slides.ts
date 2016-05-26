@@ -49,9 +49,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _angular: boolean;
 	private _footer: StackLayout;
 	private _pageIndicators: boolean;
-	private _pageIndicatorsColor: Color;
-	private _pageIndicatorsActiveImage: string;
-	private indicatorImage: Image;
+
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
 		return this._pageIndicators;
@@ -59,23 +57,6 @@ export class SlideContainer extends AbsoluteLayout {
 	set pageIndicators(value: boolean) {
 		this._pageIndicators = value;
 	}
-
-	set pageIndicatorsColor(value: string) {
-		this._pageIndicatorsColor = new Color(value);
-	}
-	get pageIndicatorsColor() {
-		return this._pageIndicatorsColor.hex
-	}
-
-	get pageIndicatorsActiveImage(): string {
-		return this._pageIndicatorsActiveImage;
-	}
-	set pageIndicatorsActiveImage(value: string) {
-		this.indicatorImage.imageSource = imageSource.fromFile(value);
-		this._pageIndicatorsActiveImage = value;
-	}
-
-
 
 	get hasNext(): boolean {
 		return !!this.currentPanel.right;
@@ -177,10 +158,6 @@ export class SlideContainer extends AbsoluteLayout {
 
 		if (this._pageIndicators == null) {
 			this._pageIndicators = false;
-		} else {
-			if (this._pageIndicatorsColor == null) {
-				this._pageIndicatorsColor = new Color('#fff')
-			}
 		}
 	}
 
@@ -222,7 +199,7 @@ export class SlideContainer extends AbsoluteLayout {
 				if (this.pageIndicators) {
 					this._footer = this.buildFooter(slides.length, 0);
 					this.addChild(this._footer);
-					this.setActivePageIndicator(0);
+					//	this.setActivePageIndicator(0);
 				}
 
 
@@ -497,6 +474,10 @@ export class SlideContainer extends AbsoluteLayout {
 			footerInnerWrap.addChild(this.createIndicator());
 			i++;
 		}
+
+		let activeIndicator = footerInnerWrap.getChildAt(0);
+		activeIndicator.className = 'slide-indicator-active';
+		activeIndicator.opacity = 0.9;
 		return footerInnerWrap;
 	}
 
@@ -538,6 +519,7 @@ export class SlideContainer extends AbsoluteLayout {
 	createIndicator(): Label {
 		let indicator = new Label();
 		indicator.backgroundColor = new Color('#fff');
+		indicator.opacity = 0.4;
 		indicator.width = 10;
 		indicator.height = 10;
 		indicator.marginLeft = 2.5;
@@ -551,19 +533,12 @@ export class SlideContainer extends AbsoluteLayout {
 		this._footer.eachLayoutChild((view: View) => {
 			if (view instanceof Label) {
 				view.opacity = 0.4;
-				if (this._pageIndicatorsActiveImage != null) {
-					view.backgroundColor = new Color('#fff');
-					view.className = 'slide-indicator-inactive';
-					view.backgroundImage = null;
-				}
+				view.className = 'slide-indicator-inactive';
 			}
 		});
 		let activeIndicator = this._footer.getChildAt(index);
 		activeIndicator.className = 'slide-indicator-active';
 		activeIndicator.opacity = 0.9;
-		if (this._pageIndicatorsActiveImage != null) {
-			activeIndicator.backgroundColor = null;
-			activeIndicator.backgroundImage = this.pageIndicatorsActiveImage;
-		}
+
 	}
 }
