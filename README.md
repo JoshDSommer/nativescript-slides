@@ -73,6 +73,8 @@ the `<Slides:SlideContainer>` element also has a property called `loop` which is
 
 the `<Slides:SlideContainer>` element also has a property called `velocityScrolling` which is a boolean value and if set to true will calculate transitions speeds based on the finger movement speed.
 
+the `<Slides:SlideContainer>` element also has a property called `pageIndicators` which will add indicator dots to the bottom of your slides.
+
 the `<Slides:SlideContainer>` element also has a property called `interval` which is a integer value and the value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
 
 #### Angular 2 compatibility

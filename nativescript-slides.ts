@@ -7,7 +7,10 @@ import { Button } from 'ui/button';
 import {Label} from 'ui/label';
 import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
-import {AnimationCurve} from 'ui/enums';
+import {AnimationCurve, Orientation} from 'ui/enums';
+import {Color} from 'color';
+import {Image} from 'ui/image';
+import * as imageSource from 'image-source';
 
 let LayoutParams: any;
 if (app.android) {
@@ -26,6 +29,7 @@ enum direction {
 
 export interface ISlideMap {
 	panel: StackLayout;
+	index: number;
 	left?: ISlideMap;
 	right?: ISlideMap;
 }
@@ -43,11 +47,39 @@ export class SlideContainer extends AbsoluteLayout {
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
 	private _angular: boolean;
+	private _footer: StackLayout;
+	private _pageIndicators: boolean;
+	private _pageIndicatorsColor: Color;
+	private _pageIndicatorsActiveImage: string;
+	private indicatorImage: Image;
+	/* page indicator stuff*/
+	get pageIndicators(): boolean {
+		return this._pageIndicators;
+	}
+	set pageIndicators(value: boolean) {
+		this._pageIndicators = value;
+	}
+
+	set pageIndicatorsColor(value: string) {
+		this._pageIndicatorsColor = new Color(value);
+	}
+	get pageIndicatorsColor() {
+		return this._pageIndicatorsColor.hex
+	}
+
+	get pageIndicatorsActiveImage(): string {
+		return this._pageIndicatorsActiveImage;
+	}
+	set pageIndicatorsActiveImage(value: string) {
+		this.indicatorImage.imageSource = imageSource.fromFile(value);
+		this._pageIndicatorsActiveImage = value;
+	}
+
+
 
 	get hasNext(): boolean {
 		return !!this.currentPanel.right;
 	}
-
 	get hasPrevious(): boolean {
 		return !!this.currentPanel.left;
 	}
@@ -110,6 +142,10 @@ export class SlideContainer extends AbsoluteLayout {
 		return;
 	}
 
+	get currentIndex(): number {
+		return this.currentPanel.index;
+	}
+
 	constructor() {
 		super();
 		this.setupDefaultValues();
@@ -117,7 +153,6 @@ export class SlideContainer extends AbsoluteLayout {
 		// until it is called manually in ngAfterViewInit.
 
 		this.constructView(true);
-
 	}
 
 	private setupDefaultValues(): void {
@@ -127,7 +162,6 @@ export class SlideContainer extends AbsoluteLayout {
 		}
 
 		this.transitioning = false;
-
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 
 		if (this._interval == null) {
@@ -141,6 +175,13 @@ export class SlideContainer extends AbsoluteLayout {
 			this.angular = false;
 		}
 
+		if (this._pageIndicators == null) {
+			this._pageIndicators = false;
+		} else {
+			if (this._pageIndicatorsColor == null) {
+				this._pageIndicatorsColor = new Color('#fff')
+			}
+		}
 	}
 
 	public constructView(constructor: boolean = false): void {
@@ -178,6 +219,13 @@ export class SlideContainer extends AbsoluteLayout {
 					}
 				});
 
+				if (this.pageIndicators) {
+					this._footer = this.buildFooter(slides.length, 0);
+					this.addChild(this._footer);
+					this.setActivePageIndicator(0);
+				}
+
+
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
 				this.applySwipe(this.pageWidth);
@@ -192,6 +240,8 @@ export class SlideContainer extends AbsoluteLayout {
 						}
 					});
 					this.applySwipe(this.pageWidth);
+					let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
+					AbsoluteLayout.setTop(this._footer, topOffset);
 					this.currentPanel.panel.translateX = -this.pageWidth;
 				});
 			}
@@ -264,6 +314,7 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = panel;
+		this.setActivePageIndicator(this.currentPanel.index);
 		this.applySwipe(this.pageWidth);
 		this.rebindSlideShow();
 	}
@@ -428,31 +479,25 @@ export class SlideContainer extends AbsoluteLayout {
 	/**
 	 * currently deprecated.... will come back to life for navigation dots.
 	 *  */
-	private buildFooter(): AbsoluteLayout {
-		let footer = new AbsoluteLayout();
+	private buildFooter(pageCount: number = 5, activeIndex: number = 0): StackLayout {
 		let footerInnerWrap = new StackLayout();
-		let footerInnerWrapLeft = new StackLayout();
-		let footerInnerWrapMiddle = new StackLayout();
-		let footerInnerWrapRight = new StackLayout();
-		this.setwidthPercent(footer, 100);
+		const topOffset = Platform.screen.mainScreen.heightDIPs - 105;
+		footerInnerWrap.height = 20;
+
+		this.setwidthPercent(footerInnerWrap, 100);
+		AbsoluteLayout.setLeft(footerInnerWrap, 0);
+		AbsoluteLayout.setTop(footerInnerWrap, topOffset);
 
 		footerInnerWrap.orientation = 'horizontal';
-		this.setwidthPercent(footerInnerWrap, 100);
+		footerInnerWrap.verticalAlignment = 'top';
+		footerInnerWrap.horizontalAlignment = 'center';
 
-		footer.addChild(footerInnerWrap);
-
-		this.setwidthPercent(footerInnerWrapRight, 30);
-		this.setwidthPercent(footerInnerWrapLeft, 30);
-		this.setwidthPercent(footerInnerWrapMiddle, 40);
-
-		footerInnerWrapLeft.addChild(this.newFooterButton('Previous'));
-		footerInnerWrapRight.addChild(this.newFooterButton('Next'));
-
-		footerInnerWrap.addChild(footerInnerWrapLeft);
-		footerInnerWrap.addChild(footerInnerWrapMiddle);
-		footerInnerWrap.addChild(footerInnerWrapRight);
-
-		return footer;
+		let i = 0;
+		while (i < pageCount) {
+			footerInnerWrap.addChild(this.createIndicator());
+			i++;
+		}
+		return footerInnerWrap;
 	}
 
 	private setwidthPercent(view: View, percentage: number) {
@@ -469,9 +514,10 @@ export class SlideContainer extends AbsoluteLayout {
 
 	private buildSlideMap(views: StackLayout[]) {
 		let slideMap: ISlideMap[] = [];
-		views.forEach((view: StackLayout) => {
+		views.forEach((view: StackLayout, index: number) => {
 			slideMap.push({
-				panel: view
+				panel: view,
+				index: index,
 			});
 		});
 		slideMap.forEach((mapping: ISlideMap, index: number) => {
@@ -487,5 +533,37 @@ export class SlideContainer extends AbsoluteLayout {
 		}
 		this.startSlideshow();
 		return slideMap[0];
+	}
+
+	createIndicator(): Label {
+		let indicator = new Label();
+		indicator.backgroundColor = new Color('#fff');
+		indicator.width = 10;
+		indicator.height = 10;
+		indicator.marginLeft = 2.5;
+		indicator.marginRight = 2.5;
+		indicator.borderRadius = 5;
+		return indicator;
+	}
+
+	setActivePageIndicator(index: number) {
+
+		this._footer.eachLayoutChild((view: View) => {
+			if (view instanceof Label) {
+				view.opacity = 0.4;
+				if (this._pageIndicatorsActiveImage != null) {
+					view.backgroundColor = new Color('#fff');
+					view.className = 'slide-indicator-inactive';
+					view.backgroundImage = null;
+				}
+			}
+		});
+		let activeIndicator = this._footer.getChildAt(index);
+		activeIndicator.className = 'slide-indicator-active';
+		activeIndicator.opacity = 0.9;
+		if (this._pageIndicatorsActiveImage != null) {
+			activeIndicator.backgroundColor = null;
+			activeIndicator.backgroundImage = this.pageIndicatorsActiveImage;
+		}
 	}
 }
