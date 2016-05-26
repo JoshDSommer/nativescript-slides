@@ -1,72 +1,75 @@
 {
-  "name": "nativescript-slides",
-  "version": "1.4.0",
-  "description": "NativeScript Slides plugin.",
-  "main": "nativescript-slides.js",
-  "nativescript": {
-    "platforms": {
-      "android": "2.0.0",
-      "ios": "2.0.0"
-    }
-  },
-  "scripts": {
-    "build": "tsc",
-    "demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
-    "demo.android": "npm run preparedemo && cd demo && tns run android",
-    "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-slides && tns plugin add .. && tns install",
-    "setup": "npm install && cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
-    "livesync.ios": "cd demo  && tns livesync ios --watch",
-    "livesync.android": "cd demo  && tns livesync android --watch",
-    "ios": "xcproj --project platforms/ios/YourApp.xcodeproj touch; xcproj --project platforms/ios/Pods/Pods.xcodeproj touch; tns livesync ios --emulator --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TheOriginalJosh/nativescript-slides.git"
-  },
-  "keywords": [
-    "NativeScript",
-    "JavaScript",
-    "Android",
-    "iOS",
-    "TypeScript",
-    "swipe slides",
-    "Slides",
-    "Carousel"
-  ],
-  "author": {
-    "name": "Josh Sommer",
-    "email": "joshdsommer@gmail.com"
-  },
-  "contributors": [
-    {
-      "name": "Brad Martin",
-      "email": "bradwaynemartin@gmail.com",
-      "url": "https://github.com/bradmartin"
-    },
-    {
-      "name": "Obsessive Inc/Abhijith Reddy",
-      "email": "mabhijith95a10@gmail.com",
-      "url": "https://github.com/Obsessive"
-    },
-    {
-      "name": "Victor Nascimento",
-      "email": "victormota15@gmail.com",
-      "url": "https://github.com/vjoao"
-    }
-  ],
-  "bugs": {
-    "url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"
-  },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/TheOriginalJosh/nativescript-slides/blob/master/LICENSE"
-  },
-  "homepage": "https://github.com/TheOriginalJosh/nativescript-slides",
-  "readmeFilename": "README.md",
-  "devDependencies": {
-    "typescript": "^1.8.7"
-  },
-  "dependencies": {
-    "tns-platform-declarations": "^2.0.0"
-  }
+	"name": "nativescript-slides",
+	"version": "1.4.1",
+	"description": "NativeScript Slides plugin.",
+	"main": "nativescript-slides.js",
+	"nativescript": {
+		"platforms": {
+			"android": "2.0.0",
+			"ios": "2.0.0"
+		},
+		"tns-ios": {
+			"version": "2.0.0"
+		}
+	},
+	"scripts": {
+		"build": "tsc",
+		"demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
+		"demo.android": "npm run preparedemo && cd demo && tns run android",
+		"preparedemo": "npm run build && cd demo && tns plugin remove nativescript-slides && tns plugin add .. && tns install",
+		"setup": "npm install && cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
+		"livesync.ios": "cd demo  && tns livesync ios --watch",
+		"livesync.android": "cd demo  && tns livesync android --watch",
+		"ios": "xcproj --project platforms/ios/YourApp.xcodeproj touch; xcproj --project platforms/ios/Pods/Pods.xcodeproj touch; tns livesync ios --emulator --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TheOriginalJosh/nativescript-slides.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"Android",
+		"iOS",
+		"TypeScript",
+		"swipe slides",
+		"Slides",
+		"Carousel"
+	],
+	"author": {
+		"name": "Josh Sommer",
+		"email": "joshdsommer@gmail.com"
+	},
+	"contributors": [
+		{
+			"name": "Brad Martin",
+			"email": "bradwaynemartin@gmail.com",
+			"url": "https://github.com/bradmartin"
+		},
+		{
+			"name": "Obsessive Inc/Abhijith Reddy",
+			"email": "mabhijith95a10@gmail.com",
+			"url": "https://github.com/Obsessive"
+		},
+		{
+			"name": "Victor Nascimento",
+			"email": "victormota15@gmail.com",
+			"url": "https://github.com/vjoao"
+		}
+	],
+	"bugs": {
+		"url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"
+	},
+	"license": {
+		"type": "MIT",
+		"url": "https://github.com/TheOriginalJosh/nativescript-slides/blob/master/LICENSE"
+	},
+	"homepage": "https://github.com/TheOriginalJosh/nativescript-slides",
+	"readmeFilename": "README.md",
+	"devDependencies": {
+		"typescript": "^1.8.7"
+	},
+	"dependencies": {
+		"tns-platform-declarations": "^2.0.0"
+	}
 }
