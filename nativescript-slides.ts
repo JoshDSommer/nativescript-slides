@@ -184,7 +184,8 @@ export class SlideContainer extends AbsoluteLayout {
 					return;
 				}
 				// Android Translucent bars API >= 19 only
-				if ((this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true) && app.android && Platform.device.sdkVersion >= '19') {
+
+				if (app.android && this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && Platform.device.sdkVersion >= '19') {
 					let window = app.android.startActivity.getWindow();
 
 					// check for status bar
@@ -209,16 +210,17 @@ export class SlideContainer extends AbsoluteLayout {
 					}
 				});
 
-				if (this.pageIndicators) {
-					this._footer = this.buildFooter(slides.length, 0);
-					this.addChild(this._footer);
-					//	this.setActivePageIndicator(0);
-				}
+				//	if (this.pageIndicators) {
+				this._footer = this.buildFooter(slides.length, 0);
+				this.insertChild(this._footer, this.getChildrenCount());
+				//	this.setActivePageIndicator(0);
+				//}
 
 
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
-				if(disablePan == false) {
+
+				if(this.disablePan === false) {
 					this.applySwipe(this.pageWidth);
 				}
 
@@ -231,7 +233,8 @@ export class SlideContainer extends AbsoluteLayout {
 							view.width = this.pageWidth;
 						}
 					});
-					if(disablePan == false) {
+
+					if(this.disablePan === false) {
 						this.applySwipe(this.pageWidth);
 					}
 					let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
@@ -308,7 +311,8 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = panel;
-		if(disablePan == false) {
+
+		if(this.disablePan === false) {
 			this.applySwipe(this.pageWidth);
 		}
 		this.setActivePageIndicator(this.currentPanel.index);
@@ -477,12 +481,12 @@ export class SlideContainer extends AbsoluteLayout {
 	 *  */
 	private buildFooter(pageCount: number = 5, activeIndex: number = 0): StackLayout {
 		let footerInnerWrap = new StackLayout();
-		const topOffset = Platform.screen.mainScreen.heightDIPs - 105;
-		footerInnerWrap.height = 20;
+
+		footerInnerWrap.height = 50;
 
 		this.setwidthPercent(footerInnerWrap, 100);
 		AbsoluteLayout.setLeft(footerInnerWrap, 0);
-		AbsoluteLayout.setTop(footerInnerWrap, topOffset);
+		AbsoluteLayout.setTop(footerInnerWrap, 0);
 
 		footerInnerWrap.orientation = 'horizontal';
 		footerInnerWrap.verticalAlignment = 'top';
@@ -497,6 +501,9 @@ export class SlideContainer extends AbsoluteLayout {
 		let activeIndicator = footerInnerWrap.getChildAt(0);
 		activeIndicator.className = 'slide-indicator-active';
 		activeIndicator.opacity = 0.9;
+
+		footerInnerWrap.marginTop = <any>'88%';
+
 		return footerInnerWrap;
 	}
 
@@ -529,7 +536,6 @@ export class SlideContainer extends AbsoluteLayout {
 
 		if (this.loop) {
 			slideMap[0].left = slideMap[slideMap.length - 1];
-			slideMap[slideMap.length - 1].right = slideMap[0];
 		}
 		this.startSlideshow();
 		return slideMap[0];
@@ -543,6 +549,7 @@ export class SlideContainer extends AbsoluteLayout {
 		indicator.height = 10;
 		indicator.marginLeft = 2.5;
 		indicator.marginRight = 2.5;
+		indicator.marginTop = 0;
 		indicator.borderRadius = 5;
 		return indicator;
 	}
