@@ -210,17 +210,17 @@ export class SlideContainer extends AbsoluteLayout {
 					}
 				});
 
-				//	if (this.pageIndicators) {
-				this._footer = this.buildFooter(slides.length, 0);
-				this.insertChild(this._footer, this.getChildrenCount());
-				//	this.setActivePageIndicator(0);
-				//}
+				if (this.pageIndicators) {
+					this._footer = this.buildFooter(slides.length, 0);
+					this.insertChild(this._footer, this.getChildrenCount());
+					//	this.setActivePageIndicator(0);
+				}
 
 
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
 
-				if(this.disablePan === false) {
+				if (this.disablePan === false) {
 					this.applySwipe(this.pageWidth);
 				}
 
@@ -234,7 +234,7 @@ export class SlideContainer extends AbsoluteLayout {
 						}
 					});
 
-					if(this.disablePan === false) {
+					if (this.disablePan === false) {
 						this.applySwipe(this.pageWidth);
 					}
 					let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
@@ -312,7 +312,7 @@ export class SlideContainer extends AbsoluteLayout {
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = panel;
 
-		if(this.disablePan === false) {
+		if (this.disablePan === false) {
 			this.applySwipe(this.pageWidth);
 		}
 		this.setActivePageIndicator(this.currentPanel.index);
