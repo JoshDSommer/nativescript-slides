@@ -47,6 +47,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _androidTranslucentNavBar: boolean;
 	private timer_reference: number;
 	private _angular: boolean;
+	private _disablePan: boolean;
 	private _footer: StackLayout;
 	private _pageIndicators: boolean;
 
@@ -79,6 +80,14 @@ export class SlideContainer extends AbsoluteLayout {
 
 	set loop(value: boolean) {
 		this._loop = value;
+	}
+
+	get disablePan() {
+		return this._disablePan;
+	}
+
+	set disablePan(value: boolean) {
+		this._disablePan = value;
 	}
 
 	get androidTranslucentStatusBar() {
@@ -149,6 +158,10 @@ export class SlideContainer extends AbsoluteLayout {
 			this.interval = 0;
 		}
 
+		if (this._disablePan == null) {
+			this.disablePan = false;
+		}
+
 		if (this._velocityScrolling == null) {
 			this._velocityScrolling = false;
 		}
@@ -171,7 +184,7 @@ export class SlideContainer extends AbsoluteLayout {
 					return;
 				}
 				// Android Translucent bars API >= 19 only
-				if (this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && app.android && Platform.device.sdkVersion >= '19') {
+				if ((this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true) && app.android && Platform.device.sdkVersion >= '19') {
 					let window = app.android.startActivity.getWindow();
 
 					// check for status bar
@@ -205,7 +218,9 @@ export class SlideContainer extends AbsoluteLayout {
 
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
-				this.applySwipe(this.pageWidth);
+				if(disablePan == false) {
+					this.applySwipe(this.pageWidth);
+				}
 
 				//handles application orientation change
 				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
@@ -216,7 +231,9 @@ export class SlideContainer extends AbsoluteLayout {
 							view.width = this.pageWidth;
 						}
 					});
-					this.applySwipe(this.pageWidth);
+					if(disablePan == false) {
+						this.applySwipe(this.pageWidth);
+					}
 					let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
 					AbsoluteLayout.setTop(this._footer, topOffset);
 					this.currentPanel.panel.translateX = -this.pageWidth;
@@ -291,8 +308,10 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = panel;
+		if(disablePan == false) {
+			this.applySwipe(this.pageWidth);
+		}
 		this.setActivePageIndicator(this.currentPanel.index);
-		this.applySwipe(this.pageWidth);
 		this.rebindSlideShow();
 	}
 
