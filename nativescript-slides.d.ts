@@ -1,9 +1,11 @@
 import { AbsoluteLayout } from 'ui/layouts/absolute-layout';
 import { StackLayout } from 'ui/layouts/stack-layout';
+import { Label } from 'ui/label';
 export declare class Slide extends StackLayout {
 }
 export interface ISlideMap {
     panel: StackLayout;
+    index: number;
     left?: ISlideMap;
     right?: ISlideMap;
 }
@@ -21,6 +23,9 @@ export declare class SlideContainer extends AbsoluteLayout {
     private timer_reference;
     private _angular;
     private _disablePan;
+    private _footer;
+    private _pageIndicators;
+    pageIndicators: boolean;
     hasNext: boolean;
     hasPrevious: boolean;
     interval: number;
@@ -33,6 +38,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     angular: boolean;
     android: any;
     ios: any;
+    currentIndex: number;
     constructor();
     private setupDefaultValues();
     constructView(constructor?: boolean): void;
@@ -47,8 +53,10 @@ export declare class SlideContainer extends AbsoluteLayout {
     private applySwipe(pageWidth);
     private showRightSlide(panelMap, offset?, endingVelocity?);
     private showLeftSlide(panelMap, offset?, endingVelocity?);
-    private buildFooter();
+    private buildFooter(pageCount?, activeIndex?);
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
+    createIndicator(): Label;
+    setActivePageIndicator(index: number): void;
 }
