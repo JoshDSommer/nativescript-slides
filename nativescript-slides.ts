@@ -184,7 +184,7 @@ export class SlideContainer extends AbsoluteLayout {
 					return;
 				}
 				// Android Translucent bars API >= 19 only
-				if (this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && app.android && Platform.device.sdkVersion >= '19') {
+				if ((this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true) && app.android && Platform.device.sdkVersion >= '19') {
 					let window = app.android.startActivity.getWindow();
 
 					// check for status bar
