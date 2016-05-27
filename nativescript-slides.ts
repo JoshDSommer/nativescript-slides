@@ -184,8 +184,8 @@ export class SlideContainer extends AbsoluteLayout {
 					return;
 				}
 				// Android Translucent bars API >= 19 only
-				if (app.android && this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && Platform.device.sdkVersion >= '19') {
 
+				if (app.android && this.androidTranslucentStatusBar === true || this._androidTranslucentNavBar === true && Platform.device.sdkVersion >= '19') {
 					let window = app.android.startActivity.getWindow();
 
 					// check for status bar
@@ -219,6 +219,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 				this.currentPanel = this.buildSlideMap(slides);
 				this.currentPanel.panel.translateX = -this.pageWidth;
+
 				if(this.disablePan === false) {
 					this.applySwipe(this.pageWidth);
 				}
@@ -232,6 +233,7 @@ export class SlideContainer extends AbsoluteLayout {
 							view.width = this.pageWidth;
 						}
 					});
+
 					if(this.disablePan === false) {
 						this.applySwipe(this.pageWidth);
 					}
@@ -309,7 +311,8 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = false;
 		this.currentPanel.panel.off('pan');
 		this.currentPanel = panel;
-		if(this.disablePan == false) {
+
+		if(this.disablePan === false) {
 			this.applySwipe(this.pageWidth);
 		}
 		this.setActivePageIndicator(this.currentPanel.index);
