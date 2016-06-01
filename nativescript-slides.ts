@@ -50,6 +50,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _disablePan: boolean;
 	private _footer: StackLayout;
 	private _pageIndicators: boolean;
+	private _indicatorsColor: string;
 
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
@@ -57,6 +58,13 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 	set pageIndicators(value: boolean) {
 		this._pageIndicators = value;
+	}
+
+	get indicatorsColor(): string {
+		return this._indicatorsColor;
+	}
+	set indicatorsColor(value: string) {
+		this._indicatorsColor = value;
 	}
 
 	get hasNext(): boolean {
@@ -211,7 +219,16 @@ export class SlideContainer extends AbsoluteLayout {
 				});
 
 				if (this.pageIndicators) {
-					this._footer = this.buildFooter(slides.length, 0);
+
+					let iColor = this.indicatorsColor;
+					//check if valid
+					if (Color.isValid()) {
+						iColor = iColor;
+					} else {
+						iColor = '#fff';
+					}
+					
+					this._footer = this.buildFooter(slides.length, 0, iColor);
 					this.insertChild(this._footer, this.getChildrenCount());
 					//	this.setActivePageIndicator(0);
 				}
@@ -479,7 +496,7 @@ export class SlideContainer extends AbsoluteLayout {
 	/**
 	 * currently deprecated.... will come back to life for navigation dots.
 	 *  */
-	private buildFooter(pageCount: number = 5, activeIndex: number = 0): StackLayout {
+	private buildFooter(pageCount: number = 5, activeIndex: number = 0, iColor: string): StackLayout {
 		let footerInnerWrap = new StackLayout();
 
 		footerInnerWrap.height = 50;
@@ -494,7 +511,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 		let i = 0;
 		while (i < pageCount) {
-			footerInnerWrap.addChild(this.createIndicator());
+			footerInnerWrap.addChild(this.createIndicator(iColor));
 			i++;
 		}
 
@@ -541,9 +558,9 @@ export class SlideContainer extends AbsoluteLayout {
 		return slideMap[0];
 	}
 
-	createIndicator(): Label {
+	createIndicator(indicatorColor: string): Label {
 		let indicator = new Label();
-		indicator.backgroundColor = new Color('#fff');
+		indicator.backgroundColor = new Color(indicatorColor);
 		indicator.opacity = 0.4;
 		indicator.width = 10;
 		indicator.height = 10;
