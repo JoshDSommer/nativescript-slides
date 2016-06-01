@@ -25,7 +25,9 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _disablePan;
     private _footer;
     private _pageIndicators;
+    private _indicatorsColor;
     pageIndicators: boolean;
+    indicatorsColor: string;
     hasNext: boolean;
     hasPrevious: boolean;
     interval: number;
@@ -53,10 +55,10 @@ export declare class SlideContainer extends AbsoluteLayout {
     private applySwipe(pageWidth);
     private showRightSlide(panelMap, offset?, endingVelocity?);
     private showLeftSlide(panelMap, offset?, endingVelocity?);
-    private buildFooter(pageCount?, activeIndex?);
+    private buildFooter(pageCount, activeIndex, iColor);
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
-    createIndicator(): Label;
+    createIndicator(indicatorColor: string): Label;
     setActivePageIndicator(index: number): void;
 }
