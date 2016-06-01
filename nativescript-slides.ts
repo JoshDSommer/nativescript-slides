@@ -221,10 +221,8 @@ export class SlideContainer extends AbsoluteLayout {
 				if (this.pageIndicators) {
 
 					let iColor = this.indicatorsColor;
-					//check if valid
-					if (Color.isValid()) {
-						iColor = iColor;
-					} else {
+					//check if invalid and set to white (#fff)
+					if (!Color.isValid(iColor)) {
 						iColor = '#fff';
 					}
 					
