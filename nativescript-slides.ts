@@ -180,6 +180,9 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._pageIndicators == null) {
 			this._pageIndicators = false;
 		}
+		if (this.indicatorsColor == null) {
+			this.indicatorsColor = "#fff"; //defaults to white.
+		}
 	}
 
 	public constructView(constructor: boolean = false): void {
@@ -225,7 +228,7 @@ export class SlideContainer extends AbsoluteLayout {
 					if (!Color.isValid(iColor)) {
 						iColor = '#fff';
 					}
-					
+
 					this._footer = this.buildFooter(slides.length, 0, iColor);
 					this.insertChild(this._footer, this.getChildrenCount());
 					//	this.setActivePageIndicator(0);
