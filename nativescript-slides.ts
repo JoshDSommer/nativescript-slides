@@ -10,7 +10,8 @@ import * as gestures from 'ui/gestures';
 import {AnimationCurve, Orientation} from 'ui/enums';
 import {Color} from 'color';
 import {Image} from 'ui/image';
-import * as imageSource from 'image-source';
+
+// declare const android:any;
 
 let LayoutParams: any;
 if (app.android) {
@@ -244,20 +245,25 @@ export class SlideContainer extends AbsoluteLayout {
 
 				//handles application orientation change
 				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
-					this._pageWidth = Platform.screen.mainScreen.widthDIPs;
-					this.eachLayoutChild((view: View) => {
-						if (view instanceof StackLayout) {
-							AbsoluteLayout.setLeft(view, this.pageWidth);
-							view.width = this.pageWidth;
-						}
-					});
+					//event and page orientation didn't seem to alwasy be on the same page so setting it in the time out addresses this.
+					setTimeout(() => {
+						this._pageWidth = Platform.screen.mainScreen.widthDIPs;
+						this.eachLayoutChild((view: View) => {
+							if (view instanceof StackLayout) {
+								AbsoluteLayout.setLeft(view, this.pageWidth);
+								view.width = this.pageWidth;
+							}
+						});
 
-					if (this.disablePan === false) {
-						this.applySwipe(this.pageWidth);
-					}
-					let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
-					AbsoluteLayout.setTop(this._footer, topOffset);
-					this.currentPanel.panel.translateX = -this.pageWidth;
+						if (this.disablePan === false) {
+							this.applySwipe(this.pageWidth);
+						}
+						let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
+						if (this.pageIndicators) {
+							AbsoluteLayout.setTop(this._footer, topOffset);
+						}
+						this.currentPanel.panel.translateX = -this.pageWidth;
+					}, 100);
 				});
 			}
 		});
