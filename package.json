@@ -1,6 +1,6 @@
 {
 	"name": "nativescript-slides",
-	"version": "1.5.3",
+	"version": "1.5.4",
 	"description": "NativeScript Slides plugin.",
 	"main": "nativescript-slides.js",
 	"nativescript": {
@@ -67,9 +67,8 @@
 	"homepage": "https://github.com/TheOriginalJosh/nativescript-slides",
 	"readmeFilename": "README.md",
 	"devDependencies": {
-		"typescript": "^1.8.7"
-	},
-	"dependencies": {
+		"typescript": "^1.8.7",
 		"tns-platform-declarations": "^2.0.0"
-	}
+	},
+	"dependencies": {}
 }

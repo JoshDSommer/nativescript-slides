@@ -260,7 +260,7 @@ export class SlideContainer extends AbsoluteLayout {
 						}
 						let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
 						if (this.pageIndicators) {
-							AbsoluteLayout.setTop(this._footer, topOffset);
+							this._footer.marginTop = <any>'88%';
 						}
 						this.currentPanel.panel.translateX = -this.pageWidth;
 					}, 100);
