@@ -1,19 +1,19 @@
 ﻿.slide-1{
-  background-color: darkslateblue;
+  background-color: #448AFF;
 }
 
 .slide-2{
-  background-color: lightcyan;
+  background-color: #F44336;
 }
 .slide-3{
-  background-color: darkgreen;
+  background-color: #8BC34A;
 }
 
 .slide-4{
-  background-color: darkgoldenrod;
+  background-color: #9C27B0;
 }
 .slide-5{
-  background-color: darkslategray;
+  background-color: #FFC107;
 }
 
 Label{
@@ -21,5 +21,6 @@ Label{
   width: 100%;
   font-size: 35;
   margin-top: 35;
+  color: #FFF;
 }
 

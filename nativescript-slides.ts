@@ -387,7 +387,8 @@ export class SlideContainer extends AbsoluteLayout {
 							
 							this.notify({
 								eventName: SlideContainer.changedEvent,
-								object: this
+								object: this,
+								args: this.currentPanel
 							});
 						});
 					}
@@ -400,7 +401,8 @@ export class SlideContainer extends AbsoluteLayout {
 
 							this.notify({
 								eventName: SlideContainer.changedEvent,
-								object: this
+								object: this,
+								args: this.currentPanel
 							});
 						});
 					}
@@ -410,7 +412,8 @@ export class SlideContainer extends AbsoluteLayout {
 				if (this.transitioning === false) {
 					this.notify({
 								eventName: SlideContainer.cancelledEvent,
-								object: this
+								object: this,
+								args: this.currentPanel
 							});
 
 					this.transitioning = true;
