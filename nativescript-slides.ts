@@ -53,6 +53,10 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageIndicators: boolean;
 	private _indicatorsColor: string;
 
+	public static startEvent = "start";
+	public static changedEvent = "changed";
+	public static cancelledEvent = "cancelled";
+
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
 		return this._pageIndicators;
@@ -187,7 +191,17 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public constructView(constructor: boolean = false): void {
+		this.on(SlideContainer.startEvent, (data: any) => {
+			console.log("ON START IN PLUGIN");
+		});
 
+		this.on(SlideContainer.changedEvent, (data: any) => {
+			console.log("ON CHANGED IN PLUGIN");
+		});
+
+		this.on(SlideContainer.cancelledEvent, (data: any) => {
+			console.log("ON CANCELLED IN PLUGIN");
+		});
 
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
@@ -349,11 +363,15 @@ export class SlideContainer extends AbsoluteLayout {
 		let startTime, deltaTime;
 
 		this.currentPanel.panel.on('pan', (args: gestures.PanGestureEventData): void => {
-
 			if (args.state === gestures.GestureStateTypes.began) {
 				startTime = Date.now();
 				previousDelta = 0;
 				endingVelocity = 250;
+				
+				this.notify({
+					eventName: SlideContainer.startEvent,
+					object: this
+				});
 			} else if (args.state === gestures.GestureStateTypes.ended) {
 				deltaTime = Date.now() - startTime;
 				// if velocityScrolling is enabled then calculate the velocitty
@@ -366,6 +384,11 @@ export class SlideContainer extends AbsoluteLayout {
 						this.transitioning = true;
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
+							
+							this.notify({
+								eventName: SlideContainer.changedEvent,
+								object: this
+							});
 						});
 					}
 					return;
@@ -374,12 +397,22 @@ export class SlideContainer extends AbsoluteLayout {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
+
+							this.notify({
+								eventName: SlideContainer.changedEvent,
+								object: this
+							});
 						});
 					}
 					return;
 				}
 
 				if (this.transitioning === false) {
+					this.notify({
+								eventName: SlideContainer.cancelledEvent,
+								object: this
+							});
+
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },

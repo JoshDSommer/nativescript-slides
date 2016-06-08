@@ -19,3 +19,15 @@ export function next() {
 export function prev() {
 	slideContainer.previousSlide();
 }
+
+export function onStart(){
+	console.log("START IN MAIN-PAGE");
+}
+
+export function onChanged(){
+	console.log("CHANGED IN MAIN-PAGE");
+}
+
+export function onCancelled(){
+	console.log("CANCELLED IN MAIN-PAGE");
+}
