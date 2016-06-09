@@ -93,6 +93,7 @@ add as many ``<Slides:Slide>`` as you want.
 
 #### Angular 2 compatibility
 To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
+[Follow the example](https://github.com/TheOriginalJosh/nativescript-slides/issues/37#issuecomment-224820901)
 
 #### Android Optional Attributes
 - **androidTranslucentStatusBar : boolean** - If true the Android status bar will be translucent on devices that support it. (Android sdk >= 19).
