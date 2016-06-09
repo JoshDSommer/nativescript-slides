@@ -26,6 +26,9 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _footer;
     private _pageIndicators;
     private _indicatorsColor;
+    static startEvent: string;
+    static changedEvent: string;
+    static cancelledEvent: string;
     pageIndicators: boolean;
     indicatorsColor: string;
     hasNext: boolean;

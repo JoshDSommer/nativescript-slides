@@ -1,6 +1,6 @@
 {
 	"name": "nativescript-slides",
-	"version": "1.5.4",
+	"version": "1.5.5",
 	"description": "NativeScript Slides plugin.",
 	"main": "nativescript-slides.js",
 	"nativescript": {
@@ -9,7 +9,7 @@
 			"ios": "2.0.0"
 		},
 		"tns-ios": {
-			"version": "2.0.0"
+			"version": "2.0.1"
 		}
 	},
 	"scripts": {
@@ -55,6 +55,11 @@
 			"name": "Victor Nascimento",
 			"email": "victormota15@gmail.com",
 			"url": "https://github.com/vjoao"
+		},
+		{
+			"name": "Steve McNiven-Scott",
+    		"email": "steve@sitefinitysteve.com",
+    		"url": "https://github.com/sitefinitysteve"
 		}
 	],
 	"bugs": {

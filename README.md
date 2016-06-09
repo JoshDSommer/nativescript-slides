@@ -86,6 +86,11 @@ add as many ``<Slides:Slide>`` as you want.
 
 - **disablePan : boolean** - If true panning is disabled. So that you can call nextSlide()/previousSlide() functions to change the slide. If slides is used to get details about users like email, phone number, username etc. in this case you don't want users to move from one slide to another slide without filling details.
 
+#### Events
+- **start** - Start pan
+- **changed** - Transition complete
+- **cancelled** - User didn't complete the transition
+
 #### Angular 2 compatibility
 To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
 
@@ -152,6 +157,8 @@ _please note this will change the panning gesture for your entire project._
 [Obsessive Inc/Abhijith Reddy](https://github.com/Obsessive)
 
 [Victor Nascimento](https://github.com/vjoao)
+
+[Steve McNiven-Scott](https://github.com/sitefinitysteve)
 
 And thanks to [Nathan Walker](https://github.com/NathanWalker) for setting up the {N} plugin seed that was used to help get this plugin up and running. More info can be found about it here:
 https://github.com/NathanWalker/nativescript-plugin-seed

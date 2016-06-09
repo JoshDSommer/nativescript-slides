@@ -53,6 +53,10 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageIndicators: boolean;
 	private _indicatorsColor: string;
 
+	public static startEvent = "start";
+	public static changedEvent = "changed";
+	public static cancelledEvent = "cancelled";
+
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
 		return this._pageIndicators;
@@ -187,8 +191,6 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public constructView(constructor: boolean = false): void {
-
-
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
 				this._loaded = true;
@@ -349,11 +351,18 @@ export class SlideContainer extends AbsoluteLayout {
 		let startTime, deltaTime;
 
 		this.currentPanel.panel.on('pan', (args: gestures.PanGestureEventData): void => {
-
 			if (args.state === gestures.GestureStateTypes.began) {
 				startTime = Date.now();
 				previousDelta = 0;
 				endingVelocity = 250;
+
+				this.notify({
+					eventName: SlideContainer.startEvent,
+					object: this,
+					eventData: {
+						currentIndex: this.currentPanel.index
+					}
+				});
 			} else if (args.state === gestures.GestureStateTypes.ended) {
 				deltaTime = Date.now() - startTime;
 				// if velocityScrolling is enabled then calculate the velocitty
@@ -366,6 +375,16 @@ export class SlideContainer extends AbsoluteLayout {
 						this.transitioning = true;
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
+							
+							this.notify({
+								eventName: SlideContainer.changedEvent,
+								object: this,
+								eventData: {
+									direction: direction.left,
+									newIndex: this.currentPanel.index,
+									oldIndex: this.currentPanel.index + 1
+								}
+							});
 						});
 					}
 					return;
@@ -374,12 +393,30 @@ export class SlideContainer extends AbsoluteLayout {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
+
+							this.notify({
+								eventName: SlideContainer.changedEvent,
+								object: this,
+								eventData: {
+									direction: direction.right,
+									newIndex: this.currentPanel.index,
+									oldIndex: this.currentPanel.index - 1
+								}
+							});
 						});
 					}
 					return;
 				}
 
 				if (this.transitioning === false) {
+					this.notify({
+								eventName: SlideContainer.cancelledEvent,
+								object: this,
+								eventData: {
+									currentIndex: this.currentPanel.index
+								}
+							});
+
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },

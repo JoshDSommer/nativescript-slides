@@ -19,3 +19,18 @@ export function next() {
 export function prev() {
 	slideContainer.previousSlide();
 }
+
+export function onStart(args){
+	var data = args.eventData;
+	console.log("Start: " + JSON.stringify(data));
+}
+
+export function onChanged(args){
+	var data = args.eventData;
+	console.log("Changed: " + JSON.stringify(data));
+}
+
+export function onCancelled(args){
+	var data = args.eventData;
+	console.log("Cancelled: " + JSON.stringify(data));
+}
