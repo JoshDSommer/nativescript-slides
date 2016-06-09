@@ -360,8 +360,7 @@ export class SlideContainer extends AbsoluteLayout {
 					eventName: SlideContainer.startEvent,
 					object: this,
 					eventData: {
-						direction: direction.left,
-						index: this.currentPanel.index
+						currentIndex: this.currentPanel.index
 					}
 				});
 			} else if (args.state === gestures.GestureStateTypes.ended) {
@@ -414,7 +413,7 @@ export class SlideContainer extends AbsoluteLayout {
 								eventName: SlideContainer.cancelledEvent,
 								object: this,
 								eventData: {
-									index: this.currentPanel.index
+									currentIndex: this.currentPanel.index
 								}
 							});
 
