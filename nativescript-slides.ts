@@ -191,18 +191,6 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public constructView(constructor: boolean = false): void {
-		this.on(SlideContainer.startEvent, (data: any) => {
-			console.log("ON START IN PLUGIN");
-		});
-
-		this.on(SlideContainer.changedEvent, (data: any) => {
-			console.log("ON CHANGED IN PLUGIN");
-		});
-
-		this.on(SlideContainer.cancelledEvent, (data: any) => {
-			console.log("ON CANCELLED IN PLUGIN");
-		});
-
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
 			if (!this._loaded) {
 				this._loaded = true;
@@ -367,10 +355,14 @@ export class SlideContainer extends AbsoluteLayout {
 				startTime = Date.now();
 				previousDelta = 0;
 				endingVelocity = 250;
-				
+
 				this.notify({
 					eventName: SlideContainer.startEvent,
-					object: this
+					object: this,
+					eventData: {
+						direction: direction.left,
+						index: this.currentPanel.index
+					}
 				});
 			} else if (args.state === gestures.GestureStateTypes.ended) {
 				deltaTime = Date.now() - startTime;
@@ -388,7 +380,11 @@ export class SlideContainer extends AbsoluteLayout {
 							this.notify({
 								eventName: SlideContainer.changedEvent,
 								object: this,
-								args: this.currentPanel
+								eventData: {
+									direction: direction.left,
+									newIndex: this.currentPanel.index,
+									oldIndex: this.currentPanel.index + 1
+								}
 							});
 						});
 					}
@@ -402,7 +398,11 @@ export class SlideContainer extends AbsoluteLayout {
 							this.notify({
 								eventName: SlideContainer.changedEvent,
 								object: this,
-								args: this.currentPanel
+								eventData: {
+									direction: direction.right,
+									newIndex: this.currentPanel.index,
+									oldIndex: this.currentPanel.index - 1
+								}
 							});
 						});
 					}
@@ -413,7 +413,9 @@ export class SlideContainer extends AbsoluteLayout {
 					this.notify({
 								eventName: SlideContainer.cancelledEvent,
 								object: this,
-								args: this.currentPanel
+								eventData: {
+									index: this.currentPanel.index
+								}
 							});
 
 					this.transitioning = true;

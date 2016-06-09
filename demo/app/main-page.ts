@@ -20,14 +20,17 @@ export function prev() {
 	slideContainer.previousSlide();
 }
 
-export function onStart(){
-	console.log("START IN MAIN-PAGE");
+export function onStart(args){
+	var data = args.eventData;
+	console.log("Start: " + JSON.stringify(data));
 }
 
-export function onChanged(){
-	console.log("CHANGED IN MAIN-PAGE");
+export function onChanged(args){
+	var data = args.eventData;
+	console.log("Changed: " + JSON.stringify(data));
 }
 
-export function onCancelled(){
-	console.log("CANCELLED IN MAIN-PAGE");
+export function onCancelled(args){
+	var data = args.eventData;
+	console.log("Cancelled: " + JSON.stringify(data));
 }
