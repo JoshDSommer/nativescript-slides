@@ -65,4 +65,8 @@ export declare class SlideContainer extends AbsoluteLayout {
     private buildSlideMap(views);
     createIndicator(indicatorColor: string): Label;
     setActivePageIndicator(index: number): void;
+    private triggerRightSlideEvents();
+    private triggerLeftSlideEvent();
+    private triggerStartEvent();
+    private triggerCancelEvent(type);
 }

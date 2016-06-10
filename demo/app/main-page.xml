@@ -6,7 +6,6 @@
 			<Slides:Slide class="slide-1">
 				<Label text="This is Panel 1"  />
 				<GridLayout class="nav" rows="auto" columns="auto, auto">
-					<Button col="0" text="Back" class="prev" tap="onNavBack" />
 					<Button col="1" text="Next" class="next" tap="onNavNext" />
 				</GridLayout>
 			</Slides:Slide>
@@ -35,7 +34,6 @@
 				<Label text="This is Panel 5"  />
 				<GridLayout class="nav" rows="auto" columns="auto, auto">
 					<Button col="0" text="Back" class="prev" tap="onNavBack" />
-					<Button col="1" text="Next" class="next" tap="onNavNext" />
 				</GridLayout>
 			</Slides:Slide>
 		</Slides:SlideContainer>

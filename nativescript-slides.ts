@@ -311,23 +311,35 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public nextSlide(): void {
-		if (!this.hasNext)
+		if (!this.hasNext){
+			this.triggerCancelEvent(cancellationReason.noMoreSlides);
 			return;
+		}
 
 		this.direction = direction.left;
 		this.transitioning = true;
+
+		this.triggerStartEvent();
 		this.showRightSlide(this.currentPanel).then(() => {
 			this.setupPanel(this.currentPanel.right);
+
+			this.triggerRightSlideEvents();
 		});
 	}
 	public previousSlide(): void {
-		if (!this.hasPrevious)
+		if (!this.hasPrevious){
+			this.triggerCancelEvent(cancellationReason.noPrevSlides);
 			return;
+		}
 
 		this.direction = direction.right;
 		this.transitioning = true;
+
+		this.triggerStartEvent();
 		this.showLeftSlide(this.currentPanel).then(() => {
 			this.setupPanel(this.currentPanel.left);
+
+			this.triggerLeftSlideEvent();
 		});
 	}
 
@@ -365,13 +377,7 @@ export class SlideContainer extends AbsoluteLayout {
 				previousDelta = 0;
 				endingVelocity = 250;
 
-				this.notify({
-					eventName: SlideContainer.startEvent,
-					object: this,
-					eventData: {
-						currentIndex: this.currentPanel.index
-					}
-				});
+				this.triggerStartEvent();
 			} else if (args.state === gestures.GestureStateTypes.ended) {
 				deltaTime = Date.now() - startTime;
 				// if velocityScrolling is enabled then calculate the velocitty
@@ -386,82 +392,35 @@ export class SlideContainer extends AbsoluteLayout {
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
 							
-							this.notify({
-								eventName: SlideContainer.changedEvent,
-								object: this,
-								eventData: {
-									direction: direction.left,
-									newIndex: this.currentPanel.index,
-									oldIndex: this.currentPanel.index + 1
-								}
-							});
+							this.triggerLeftSlideEvent();
 						});
 					}else{
 						//We're at the start
 						//Notify no more slides
-						this.notify({
-								eventName: SlideContainer.cancelledEvent,
-								object: this,
-								eventData: {
-									currentIndex: this.currentPanel.index,
-									reason: cancellationReason.noPrevSlides
-								}
-							});
+						this.triggerCancelEvent(cancellationReason.noPrevSlides);
 					}
 					return;
 				} 
 				// swiping right to left
 				else if (args.deltaX < (-pageWidth / 3) || (this.velocityScrolling && endingVelocity < -32)) {
-					debugger;
 					if (this.hasNext) {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
 
-							// Notify changed
-							this.notify({
-								eventName: SlideContainer.changedEvent,
-								object: this,
-								eventData: {
-									direction: direction.right,
-									newIndex: this.currentPanel.index,
-									oldIndex: this.currentPanel.index - 1
-								}
-							});
-
-							if(!this.hasNext){
-								// Notify finsihed
-								this.notify({
-									eventName: SlideContainer.finishedEvent,
-									object: this
-								});
-							}
+							this.triggerRightSlideEvents();
 						});
 					}else{
 						// We're at the end
 						// Notify no more slides
-						this.notify({
-								eventName: SlideContainer.cancelledEvent,
-								object: this,
-								eventData: {
-									currentIndex: this.currentPanel.index,
-									reason: cancellationReason.noMoreSlides
-								}
-							});
+						this.triggerCancelEvent(cancellationReason.noMoreSlides);
 					}
 					return;
 				}
 
 				if (this.transitioning === false) {
 					//Notify cancelled
-					this.notify({
-								eventName: SlideContainer.cancelledEvent,
-								object: this,
-								eventData: {
-									currentIndex: this.currentPanel.index,
-									reason: cancellationReason.user
-								}
-							});
+					this.triggerCancelEvent(cancellationReason.user);
 
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
@@ -673,5 +632,59 @@ export class SlideContainer extends AbsoluteLayout {
 		activeIndicator.className = 'slide-indicator-active';
 		activeIndicator.opacity = 0.9;
 
+	}
+
+	private triggerRightSlideEvents(){
+		// Notify changed
+		this.notify({
+			eventName: SlideContainer.changedEvent,
+			object: this,
+			eventData: {
+				direction: direction.right,
+				newIndex: this.currentPanel.index,
+				oldIndex: this.currentPanel.index - 1
+			}
+		});
+
+		if(!this.hasNext){
+			// Notify finsihed
+			this.notify({
+				eventName: SlideContainer.finishedEvent,
+				object: this
+			});
+		}
+	}
+
+	private triggerLeftSlideEvent(){
+		this.notify({
+			eventName: SlideContainer.changedEvent,
+			object: this,
+			eventData: {
+				direction: direction.left,
+				newIndex: this.currentPanel.index,
+				oldIndex: this.currentPanel.index + 1
+			}
+		});
+	}
+
+	private triggerStartEvent(){
+		this.notify({
+			eventName: SlideContainer.startEvent,
+			object: this,
+			eventData: {
+				currentIndex: this.currentPanel.index
+			}
+		});
+	}
+
+	private triggerCancelEvent(type : cancellationReason){
+		this.notify({
+			eventName: SlideContainer.cancelledEvent,
+			object: this,
+			eventData: {
+				currentIndex: this.currentPanel.index,
+				reason: type
+			}
+		});
 	}
 }
