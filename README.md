@@ -89,7 +89,8 @@ add as many ``<Slides:Slide>`` as you want.
 #### Events
 - **start** - Start pan
 - **changed** - Transition complete
-- **cancelled** - User didn't complete the transition
+- **cancelled** - User didn't complete the transition, or at start\end with no slides
+- **finished** - Last slide has come into view
 
 #### Angular 2 compatibility
 To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
@@ -109,6 +110,41 @@ To use the slides with Angular2 and the `registerElement` from `nativescript-ang
 #### Known issues
 
   * There apears to be a bug with the loop resulting in bad transitions going right to left.
+
+#### How To: Load slides dynamically
+You want to hook into the loaded event of the view and then create your view elements.
+
+[Demo Code](https://github.com/TheOriginalJosh/nativescript-slides/blob/master/demo/app/dynamic-page.xml)
+``` xml
+<Slides:SlideContainer loaded="onSlideContainerLoaded"
+```
+``` ts
+import * as slides from 'nativescript-slides/nativescript-slides'
+
+export function onSlideContainerLoaded(args) {    
+    let slideContainer = <slides.SlideContainer>args.object;
+
+      //Construct the slides
+      slideContainer.addChild(getSlide("Page 1", "slide-1"));
+      slideContainer.addChild(getSlide("Page 2", "slide-2"));
+      slideContainer.addChild(getSlide("Page 3", "slide-3"));
+      slideContainer.addChild(getSlide("Page 4", "slide-4"));
+      slideContainer.addChild(getSlide("Page 5", "slide-5"));
+
+  }
+
+  function getSlide(labelText: string, className: string)  {
+      let slide = new slides.Slide();
+      slide.className = className;
+      let label = new labelModule.Label();
+      label.text = labelText;
+      slide.addChild(label)
+
+      return slide;
+  }
+
+
+```
 
 #### Smoother panning on Android (For {N} v2.0.0 and below __only__).
 
