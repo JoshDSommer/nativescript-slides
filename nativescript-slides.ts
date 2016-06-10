@@ -11,7 +11,9 @@ import {AnimationCurve, Orientation} from 'ui/enums';
 import {Color} from 'color';
 import {Image} from 'ui/image';
 
-// declare const android:any;
+declare var android: any;
+declare var com: any;
+declare var java: any;
 
 let LayoutParams: any;
 if (app.android) {
