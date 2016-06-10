@@ -34,3 +34,7 @@ export function onCancelled(args){
 	var data = args.eventData;
 	console.log("Cancelled: " + JSON.stringify(data));
 }
+
+export function onFinished(args){
+	console.log("Finished slides");
+}

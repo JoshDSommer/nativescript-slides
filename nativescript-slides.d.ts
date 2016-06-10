@@ -29,6 +29,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     static startEvent: string;
     static changedEvent: string;
     static cancelledEvent: string;
+    static finishedEvent: string;
     pageIndicators: boolean;
     indicatorsColor: string;
     hasNext: boolean;

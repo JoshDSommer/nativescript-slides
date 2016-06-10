@@ -30,6 +30,12 @@ enum direction {
 	right
 }
 
+enum cancellationReason {
+	user,
+	noPrevSlides,
+	noMoreSlides
+}
+
 export interface ISlideMap {
 	panel: StackLayout;
 	index: number;
@@ -58,6 +64,7 @@ export class SlideContainer extends AbsoluteLayout {
 	public static startEvent = "start";
 	public static changedEvent = "changed";
 	public static cancelledEvent = "cancelled";
+	public static finishedEvent = "finished";
 
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
@@ -372,7 +379,8 @@ export class SlideContainer extends AbsoluteLayout {
 					endingVelocity = (args.deltaX / deltaTime) * 100;
 				}
 
-				if (args.deltaX > (pageWidth / 3) || (this.velocityScrolling && endingVelocity > 32)) { ///swiping left to right.
+				// swiping left to right.
+				if (args.deltaX > (pageWidth / 3) || (this.velocityScrolling && endingVelocity > 32)) { 
 					if (this.hasPrevious) {
 						this.transitioning = true;
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
@@ -388,14 +396,29 @@ export class SlideContainer extends AbsoluteLayout {
 								}
 							});
 						});
+					}else{
+						//We're at the start
+						//Notify no more slides
+						this.notify({
+								eventName: SlideContainer.cancelledEvent,
+								object: this,
+								eventData: {
+									currentIndex: this.currentPanel.index,
+									reason: cancellationReason.noPrevSlides
+								}
+							});
 					}
 					return;
-				} else if (args.deltaX < (-pageWidth / 3) || (this.velocityScrolling && endingVelocity < -32)) {
+				} 
+				// swiping right to left
+				else if (args.deltaX < (-pageWidth / 3) || (this.velocityScrolling && endingVelocity < -32)) {
+					debugger;
 					if (this.hasNext) {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
 
+							// Notify changed
 							this.notify({
 								eventName: SlideContainer.changedEvent,
 								object: this,
@@ -405,17 +428,38 @@ export class SlideContainer extends AbsoluteLayout {
 									oldIndex: this.currentPanel.index - 1
 								}
 							});
+
+							if(!this.hasNext){
+								// Notify finsihed
+								this.notify({
+									eventName: SlideContainer.finishedEvent,
+									object: this
+								});
+							}
 						});
+					}else{
+						// We're at the end
+						// Notify no more slides
+						this.notify({
+								eventName: SlideContainer.cancelledEvent,
+								object: this,
+								eventData: {
+									currentIndex: this.currentPanel.index,
+									reason: cancellationReason.noMoreSlides
+								}
+							});
 					}
 					return;
 				}
 
 				if (this.transitioning === false) {
+					//Notify cancelled
 					this.notify({
 								eventName: SlideContainer.cancelledEvent,
 								object: this,
 								eventData: {
-									currentIndex: this.currentPanel.index
+									currentIndex: this.currentPanel.index,
+									reason: cancellationReason.user
 								}
 							});
 
