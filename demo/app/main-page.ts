@@ -1,5 +1,6 @@
 import * as observable from 'data/observable';
 import * as pages from 'ui/page';
+import * as slides from 'nativescript-slides/nativescript-slides'
 
 
 let slideContainer;
@@ -9,7 +10,7 @@ export function pageLoaded(args: observable.EventData) {
 	// Get the event sender
 	var page = <pages.Page>args.object;
 	page.actionBarHidden = true;
-	slideContainer = page.getViewById("slides");
+	slideContainer = <slides.SlideContainer>page.getViewById("slides");
 }
 
 export function onNavNext() {
