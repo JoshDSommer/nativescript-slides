@@ -24,3 +24,17 @@ Label{
   color: #FFF;
 }
 
+.nav {
+  margin-top: 20;
+  horizontal-align: center;
+}
+
+.next {
+  color: #fff;
+  margin-left: 20;
+}
+
+.prev {
+  color: #fff;
+  margin-right: 20;
+}

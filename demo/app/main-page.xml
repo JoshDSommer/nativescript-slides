@@ -5,18 +5,38 @@
 							  start="onStart" cancelled="onCancelled" changed="onChanged" finished="onFinished">
 			<Slides:Slide class="slide-1">
 				<Label text="This is Panel 1"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
 			</Slides:Slide>
 			<Slides:Slide class="slide-2">
 				<Label text="This is Panel 2"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
 			</Slides:Slide>
 			<Slides:Slide class="slide-3">
 				<Label text="This is Panel 3"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
 			</Slides:Slide>
 			<Slides:Slide class="slide-4">
 				<Label text="This is Panel 4"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
 			</Slides:Slide>
 			<Slides:Slide class="slide-5">
 				<Label text="This is Panel 5"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
 			</Slides:Slide>
 		</Slides:SlideContainer>
 	</GridLayout>

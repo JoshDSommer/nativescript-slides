@@ -12,11 +12,11 @@ export function pageLoaded(args: observable.EventData) {
 	slideContainer = page.getViewById("slides");
 }
 
-export function next() {
+export function onNavNext() {
 	slideContainer.nextSlide();
 }
 
-export function prev() {
+export function onNavBack() {
 	slideContainer.previousSlide();
 }
 
