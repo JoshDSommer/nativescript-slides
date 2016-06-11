@@ -285,6 +285,7 @@ export class SlideContainer extends AbsoluteLayout {
 			this.timer_reference = setInterval(() => {
 				if (typeof this.currentPanel.right !== "undefined") {
 					this.nextSlide();
+					
 				} else {
 					clearTimeout(this.timer_reference);
 				}
@@ -307,6 +308,8 @@ export class SlideContainer extends AbsoluteLayout {
 	public startSlideshow(): void {
 		if (this.interval !== 0) {
 			this.carousel(true, this.interval);
+		}else{
+			console.log("Can't start slideshow without an interval set");
 		}
 	}
 
@@ -318,12 +321,10 @@ export class SlideContainer extends AbsoluteLayout {
 
 		this.direction = direction.left;
 		this.transitioning = true;
-
 		this.triggerStartEvent();
 		this.showRightSlide(this.currentPanel).then(() => {
+			this.triggerChangeEventLeftToRight();
 			this.setupPanel(this.currentPanel.right);
-
-			this.triggerRightSlideEvents();
 		});
 	}
 	public previousSlide(): void {
@@ -334,12 +335,10 @@ export class SlideContainer extends AbsoluteLayout {
 
 		this.direction = direction.right;
 		this.transitioning = true;
-
 		this.triggerStartEvent();
 		this.showLeftSlide(this.currentPanel).then(() => {
+			this.triggerChangeEventRightToLeft();
 			this.setupPanel(this.currentPanel.left);
-
-			this.triggerLeftSlideEvent();
 		});
 	}
 
@@ -392,7 +391,7 @@ export class SlideContainer extends AbsoluteLayout {
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
 							
-							this.triggerLeftSlideEvent();
+							this.triggerChangeEventLeftToRight();
 						});
 					}else{
 						//We're at the start
@@ -408,7 +407,16 @@ export class SlideContainer extends AbsoluteLayout {
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
 
-							this.triggerRightSlideEvents();
+							// Notify changed
+							this.triggerChangeEventRightToLeft();
+
+							if(!this.hasNext){
+								// Notify finsihed
+								this.notify({
+									eventName: SlideContainer.finishedEvent,
+									object: this
+								});
+							}
 						});
 					}else{
 						// We're at the end
@@ -421,7 +429,6 @@ export class SlideContainer extends AbsoluteLayout {
 				if (this.transitioning === false) {
 					//Notify cancelled
 					this.triggerCancelEvent(cancellationReason.user);
-
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },
@@ -601,10 +608,57 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 
 		if (this.loop) {
-			slideMap[0].left = slideMap[slideMap.length - 1];
-		}
+            slideMap[0].left = slideMap[slideMap.length - 1];
+            slideMap[slideMap.length - 1].right = slideMap[0];
+        }
+
 		this.startSlideshow();
 		return slideMap[0];
+	}
+
+	private triggerStartEvent(){
+		this.notify({
+					eventName: SlideContainer.startEvent,
+					object: this,
+					eventData: {
+						currentIndex: this.currentPanel.index
+					}
+				});
+	}
+
+	private triggerChangeEventLeftToRight(){
+		this.notify({
+			eventName: SlideContainer.changedEvent,
+			object: this,
+			eventData: {
+				direction: direction.left,
+				newIndex: this.currentPanel.index,
+				oldIndex: this.currentPanel.index + 1
+			}
+		});
+	}
+
+	private triggerChangeEventRightToLeft(){
+		this.notify({
+			eventName: SlideContainer.changedEvent,
+			object: this,
+			eventData: {
+				direction: direction.right,
+				newIndex: this.currentPanel.index,
+				oldIndex: this.currentPanel.index - 1
+			}
+		});
+	}
+
+	private triggerCancelEvent(cancelReason : cancellationReason){
+		this.notify({
+			eventName: SlideContainer.cancelledEvent,
+			object: this,
+			eventData: {
+				currentIndex: this.currentPanel.index,
+				reason: cancelReason
+			}
+		});
 	}
 
 	createIndicator(indicatorColor: string): Label {
@@ -632,59 +686,5 @@ export class SlideContainer extends AbsoluteLayout {
 		activeIndicator.className = 'slide-indicator-active';
 		activeIndicator.opacity = 0.9;
 
-	}
-
-	private triggerRightSlideEvents(){
-		// Notify changed
-		this.notify({
-			eventName: SlideContainer.changedEvent,
-			object: this,
-			eventData: {
-				direction: direction.right,
-				newIndex: this.currentPanel.index,
-				oldIndex: this.currentPanel.index - 1
-			}
-		});
-
-		if(!this.hasNext){
-			// Notify finsihed
-			this.notify({
-				eventName: SlideContainer.finishedEvent,
-				object: this
-			});
-		}
-	}
-
-	private triggerLeftSlideEvent(){
-		this.notify({
-			eventName: SlideContainer.changedEvent,
-			object: this,
-			eventData: {
-				direction: direction.left,
-				newIndex: this.currentPanel.index,
-				oldIndex: this.currentPanel.index + 1
-			}
-		});
-	}
-
-	private triggerStartEvent(){
-		this.notify({
-			eventName: SlideContainer.startEvent,
-			object: this,
-			eventData: {
-				currentIndex: this.currentPanel.index
-			}
-		});
-	}
-
-	private triggerCancelEvent(type : cancellationReason){
-		this.notify({
-			eventName: SlideContainer.cancelledEvent,
-			object: this,
-			eventData: {
-				currentIndex: this.currentPanel.index,
-				reason: type
-			}
-		});
 	}
 }

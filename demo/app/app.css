@@ -16,12 +16,34 @@
   background-color: #FFC107;
 }
 
+.slide-6{
+  background-color: #448AFF;
+}
+
+.slide-7{
+  background-color: #F44336;
+}
+.slide-8{
+  background-color: #8BC34A;
+} 
+
+.slide-9{
+  background-color: #9C27B0;
+}
+.slide-10{
+  background-color: #FFC107;
+}
+
 Label{
   text-align: center;
   width: 100%;
   font-size: 35;
   margin-top: 35;
   color: #FFF;
+}
+
+.subtext {
+  font-size: 20;
 }
 
 .nav {

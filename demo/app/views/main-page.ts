@@ -1,16 +1,26 @@
 import * as observable from 'data/observable';
 import * as pages from 'ui/page';
 import * as slides from 'nativescript-slides/nativescript-slides'
+import * as frameModule from 'ui/frame'
 
-
-let slideContainer;
+var slideContainer;
 
 // Event handler for Page "loaded" event attached in main-page.xml
 export function pageLoaded(args: observable.EventData) {
 	// Get the event sender
 	var page = <pages.Page>args.object;
 	page.actionBarHidden = true;
-	slideContainer = <slides.SlideContainer>page.getViewById("slides");
+	slideContainer = page.getViewById("slides");
+}
+
+export function onNavHome() {
+	var navigationEntry = {
+        moduleName: "loader",
+        animated: false,
+		clearHistory: true
+    };
+
+    frameModule.topmost().navigate(navigationEntry);
 }
 
 export function onNavNext() {

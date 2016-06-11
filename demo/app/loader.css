@@ -1,0 +1,16 @@
+Page {
+    margin: 40;
+}
+
+.counter{
+    horizontal-align: center;
+    color: #666;
+}
+
+Button{
+    color: #FFF;
+    background-color: #0c60ee;
+    padding: 20 10;
+    margin-bottom: 20;
+    border-radius: 10;
+}

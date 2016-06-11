@@ -63,10 +63,10 @@ export declare class SlideContainer extends AbsoluteLayout {
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
+    private triggerStartEvent();
+    private triggerChangeEventLeftToRight();
+    private triggerChangeEventRightToLeft();
+    private triggerCancelEvent(cancelReason);
     createIndicator(indicatorColor: string): Label;
     setActivePageIndicator(index: number): void;
-    private triggerRightSlideEvents();
-    private triggerLeftSlideEvent();
-    private triggerStartEvent();
-    private triggerCancelEvent(type);
 }

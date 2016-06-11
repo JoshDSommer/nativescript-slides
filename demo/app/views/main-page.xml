@@ -5,7 +5,9 @@
 							  start="onStart" cancelled="onCancelled" changed="onChanged" finished="onFinished">
 			<Slides:Slide class="slide-1">
 				<Label text="This is Panel 1"  />
+				<Label text="Swipe or use buttons" class="subtext" />
 				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
 					<Button col="1" text="Next" class="next" tap="onNavNext" />
 				</GridLayout>
 			</Slides:Slide>
@@ -32,8 +34,10 @@
 			</Slides:Slide>
 			<Slides:Slide class="slide-5">
 				<Label text="This is Panel 5"  />
-				<GridLayout class="nav" rows="auto" columns="auto, auto">
-					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+				<GridLayout class="nav" rows="auto, auto" columns="auto, auto">
+					<Button col="0" row="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" row="0" text="Next" class="next" tap="onNavNext" />
+					<Button col="0" row="1" text="Home" class="next" tap="onNavHome" />
 				</GridLayout>
 			</Slides:Slide>
 		</Slides:SlideContainer>
