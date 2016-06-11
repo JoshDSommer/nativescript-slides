@@ -1,7 +1,7 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" loaded="pageLoaded">
 
 	<GridLayout rows="* auto">
-		<Slides:SlideContainer id="slides" row="0" pageIndicators="true" androidTranslucentStatusBar="true" disablePan="true" interval="2000" pagerOffset="50%" 
+		<Slides:SlideContainer id="slides" row="0" pageIndicators="true" androidTranslucentStatusBar="true" disablePan="true" interval="2000"
 							  start="onStart" cancelled="onCancelled" changed="onChanged" finished="onFinished">
 			<Slides:Slide class="slide-1">
 				<Label text="This is Panel 1"  />
@@ -20,7 +20,7 @@
 			</Slides:Slide>
 			<Slides:Slide class="slide-5">
 				<Label text="This is Panel 5"  />
-                <Button col="1" text="Home" class="next" tap="onNavHome" />
+                <Button text="Home" class="next" tap="onNavHome" />
 			</Slides:Slide>
 		</Slides:SlideContainer>
 	</GridLayout>

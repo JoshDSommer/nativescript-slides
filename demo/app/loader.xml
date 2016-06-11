@@ -3,7 +3,7 @@
         <ActionBar title="Demo Loader" icon="">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout>
+    <StackLayout class="commands">
         <Button text="Main Demo" tap="onLoadMain" />
         <Button text="Dynamic Slides" tap="onLoadDynamic" />
         <Button text="Carousel" tap="onLoadCarousel" />            

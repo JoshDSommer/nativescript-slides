@@ -323,8 +323,6 @@ export class SlideContainer extends AbsoluteLayout {
 	public startSlideshow(): void {
 		if (this.interval !== 0) {
 			this.carousel(true, this.interval);
-		}else{
-			console.log("Can't start slideshow without an interval set");
 		}
 	}
 
