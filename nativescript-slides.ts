@@ -1,5 +1,6 @@
 import * as app from 'application';
 import * as Platform from 'platform';
+import utils = require("utils/utils");
 import {AbsoluteLayout} from 'ui/layouts/absolute-layout';
 import {StackLayout} from 'ui/layouts/stack-layout';
 import {View} from 'ui/core/view';
@@ -51,6 +52,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageWidth: number;
 	private _loop: boolean;
 	private _interval: number;
+	private _pagerOffset: string;
 	private _velocityScrolling: boolean;
 	private _androidTranslucentStatusBar: boolean;
 	private _androidTranslucentNavBar: boolean;
@@ -79,6 +81,13 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 	set indicatorsColor(value: string) {
 		this._indicatorsColor = value;
+	}
+
+	get pagerOffset(): string {
+		return this._pagerOffset;
+	}
+	set pagerOffset(value: string) {
+		this._pagerOffset = value;
 	}
 
 	get hasNext(): boolean {
@@ -187,6 +196,7 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._velocityScrolling == null) {
 			this._velocityScrolling = false;
 		}
+
 		if (this._angular == null) {
 			this.angular = false;
 		}
@@ -194,8 +204,13 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._pageIndicators == null) {
 			this._pageIndicators = false;
 		}
+		
 		if (this.indicatorsColor == null) {
 			this.indicatorsColor = "#fff"; //defaults to white.
+		}
+
+		if (this._pagerOffset == null) {
+			this._pagerOffset = "88%"; //defaults to white.
 		}
 	}
 
@@ -575,7 +590,7 @@ export class SlideContainer extends AbsoluteLayout {
 		activeIndicator.className = 'slide-indicator-active';
 		activeIndicator.opacity = 0.9;
 
-		footerInnerWrap.marginTop = <any>'88%';
+		footerInnerWrap.marginTop = <any>this._pagerOffset;
 
 		return footerInnerWrap;
 	}

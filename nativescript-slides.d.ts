@@ -17,6 +17,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _pageWidth;
     private _loop;
     private _interval;
+    private _pagerOffset;
     private _velocityScrolling;
     private _androidTranslucentStatusBar;
     private _androidTranslucentNavBar;
@@ -32,6 +33,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     static finishedEvent: string;
     pageIndicators: boolean;
     indicatorsColor: string;
+    pagerOffset: string;
     hasNext: boolean;
     hasPrevious: boolean;
     interval: number;

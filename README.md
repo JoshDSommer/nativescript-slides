@@ -86,6 +86,8 @@ add as many ``<Slides:Slide>`` as you want.
 
 - **disablePan : boolean** - If true panning is disabled. So that you can call nextSlide()/previousSlide() functions to change the slide. If slides is used to get details about users like email, phone number, username etc. in this case you don't want users to move from one slide to another slide without filling details.
 
+- **pagerOffset : string** - Margin-top for the pager.  Number or percentage, default 88%.
+
 #### Events
 - **start** - Start pan
 - **changed** - Transition complete
