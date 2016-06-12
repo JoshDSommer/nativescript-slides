@@ -1,6 +1,6 @@
 {
 	"name": "nativescript-slides",
-	"version": "1.6.2",
+	"version": "1.7.0",
 	"description": "NativeScript Slides plugin.",
 	"main": "nativescript-slides.js",
 	"nativescript": {
