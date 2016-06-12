@@ -1,5 +1,6 @@
 import * as app from 'application';
 import * as Platform from 'platform';
+import utils = require("utils/utils");
 import {AbsoluteLayout} from 'ui/layouts/absolute-layout';
 import {StackLayout} from 'ui/layouts/stack-layout';
 import {View} from 'ui/core/view';
@@ -30,6 +31,12 @@ enum direction {
 	right
 }
 
+enum cancellationReason {
+	user,
+	noPrevSlides,
+	noMoreSlides
+}
+
 export interface ISlideMap {
 	panel: StackLayout;
 	index: number;
@@ -45,6 +52,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _pageWidth: number;
 	private _loop: boolean;
 	private _interval: number;
+	private _pagerOffset: string;
 	private _velocityScrolling: boolean;
 	private _androidTranslucentStatusBar: boolean;
 	private _androidTranslucentNavBar: boolean;
@@ -58,6 +66,7 @@ export class SlideContainer extends AbsoluteLayout {
 	public static startEvent = "start";
 	public static changedEvent = "changed";
 	public static cancelledEvent = "cancelled";
+	public static finishedEvent = "finished";
 
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
@@ -72,6 +81,13 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 	set indicatorsColor(value: string) {
 		this._indicatorsColor = value;
+	}
+
+	get pagerOffset(): string {
+		return this._pagerOffset;
+	}
+	set pagerOffset(value: string) {
+		this._pagerOffset = value;
 	}
 
 	get hasNext(): boolean {
@@ -180,6 +196,7 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._velocityScrolling == null) {
 			this._velocityScrolling = false;
 		}
+
 		if (this._angular == null) {
 			this.angular = false;
 		}
@@ -187,8 +204,13 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this._pageIndicators == null) {
 			this._pageIndicators = false;
 		}
+		
 		if (this.indicatorsColor == null) {
 			this.indicatorsColor = "#fff"; //defaults to white.
+		}
+
+		if (this._pagerOffset == null) {
+			this._pagerOffset = "88%"; //defaults to white.
 		}
 	}
 
@@ -278,6 +300,7 @@ export class SlideContainer extends AbsoluteLayout {
 			this.timer_reference = setInterval(() => {
 				if (typeof this.currentPanel.right !== "undefined") {
 					this.nextSlide();
+					
 				} else {
 					clearTimeout(this.timer_reference);
 				}
@@ -304,22 +327,30 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public nextSlide(): void {
-		if (!this.hasNext)
+		if (!this.hasNext){
+			this.triggerCancelEvent(cancellationReason.noMoreSlides);
 			return;
+		}
 
 		this.direction = direction.left;
 		this.transitioning = true;
+		this.triggerStartEvent();
 		this.showRightSlide(this.currentPanel).then(() => {
+			this.triggerChangeEventLeftToRight();
 			this.setupPanel(this.currentPanel.right);
 		});
 	}
 	public previousSlide(): void {
-		if (!this.hasPrevious)
+		if (!this.hasPrevious){
+			this.triggerCancelEvent(cancellationReason.noPrevSlides);
 			return;
+		}
 
 		this.direction = direction.right;
 		this.transitioning = true;
+		this.triggerStartEvent();
 		this.showLeftSlide(this.currentPanel).then(() => {
+			this.triggerChangeEventRightToLeft();
 			this.setupPanel(this.currentPanel.left);
 		});
 	}
@@ -358,13 +389,7 @@ export class SlideContainer extends AbsoluteLayout {
 				previousDelta = 0;
 				endingVelocity = 250;
 
-				this.notify({
-					eventName: SlideContainer.startEvent,
-					object: this,
-					eventData: {
-						currentIndex: this.currentPanel.index
-					}
-				});
+				this.triggerStartEvent();
 			} else if (args.state === gestures.GestureStateTypes.ended) {
 				deltaTime = Date.now() - startTime;
 				// if velocityScrolling is enabled then calculate the velocitty
@@ -372,53 +397,51 @@ export class SlideContainer extends AbsoluteLayout {
 					endingVelocity = (args.deltaX / deltaTime) * 100;
 				}
 
-				if (args.deltaX > (pageWidth / 3) || (this.velocityScrolling && endingVelocity > 32)) { ///swiping left to right.
+				// swiping left to right.
+				if (args.deltaX > (pageWidth / 3) || (this.velocityScrolling && endingVelocity > 32)) { 
 					if (this.hasPrevious) {
 						this.transitioning = true;
 						this.showLeftSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.left);
 							
-							this.notify({
-								eventName: SlideContainer.changedEvent,
-								object: this,
-								eventData: {
-									direction: direction.left,
-									newIndex: this.currentPanel.index,
-									oldIndex: this.currentPanel.index + 1
-								}
-							});
+							this.triggerChangeEventLeftToRight();
 						});
+					}else{
+						//We're at the start
+						//Notify no more slides
+						this.triggerCancelEvent(cancellationReason.noPrevSlides);
 					}
 					return;
-				} else if (args.deltaX < (-pageWidth / 3) || (this.velocityScrolling && endingVelocity < -32)) {
+				} 
+				// swiping right to left
+				else if (args.deltaX < (-pageWidth / 3) || (this.velocityScrolling && endingVelocity < -32)) {
 					if (this.hasNext) {
 						this.transitioning = true;
 						this.showRightSlide(this.currentPanel, args.deltaX, endingVelocity).then(() => {
 							this.setupPanel(this.currentPanel.right);
 
-							this.notify({
-								eventName: SlideContainer.changedEvent,
-								object: this,
-								eventData: {
-									direction: direction.right,
-									newIndex: this.currentPanel.index,
-									oldIndex: this.currentPanel.index - 1
-								}
-							});
+							// Notify changed
+							this.triggerChangeEventRightToLeft();
+
+							if(!this.hasNext){
+								// Notify finsihed
+								this.notify({
+									eventName: SlideContainer.finishedEvent,
+									object: this
+								});
+							}
 						});
+					}else{
+						// We're at the end
+						// Notify no more slides
+						this.triggerCancelEvent(cancellationReason.noMoreSlides);
 					}
 					return;
 				}
 
 				if (this.transitioning === false) {
-					this.notify({
-								eventName: SlideContainer.cancelledEvent,
-								object: this,
-								eventData: {
-									currentIndex: this.currentPanel.index
-								}
-							});
-
+					//Notify cancelled
+					this.triggerCancelEvent(cancellationReason.user);
 					this.transitioning = true;
 					this.currentPanel.panel.animate({
 						translate: { x: -this.pageWidth, y: 0 },
@@ -565,7 +588,7 @@ export class SlideContainer extends AbsoluteLayout {
 		activeIndicator.className = 'slide-indicator-active';
 		activeIndicator.opacity = 0.9;
 
-		footerInnerWrap.marginTop = <any>'88%';
+		footerInnerWrap.marginTop = <any>this._pagerOffset;
 
 		return footerInnerWrap;
 	}
@@ -598,10 +621,57 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 
 		if (this.loop) {
-			slideMap[0].left = slideMap[slideMap.length - 1];
-		}
+            slideMap[0].left = slideMap[slideMap.length - 1];
+            slideMap[slideMap.length - 1].right = slideMap[0];
+        }
+
 		this.startSlideshow();
 		return slideMap[0];
+	}
+
+	private triggerStartEvent(){
+		this.notify({
+					eventName: SlideContainer.startEvent,
+					object: this,
+					eventData: {
+						currentIndex: this.currentPanel.index
+					}
+				});
+	}
+
+	private triggerChangeEventLeftToRight(){
+		this.notify({
+			eventName: SlideContainer.changedEvent,
+			object: this,
+			eventData: {
+				direction: direction.left,
+				newIndex: this.currentPanel.index,
+				oldIndex: this.currentPanel.index + 1
+			}
+		});
+	}
+
+	private triggerChangeEventRightToLeft(){
+		this.notify({
+			eventName: SlideContainer.changedEvent,
+			object: this,
+			eventData: {
+				direction: direction.right,
+				newIndex: this.currentPanel.index,
+				oldIndex: this.currentPanel.index - 1
+			}
+		});
+	}
+
+	private triggerCancelEvent(cancelReason : cancellationReason){
+		this.notify({
+			eventName: SlideContainer.cancelledEvent,
+			object: this,
+			eventData: {
+				currentIndex: this.currentPanel.index,
+				reason: cancelReason
+			}
+		});
 	}
 
 	createIndicator(indicatorColor: string): Label {

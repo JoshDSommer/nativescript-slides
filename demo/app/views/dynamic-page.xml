@@ -1,0 +1,9 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" navigatedTo="navigatedTo">
+
+	<GridLayout rows="* auto">
+		<Slides:SlideContainer id="slides" row="0" pageIndicators="true" androidTranslucentStatusBar="true" loaded="onSlideContainerLoaded"
+							  start="onStart" cancelled="onCancelled" changed="onChanged" finished="onFinished">
+                                             
+		</Slides:SlideContainer>
+	</GridLayout>
+</Page>

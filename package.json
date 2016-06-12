@@ -1,6 +1,6 @@
 {
 	"name": "nativescript-slides",
-	"version": "1.6.0",
+	"version": "1.6.2",
 	"description": "NativeScript Slides plugin.",
 	"main": "nativescript-slides.js",
 	"nativescript": {
@@ -58,8 +58,8 @@
 		},
 		{
 			"name": "Steve McNiven-Scott",
-    		"email": "steve@sitefinitysteve.com",
-    		"url": "https://github.com/sitefinitysteve"
+			"email": "steve@sitefinitysteve.com",
+			"url": "https://github.com/sitefinitysteve"
 		}
 	],
 	"bugs": {

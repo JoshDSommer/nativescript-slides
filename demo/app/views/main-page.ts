@@ -1,8 +1,9 @@
 import * as observable from 'data/observable';
 import * as pages from 'ui/page';
+import * as slides from 'nativescript-slides/nativescript-slides'
+import * as frameModule from 'ui/frame'
 
-
-let slideContainer;
+var slideContainer;
 
 // Event handler for Page "loaded" event attached in main-page.xml
 export function pageLoaded(args: observable.EventData) {
@@ -12,11 +13,21 @@ export function pageLoaded(args: observable.EventData) {
 	slideContainer = page.getViewById("slides");
 }
 
-export function next() {
+export function onNavHome() {
+	var navigationEntry = {
+        moduleName: "loader",
+        animated: false,
+		clearHistory: true
+    };
+
+    frameModule.topmost().navigate(navigationEntry);
+}
+
+export function onNavNext() {
 	slideContainer.nextSlide();
 }
 
-export function prev() {
+export function onNavBack() {
 	slideContainer.previousSlide();
 }
 
@@ -33,4 +44,8 @@ export function onChanged(args){
 export function onCancelled(args){
 	var data = args.eventData;
 	console.log("Cancelled: " + JSON.stringify(data));
+}
+
+export function onFinished(args){
+	console.log("Finished slides");
 }
