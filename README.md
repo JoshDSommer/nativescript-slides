@@ -1,4 +1,8 @@
 # NativeScript Slides for iOS and Android
+
+[![npm](https://img.shields.io/npm/v/nativescript-slides.svg)](https://www.npmjs.com/package/nativescript-slides)
+[![npm](https://img.shields.io/npm/dt/nativescript-slides.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-slides)
+
 ### _The plugin formally known as nativescript-intro-slides_
 
 ### Intro slides example:
