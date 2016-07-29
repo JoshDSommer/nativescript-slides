@@ -17,16 +17,17 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _pageWidth;
     private _loop;
     private _pagerOffset;
-    private timer_reference;
     private _angular;
     private _disablePan;
     private _footer;
     private _pageIndicators;
-    static startEvent: string;
-    static changedEvent: string;
-    static cancelledEvent: string;
-    static finishedEvent: string;
+    private _indicatorsColor;
+    static START_EVENT: string;
+    static CHANGED_EVENT: string;
+    static CANCELLED_EVENT: string;
+    static FINISHED_EVENT: string;
     pageIndicators: boolean;
+    indicatorsColor: string;
     pagerOffset: string;
     hasNext: boolean;
     hasPrevious: boolean;
@@ -43,10 +44,10 @@ export declare class SlideContainer extends AbsoluteLayout {
     nextSlide(): void;
     previousSlide(): void;
     private setupPanel(panel);
+    private positionPanels(panel);
     private applySwipe(pageWidth);
     private showRightSlide(panelMap, offset?, endingVelocity?);
     private showLeftSlide(panelMap, offset?, endingVelocity?);
-    private buildFooter(pageCount?, activeIndex?);
     private setwidthPercent(view, percentage);
     private newFooterButton(name);
     private buildSlideMap(views);
@@ -54,6 +55,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private triggerChangeEventLeftToRight();
     private triggerChangeEventRightToLeft();
     private triggerCancelEvent(cancelReason);
-    createIndicator(index: number): Label;
+    private buildFooter(pageCount, activeIndex, indicatorColor);
+    createIndicator(indicatorColor: string): Label;
     setActivePageIndicator(index: number): void;
 }
