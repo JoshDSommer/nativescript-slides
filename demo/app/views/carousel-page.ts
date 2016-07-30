@@ -11,7 +11,7 @@ export function pageLoaded(args: observable.EventData) {
 	var page = <pages.Page>args.object;
 	page.actionBarHidden = true;
 	let slideContainer = <slides.SlideContainer>page.getViewById("slides");
-    slideContainer.startSlideshow();
+    // slideContainer.startSlideshow();
 }
 
 export function onNavHome() {

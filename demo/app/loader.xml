@@ -6,6 +6,6 @@
     <StackLayout class="commands">
         <Button text="Main Demo" tap="onLoadMain" />
         <Button text="Dynamic Slides" tap="onLoadDynamic" />
-        <Button text="Carousel" tap="onLoadCarousel" />            
+        <!--<Button text="Carousel" tap="onLoadCarousel" />            -->
     </StackLayout>
 </Page>

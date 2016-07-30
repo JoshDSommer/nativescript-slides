@@ -7,7 +7,7 @@
 }
 .slide-3{
   background-color: #8BC34A;
-} 
+}
 
 .slide-4{
   background-color: #9C27B0;
@@ -25,7 +25,7 @@
 }
 .slide-8{
   background-color: #8BC34A;
-} 
+}
 
 .slide-9{
   background-color: #9C27B0;
@@ -59,4 +59,26 @@ Label{
 .prev {
   color: #fff;
   margin-right: 20;
+}
+
+.slide-indicator-inactive{
+    background-color: #fff;
+  	opacity : 0.4;
+		width : 10;
+		height : 10;
+		margin-left : 2.5;
+		margin-right : 2.5;
+		margin-top : 0;
+		border-radius : 5;
+}
+
+.slide-indicator-active{
+    background-color: #fff;
+  	opacity : 0.9;
+		width : 10;
+		height : 10;
+		margin-left : 2.5;
+		margin-right : 2.5;
+		margin-top : 0;
+		border-radius : 5;
 }

@@ -80,17 +80,39 @@ add as many ``<Slides:Slide>`` as you want.
 
 -  **loop : boolean** - If true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
-- **velocityScrolling : boolean** - If true will calculate transitions speeds based on the finger movement speed.
-
-- **pageIndicators : boolean** - If true adds indicator dots to the bottom of your slides.
-
-- **indicatorsColor : string** -  color of the indicator dots.
-
-- **interval : integer** -  value is in milliseconds. The suggested use case would be for a Image Carousel or something of that nature which can change the image for every fixed intervals. In unloaded function call `page.getViewById("your_id").stopSlideshow()` to unregister it (your_id is the id given to `<Slides:SlideContainer>`), it can be restarted with `startSlidShow`.
-
 - **disablePan : boolean** - If true panning is disabled. So that you can call nextSlide()/previousSlide() functions to change the slide. If slides is used to get details about users like email, phone number, username etc. in this case you don't want users to move from one slide to another slide without filling details.
 
 - **pagerOffset : string** - Margin-top for the pager.  Number or percentage, default 88%.
+
+- **pageIndicators : boolean** - If true adds indicator dots to the bottom of your slides.
+
+#### Indicators
+
+If the property `pageIndicators` is `true` you won't see the page indicators anymore as of 2.0.0 right away. there are two css classes exposed that you can setup however you like for active and inactive indicators. below is an example for semi translucent dots.
+
+```css
+.slide-indicator-inactive{
+    background-color: #fff;
+    opacity : 0.4;
+    width : 10;
+    height : 10;
+    margin-left : 2.5;
+    margin-right : 2.5;
+    margin-top : 0;
+    border-radius : 5;
+}
+
+.slide-indicator-active{
+    background-color: #fff;
+    opacity : 0.9;
+    width : 10;
+    height : 10;
+    margin-left : 2.5;
+    margin-right : 2.5;
+    margin-top : 0;
+    border-radius : 5;
+}
+```
 
 #### Events
 - **start** - Start pan
@@ -102,10 +124,6 @@ add as many ``<Slides:Slide>`` as you want.
 To use the slides with Angular2 and the `registerElement` from `nativescript-angular` you will want to set the `SlideContainer`'s property of `angular` to `true`. Then in your angular component in the `ngAfterViewInit`. you will want to have an instance of your slide container to call the function `constructView()`.
 [Follow the example](https://github.com/TheOriginalJosh/nativescript-slides/issues/37#issuecomment-224820901)
 
-#### Android Optional Attributes
-- **androidTranslucentStatusBar : boolean** - If true the Android status bar will be translucent on devices that support it. (Android sdk >= 19).
-- **androidTranslucentNavBar : boolean** - If true the Android navigation bar will be translucent on devices that support it. (Android sdk >= 19).
-
 #### Plugin Development Work Flow:
 
 * Clone repository to your machine.
@@ -115,7 +133,7 @@ To use the slides with Angular2 and the `registerElement` from `nativescript-ang
 
 #### Known issues
 
-  * There apears to be a bug with the loop resulting in bad transitions going right to left.
+  * There appears to be a bug with the loop resulting in bad transitions going right to left.
 
 #### How To: Load slides dynamically
 You want to hook into the loaded event of the view and then create your view elements.
@@ -127,7 +145,7 @@ You want to hook into the loaded event of the view and then create your view ele
 ``` ts
 import * as slides from 'nativescript-slides/nativescript-slides'
 
-export function onSlideContainerLoaded(args) {    
+export function onSlideContainerLoaded(args) {
     let slideContainer = <slides.SlideContainer>args.object;
 
       //Construct the slides
