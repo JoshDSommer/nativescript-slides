@@ -183,6 +183,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 				if (this.pageIndicators) {
 					this._footer = this.buildFooter(slides.length, 0);
+					this.setActivePageIndicator(0);
 					this.insertChild(this._footer, this.getChildrenCount());
 				}
 
@@ -454,12 +455,12 @@ export class SlideContainer extends AbsoluteLayout {
 		footerInnerWrap.height = 50;
 
 		this.setwidthPercent(footerInnerWrap, 100);
-		AbsoluteLayout.setLeft(footerInnerWrap, 0);
 		AbsoluteLayout.setTop(footerInnerWrap, 0);
 
 		footerInnerWrap.orientation = 'horizontal';
 		footerInnerWrap.verticalAlignment = 'top';
 		footerInnerWrap.horizontalAlignment = 'center';
+		footerInnerWrap.width = (this._pageWidth / 2);
 
 		let index = 0;
 		while (index < pageCount) {
@@ -467,6 +468,8 @@ export class SlideContainer extends AbsoluteLayout {
 			index++;
 		}
 
+		let pageIndicatorsLeftOffset = this.pageWidth / 4;
+		AbsoluteLayout.setLeft(footerInnerWrap, pageIndicatorsLeftOffset);
 
 		footerInnerWrap.marginTop = <any>this._pagerOffset;
 
@@ -559,16 +562,9 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	setActivePageIndicator(index: number) {
-
-
 		let indicatorsToDeactivate = (<any>this._footer).getElementsByClassName(SLIDE_INDICATOR_ACTIVE);
-		// if (indicatorToDeactivate) {
-		// 	indicatorToDeactivate.classList.toggle(SLIDE_INDICATOR_INACTIVE);
-		// 	console.log(indicatorToDeactivate);
-		// }
+
 		indicatorsToDeactivate.forEach(activeIndicator => {
-			console.log(activeIndicator);
-			// activeIndicator.className = activeIndicator.className.replace('slide-indicator-active ', 'slide-indicator-inactive ');
 			activeIndicator.classList.remove(SLIDE_INDICATOR_ACTIVE);
 			activeIndicator.classList.add(SLIDE_INDICATOR_INACTIVE);
 		});
@@ -576,6 +572,5 @@ export class SlideContainer extends AbsoluteLayout {
 		let activeIndicator = (<any>this._footer).getElementsByClassName(SLIDE_INDICATOR_INACTIVE)[index];
 		activeIndicator.classList.remove(SLIDE_INDICATOR_INACTIVE);
 		activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
-		console.log(JSON.stringify(activeIndicator));
 	}
 }
