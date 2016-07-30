@@ -1,3 +1,4 @@
+require("nativescript-dom");
 import * as app from 'application';
 import * as Platform from 'platform';
 import utils = require('utils/utils');
@@ -12,9 +13,11 @@ import {AnimationCurve, Orientation} from 'ui/enums';
 import {Color} from 'color';
 import {Image} from 'ui/image';
 
-declare var android: any;
-declare var com: any;
-declare var java: any;
+declare const android: any;
+declare const com: any;
+declare const java: any;
+const SLIDE_INDICATOR_INACTIVE = 'slide-indicator-inactive';
+const SLIDE_INDICATOR_ACTIVE = 'slide-indicator-active';
 
 let LayoutParams: any;
 if (app.android) {
@@ -56,26 +59,18 @@ export class SlideContainer extends AbsoluteLayout {
 	private _disablePan: boolean;
 	private _footer: StackLayout;
 	private _pageIndicators: boolean;
-	private _indicatorsColor: string;
-
 
 	public static START_EVENT = 'start';
 	public static CHANGED_EVENT = 'changed';
 	public static CANCELLED_EVENT = 'cancelled';
 	public static FINISHED_EVENT = 'finished';
+
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
 		return this._pageIndicators;
 	}
 	set pageIndicators(value: boolean) {
 		this._pageIndicators = value;
-	}
-
-	get indicatorsColor(): string {
-		return this._indicatorsColor;
-	}
-	set indicatorsColor(value: string) {
-		this._indicatorsColor = value;
 	}
 
 	get pagerOffset(): string {
@@ -150,22 +145,19 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = false;
 		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 
-		if (this._disablePan) {
+		if (this._disablePan == null) {
 			this.disablePan = false;
 		}
 
-		if (this._angular) {
+		if (this._angular == null) {
 			this.angular = false;
 		}
 
-		if (this._pageIndicators) {
+		if (this._pageIndicators == null) {
 			this._pageIndicators = false;
 		}
-		if (this.indicatorsColor) {
-			this.indicatorsColor = '#ffffff';
-		}
 
-		if (this._pagerOffset) {
+		if (this._pagerOffset == null) {
 			this._pagerOffset = '88%'; //defaults to white.
 		}
 	}
@@ -190,12 +182,7 @@ export class SlideContainer extends AbsoluteLayout {
 				});
 
 				if (this.pageIndicators) {
-					let indicatorsColor = this.indicatorsColor;
-					//check if invalid and set to white (#fff)
-					if (!Color.isValid(indicatorsColor)) {
-						indicatorsColor = '#fff';
-					}
-					this._footer = this.buildFooter(slides.length, 0, indicatorsColor);
+					this._footer = this.buildFooter(slides.length, 0);
 					this.insertChild(this._footer, this.getChildrenCount());
 				}
 
@@ -209,6 +196,7 @@ export class SlideContainer extends AbsoluteLayout {
 				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
 					//event and page orientation didn't seem to alwasy be on the same page so setting it in the time out addresses this.
 					setTimeout(() => {
+						console.log('orientationChangedEvent');
 						this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 						this.eachLayoutChild((view: View) => {
 							if (view instanceof StackLayout) {
@@ -272,8 +260,10 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this.disablePan === false) {
 			this.applySwipe(this.pageWidth);
 		}
+		console.log('changed active ' + this.currentPanel.index + ' indicators ' + this.pageIndicators);
 		if (this.pageIndicators) {
 			this.setActivePageIndicator(this.currentPanel.index);
+			console.log('changed active ' + this.currentPanel.index);
 		}
 	}
 
@@ -458,6 +448,31 @@ export class SlideContainer extends AbsoluteLayout {
 
 	}
 
+	private buildFooter(pageCount: number = 5, activeIndex: number = 0): StackLayout {
+		let footerInnerWrap = new StackLayout();
+
+		footerInnerWrap.height = 50;
+
+		this.setwidthPercent(footerInnerWrap, 100);
+		AbsoluteLayout.setLeft(footerInnerWrap, 0);
+		AbsoluteLayout.setTop(footerInnerWrap, 0);
+
+		footerInnerWrap.orientation = 'horizontal';
+		footerInnerWrap.verticalAlignment = 'top';
+		footerInnerWrap.horizontalAlignment = 'center';
+
+		let index = 0;
+		while (index < pageCount) {
+			footerInnerWrap.addChild(this.createIndicator(index));
+			index++;
+		}
+
+
+		footerInnerWrap.marginTop = <any>this._pagerOffset;
+
+		return footerInnerWrap;
+	}
+
 	private setwidthPercent(view: View, percentage: number) {
 		(<any>view).width = percentage + '%';
 	}
@@ -537,59 +552,30 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 	}
 
-	private buildFooter(pageCount: number = 5, activeIndex: number = 0, indicatorColor: string): StackLayout {
-		let footerInnerWrap = new StackLayout();
-
-		footerInnerWrap.height = 50;
-
-		this.setwidthPercent(footerInnerWrap, 100);
-		AbsoluteLayout.setLeft(footerInnerWrap, 0);
-		AbsoluteLayout.setTop(footerInnerWrap, 0);
-
-		footerInnerWrap.orientation = 'horizontal';
-		footerInnerWrap.verticalAlignment = 'top';
-		footerInnerWrap.horizontalAlignment = 'center';
-
-		let i = 0;
-		while (i < pageCount) {
-			footerInnerWrap.addChild(this.createIndicator(indicatorColor));
-			i++;
-		}
-
-		let activeIndicator = footerInnerWrap.getChildAt(0);
-		activeIndicator.className = 'slide-indicator-active';
-		activeIndicator.opacity = 0.9;
-
-		footerInnerWrap.marginTop = <any>this._pagerOffset;
-
-		return footerInnerWrap;
-	}
-
-
-	createIndicator(indicatorColor: string): Label {
+	createIndicator(index: number): Label {
 		let indicator = new Label();
-		indicator.backgroundColor = new Color(indicatorColor);
-		indicator.opacity = 0.4;
-		indicator.width = 10;
-		indicator.height = 10;
-		indicator.marginLeft = 2.5;
-		indicator.marginRight = 2.5;
-		indicator.marginTop = 0;
-		indicator.borderRadius = 5;
+		(<any>indicator).classList.add(SLIDE_INDICATOR_INACTIVE);
 		return indicator;
 	}
 
 	setActivePageIndicator(index: number) {
 
-		this._footer.eachLayoutChild((view: View) => {
-			if (view instanceof Label) {
-				view.opacity = 0.4;
-				view.className = 'slide-indicator-inactive';
-			}
-		});
-		let activeIndicator = this._footer.getChildAt(index);
-		activeIndicator.className = 'slide-indicator-active';
-		activeIndicator.opacity = 0.9;
 
+		let indicatorsToDeactivate = (<any>this._footer).getElementsByClassName(SLIDE_INDICATOR_ACTIVE);
+		// if (indicatorToDeactivate) {
+		// 	indicatorToDeactivate.classList.toggle(SLIDE_INDICATOR_INACTIVE);
+		// 	console.log(indicatorToDeactivate);
+		// }
+		indicatorsToDeactivate.forEach(activeIndicator => {
+			console.log(activeIndicator);
+			// activeIndicator.className = activeIndicator.className.replace('slide-indicator-active ', 'slide-indicator-inactive ');
+			activeIndicator.classList.remove(SLIDE_INDICATOR_ACTIVE);
+			activeIndicator.classList.add(SLIDE_INDICATOR_INACTIVE);
+		});
+
+		let activeIndicator = (<any>this._footer).getElementsByClassName(SLIDE_INDICATOR_INACTIVE)[index];
+		activeIndicator.classList.remove(SLIDE_INDICATOR_INACTIVE);
+		activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
+		console.log(JSON.stringify(activeIndicator));
 	}
 }
