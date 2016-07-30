@@ -76,8 +76,6 @@ add as many ``<Slides:Slide>`` as you want.
 
 -  **loop : boolean** - If true will cause the slide to be an endless loop. The suggested use case would be for a Image Carousel or something of that nature.
 
-- **velocityScrolling : boolean** - If true will calculate transitions speeds based on the finger movement speed.
-
 - **pageIndicators : boolean** - If true adds indicator dots to the bottom of your slides.
 
 - **disablePan : boolean** - If true panning is disabled. So that you can call nextSlide()/previousSlide() functions to change the slide. If slides is used to get details about users like email, phone number, username etc. in this case you don't want users to move from one slide to another slide without filling details.
