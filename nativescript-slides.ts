@@ -279,13 +279,27 @@ export class SlideContainer extends AbsoluteLayout {
 			panel.right.panel.translateX = 0;
 		}
 	}
-		public goToSlide(index: number): void {
+
+	public goToSlide(index: number): void {
 		if (this._slideMap.length > 0 && index < this._slideMap.length) {
+			let previousSlide = this.currentPanel;
+
 			this.setupPanel(this._slideMap[index]);
+
+			this.notify({
+				eventName: SlideContainer.CHANGED_EVENT,
+				object: this,
+				eventData: {
+					direction: direction.left,
+					newIndex: this.currentPanel.index,
+					oldIndex: previousSlide.index,
+				}
+			});
 		} else {
 			console.log('invalid index');
 		}
 	}
+
 	private applySwipe(pageWidth: number): void {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
 		let endingVelocity = 0;
