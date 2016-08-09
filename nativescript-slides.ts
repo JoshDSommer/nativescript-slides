@@ -290,7 +290,7 @@ export class SlideContainer extends AbsoluteLayout {
 				eventName: SlideContainer.CHANGED_EVENT,
 				object: this,
 				eventData: {
-					direction: direction.left,
+					direction: direction.none,
 					newIndex: this.currentPanel.index,
 					oldIndex: previousSlide.index,
 				}
