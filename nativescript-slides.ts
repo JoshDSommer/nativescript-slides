@@ -591,7 +591,10 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 
 		let activeIndicator = (<any>this._footer).getElementsByClassName(SLIDE_INDICATOR_INACTIVE)[index];
-		activeIndicator.classList.remove(SLIDE_INDICATOR_INACTIVE);
-		activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
+		if (activeIndicator) {
+			activeIndicator.classList.remove(SLIDE_INDICATOR_INACTIVE);
+			activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
+		}
+
 	}
 }
