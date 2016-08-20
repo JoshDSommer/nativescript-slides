@@ -59,6 +59,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _disablePan: boolean;
 	private _footer: StackLayout;
 	private _pageIndicators: boolean;
+	private _slideMap: ISlideMap[];
 
 	public static START_EVENT = 'start';
 	public static CHANGED_EVENT = 'changed';
@@ -279,6 +280,26 @@ export class SlideContainer extends AbsoluteLayout {
 		}
 	}
 
+	public goToSlide(index: number): void {
+		if (this._slideMap.length > 0 && index < this._slideMap.length) {
+			let previousSlide = this.currentPanel;
+
+			this.setupPanel(this._slideMap[index]);
+
+			this.notify({
+				eventName: SlideContainer.CHANGED_EVENT,
+				object: this,
+				eventData: {
+					direction: direction.none,
+					newIndex: this.currentPanel.index,
+					oldIndex: previousSlide.index,
+				}
+			});
+		} else {
+			console.log('invalid index');
+		}
+	}
+
 	private applySwipe(pageWidth: number): void {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
 		let endingVelocity = 0;
@@ -489,25 +510,25 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	private buildSlideMap(views: StackLayout[]) {
-		let slideMap: ISlideMap[] = [];
+		this._slideMap = [];
 		views.forEach((view: StackLayout, index: number) => {
-			slideMap.push({
+			this._slideMap.push({
 				panel: view,
 				index: index,
 			});
 		});
-		slideMap.forEach((mapping: ISlideMap, index: number) => {
-			if (slideMap[index - 1] != null)
-				mapping.left = slideMap[index - 1];
-			if (slideMap[index + 1] != null)
-				mapping.right = slideMap[index + 1];
+		this._slideMap.forEach((mapping: ISlideMap, index: number) => {
+			if (this._slideMap[index - 1] != null)
+				mapping.left = this._slideMap[index - 1];
+			if (this._slideMap[index + 1] != null)
+				mapping.right = this._slideMap[index + 1];
 		});
 
 		if (this.loop) {
-			slideMap[0].left = slideMap[slideMap.length - 1];
-			slideMap[slideMap.length - 1].right = slideMap[0];
+			this._slideMap[0].left = this._slideMap[this._slideMap.length - 1];
+			this._slideMap[this._slideMap.length - 1].right = this._slideMap[0];
 		}
-		return slideMap[0];
+		return this._slideMap[0];
 	}
 
 	private triggerStartEvent() {
@@ -570,7 +591,10 @@ export class SlideContainer extends AbsoluteLayout {
 		});
 
 		let activeIndicator = (<any>this._footer).getElementsByClassName(SLIDE_INDICATOR_INACTIVE)[index];
-		activeIndicator.classList.remove(SLIDE_INDICATOR_INACTIVE);
-		activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
+		if (activeIndicator) {
+			activeIndicator.classList.remove(SLIDE_INDICATOR_INACTIVE);
+			activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
+		}
+
 	}
 }

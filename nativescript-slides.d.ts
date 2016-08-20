@@ -21,6 +21,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _disablePan;
     private _footer;
     private _pageIndicators;
+    private _slideMap;
     static START_EVENT: string;
     static CHANGED_EVENT: string;
     static CANCELLED_EVENT: string;
@@ -43,6 +44,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     previousSlide(): void;
     private setupPanel(panel);
     private positionPanels(panel);
+    goToSlide(index: number): void;
     private applySwipe(pageWidth);
     private showRightSlide(panelMap, offset?, endingVelocity?);
     private showLeftSlide(panelMap, offset?, endingVelocity?);

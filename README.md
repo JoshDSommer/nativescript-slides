@@ -75,6 +75,8 @@ add as many ``<Slides:Slide>`` as you want.
 
 - **nextSlide()** - navigate to the next slide (right direction)
 - **previousSlide()** - navigate to the previous slide (left direction)
+- **goToSlide(index)** : - goes to the slide at the specified index
+
 
 ### Attributes for SlideContainer
 
