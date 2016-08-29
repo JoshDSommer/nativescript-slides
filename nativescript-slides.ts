@@ -231,8 +231,8 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = true;
 		this.triggerStartEvent();
 		this.showRightSlide(this.currentPanel).then(() => {
-			this.triggerChangeEventRightToLeft();
 			this.setupPanel(this.currentPanel.right);
+			this.triggerChangeEventRightToLeft();
 		});
 	}
 	public previousSlide(): void {
@@ -245,8 +245,8 @@ export class SlideContainer extends AbsoluteLayout {
 		this.transitioning = true;
 		this.triggerStartEvent();
 		this.showLeftSlide(this.currentPanel).then(() => {
-			this.triggerChangeEventLeftToRight();
 			this.setupPanel(this.currentPanel.left);
+			this.triggerChangeEventLeftToRight();
 		});
 	}
 
