@@ -300,7 +300,7 @@ export class SlideContainer extends AbsoluteLayout {
 		}
 	}
 
-	private applySwipe(pageWidth: number): void {
+	public applySwipe(pageWidth: number): void {
 		let previousDelta = -1; //hack to get around ios firing pan event after release
 		let endingVelocity = 0;
 		let startTime, deltaTime;

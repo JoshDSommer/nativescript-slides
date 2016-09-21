@@ -136,6 +136,7 @@ To use the slides with Angular2 and the `registerElement` from `nativescript-ang
 #### Known issues
 
   * There appears to be a bug with the loop resulting in bad transitions going right to left.
+  * Currently in Android there is an known issue when a slide component inside of a scroll view.
 
 #### How To: Load slides dynamically
 You want to hook into the loaded event of the view and then create your view elements.
@@ -172,46 +173,6 @@ export function onSlideContainerLoaded(args) {
 
 ```
 
-#### Smoother panning on Android (For {N} v2.0.0 and below __only__).
-
-To achieve a much smoother drag on android simply go into the gestures.android.js file in the tns-core-modules here
-
-
-`/node_modules/tns-core-modules/ui/gestures/gestures.android.js`
-
-and change
-
-```javascript
-    CustomPanGestureDetector.prototype.getMotionEventCenter = function (event) {
-        var count = event.getPointerCount();
-        var res = { x: 0, y: 0 };
-        for (var i = 0; i < count; i++) {
-            res.x += event.getX(i);
-            res.y += event.getY(i);
-        }
-        res.x /= (count * this.density);
-        res.y /= (count * this.density);
-        return res;
-    };
-```
-
-to
-```javascript
-  CustomPanGestureDetector.prototype.getMotionEventCenter = function (event) {
-        var count = event.getPointerCount();
-        var res = { x: 0, y: 0 };
-        for (var i = 0; i < count; i++) {
-            res.x += event.getRawX();
-            res.y += event.getRawY();
-        }
-        res.x /= (count * this.density);
-        res.y /= (count * this.density);
-        return res;
-    };
-```
-
-_please note this will change the panning gesture for your entire project._
-
 
 ### Thanks to these awesome contributors!
 
@@ -222,6 +183,12 @@ _please note this will change the panning gesture for your entire project._
 [Victor Nascimento](https://github.com/vjoao)
 
 [Steve McNiven-Scott](https://github.com/sitefinitysteve)
+
+[Leo Caseiro](https://github.com/leocaseiro)
+
+[Todd Anglin](https://github.com/toddanglin)
+
+[Andrew Lo](https://github.com/andrewlo)
 
 And thanks to [Nathan Walker](https://github.com/NathanWalker) for setting up the {N} plugin seed that was used to help get this plugin up and running. More info can be found about it here:
 https://github.com/NathanWalker/nativescript-plugin-seed
