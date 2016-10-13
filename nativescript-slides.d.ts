@@ -22,6 +22,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private _footer;
     private _pageIndicators;
     private _slideMap;
+    private _slideWidth;
     static START_EVENT: string;
     static CHANGED_EVENT: string;
     static CANCELLED_EVENT: string;
@@ -34,9 +35,8 @@ export declare class SlideContainer extends AbsoluteLayout {
     disablePan: boolean;
     pageWidth: number;
     angular: boolean;
-    android: any;
-    ios: any;
     currentIndex: number;
+    slideWidth: string;
     constructor();
     private setupDefaultValues();
     constructView(constructor?: boolean): void;
@@ -45,7 +45,7 @@ export declare class SlideContainer extends AbsoluteLayout {
     private setupPanel(panel);
     private positionPanels(panel);
     goToSlide(index: number): void;
-    private applySwipe(pageWidth);
+    applySwipe(pageWidth: number): void;
     private showRightSlide(panelMap, offset?, endingVelocity?);
     private showLeftSlide(panelMap, offset?, endingVelocity?);
     private buildFooter(pageCount?, activeIndex?);
@@ -58,4 +58,5 @@ export declare class SlideContainer extends AbsoluteLayout {
     private triggerCancelEvent(cancelReason);
     createIndicator(index: number): Label;
     setActivePageIndicator(index: number): void;
+    iosProperty(theClass: any, theProperty: any): any;
 }

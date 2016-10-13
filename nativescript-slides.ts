@@ -2,16 +2,16 @@ require("nativescript-dom");
 import * as app from 'application';
 import * as Platform from 'platform';
 import utils = require('utils/utils');
-import {AbsoluteLayout} from 'ui/layouts/absolute-layout';
-import {StackLayout} from 'ui/layouts/stack-layout';
-import {View} from 'ui/core/view';
+import { AbsoluteLayout } from 'ui/layouts/absolute-layout';
+import { StackLayout } from 'ui/layouts/stack-layout';
+import { View } from 'ui/core/view';
 import { Button } from 'ui/button';
-import {Label} from 'ui/label';
+import { Label } from 'ui/label';
 import * as AnimationModule from 'ui/animation';
 import * as gestures from 'ui/gestures';
-import {AnimationCurve, Orientation} from 'ui/enums';
-import {Color} from 'color';
-import {Image} from 'ui/image';
+import { AnimationCurve, Orientation } from 'ui/enums';
+import { Color } from 'color';
+import { Image } from 'ui/image';
 
 declare const android: any;
 declare const com: any;
@@ -60,6 +60,7 @@ export class SlideContainer extends AbsoluteLayout {
 	private _footer: StackLayout;
 	private _pageIndicators: boolean;
 	private _slideMap: ISlideMap[];
+	private _slideWidth: string;
 
 	public static START_EVENT = 'start';
 	public static CHANGED_EVENT = 'changed';
@@ -105,7 +106,10 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	get pageWidth() {
-		return this._pageWidth;
+		if (!this.slideWidth) {
+			return Platform.screen.mainScreen.widthDIPs;
+		}
+		return +this.slideWidth;
 	}
 
 	get angular(): boolean {
@@ -116,16 +120,15 @@ export class SlideContainer extends AbsoluteLayout {
 		this._angular = value;
 	}
 
-	get android(): any {
-		return;
-	}
-
-	get ios(): any {
-		return;
-	}
-
 	get currentIndex(): number {
 		return this.currentPanel.index;
+	}
+
+	get slideWidth(): string {
+		return this._slideWidth;
+	}
+	set slideWidth(width: string) {
+		this._slideWidth = width;
 	}
 
 	constructor() {
@@ -138,13 +141,15 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	private setupDefaultValues(): void {
+		this.clipToBounds = true;
+
+
 		this._loaded = false;
 		if (this._loop == null) {
 			this.loop = false;
 		}
 
 		this.transitioning = false;
-		this._pageWidth = Platform.screen.mainScreen.widthDIPs;
 
 		if (this._disablePan == null) {
 			this.disablePan = false;
@@ -172,6 +177,7 @@ export class SlideContainer extends AbsoluteLayout {
 				}
 
 				let slides: StackLayout[] = [];
+				this.width = parseInt(this.slideWidth);
 
 				this.eachLayoutChild((view: View) => {
 					if (view instanceof StackLayout) {
@@ -194,12 +200,15 @@ export class SlideContainer extends AbsoluteLayout {
 				if (this.disablePan === false) {
 					this.applySwipe(this.pageWidth);
 				}
+				if (app.ios) {
+					this.ios.clipsToBound = true;
+				}
 				//handles application orientation change
 				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
 					//event and page orientation didn't seem to alwasy be on the same page so setting it in the time out addresses this.
 					setTimeout(() => {
 						console.log('orientationChangedEvent');
-						this._pageWidth = Platform.screen.mainScreen.widthDIPs;
+						this.width = parseInt(this.slideWidth);
 						this.eachLayoutChild((view: View) => {
 							if (view instanceof StackLayout) {
 								AbsoluteLayout.setLeft(view, this.pageWidth);
@@ -473,15 +482,17 @@ export class SlideContainer extends AbsoluteLayout {
 	private buildFooter(pageCount: number = 5, activeIndex: number = 0): StackLayout {
 		let footerInnerWrap = new StackLayout();
 
-		footerInnerWrap.height = 50;
+		//footerInnerWrap.height = 50;
+		footerInnerWrap.clipToBounds = false;
 
-		this.setwidthPercent(footerInnerWrap, 100);
+
+
 		AbsoluteLayout.setTop(footerInnerWrap, 0);
 
 		footerInnerWrap.orientation = 'horizontal';
 		footerInnerWrap.verticalAlignment = 'top';
 		footerInnerWrap.horizontalAlignment = 'center';
-		footerInnerWrap.width = (this._pageWidth / 2);
+		footerInnerWrap.width = this.pageWidth / 2;
 
 		let index = 0;
 		while (index < pageCount) {
@@ -578,6 +589,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	createIndicator(index: number): Label {
 		let indicator = new Label();
+
 		(<any>indicator).classList.add(SLIDE_INDICATOR_INACTIVE);
 		return indicator;
 	}
@@ -596,5 +608,15 @@ export class SlideContainer extends AbsoluteLayout {
 			activeIndicator.classList.add(SLIDE_INDICATOR_ACTIVE);
 		}
 
+	}
+
+	iosProperty(theClass, theProperty) {
+		if (typeof theProperty === "function") {
+			// xCode 7 and below
+			return theProperty.call(theClass);
+		} else {
+			// xCode 8+
+			return theProperty;
+		}
 	}
 }

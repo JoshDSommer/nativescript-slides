@@ -17,7 +17,7 @@ _videos by [Brad Martin](https://github.com/bradmartin)_
 ### XML
 ```xml
 
-	<Slides:SlideContainer id="slides" pageIndicators="true" indicatorsColor="#fff">
+	<Slides:SlideContainer id="slides" pageIndicators="true">
 			<Slides:Slide class="slide-1">
 				<Label text="This is Panel 1"  />
 			</Slides:Slide>
@@ -87,6 +87,8 @@ add as many ``<Slides:Slide>`` as you want.
 - **pagerOffset : string** - Margin-top for the pager.  Number or percentage, default 88%.
 
 - **pageIndicators : boolean** - If true adds indicator dots to the bottom of your slides.
+
+- **slideWidth: number - set the width of your slides. (Only currently works on android).
 
 #### Indicators
 
