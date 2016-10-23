@@ -18,7 +18,7 @@ declare const com: any;
 declare const java: any;
 const SLIDE_INDICATOR_INACTIVE = 'slide-indicator-inactive';
 const SLIDE_INDICATOR_ACTIVE = 'slide-indicator-active';
-
+const SLIDE_INDICATOR_WRAP = 'slide-indicator-wrap';
 let LayoutParams: any;
 if (app.android) {
 	LayoutParams = <any>android.view.WindowManager.LayoutParams;
@@ -83,10 +83,10 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	get hasNext(): boolean {
-		return !!this.currentPanel.right;
+		return !!this.currentPanel && !!this.currentPanel.right;
 	}
 	get hasPrevious(): boolean {
-		return !!this.currentPanel.left;
+		return !!this.currentPanel && !!this.currentPanel.left;
 	}
 
 	get loop() {
@@ -170,6 +170,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	public constructView(constructor: boolean = false): void {
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
+			console.log('LOADDED EVENT');
 			if (!this._loaded) {
 				this._loaded = true;
 				if (this.angular === true && constructor === true) {
@@ -195,37 +196,40 @@ export class SlideContainer extends AbsoluteLayout {
 				}
 
 				this.currentPanel = this.buildSlideMap(slides);
-				this.positionPanels(this.currentPanel);
+				if (this.currentPanel) {
 
-				if (this.disablePan === false) {
-					this.applySwipe(this.pageWidth);
-				}
-				if (app.ios) {
-					this.ios.clipsToBound = true;
-				}
-				//handles application orientation change
-				app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
-					//event and page orientation didn't seem to alwasy be on the same page so setting it in the time out addresses this.
-					setTimeout(() => {
-						console.log('orientationChangedEvent');
-						this.width = parseInt(this.slideWidth);
-						this.eachLayoutChild((view: View) => {
-							if (view instanceof StackLayout) {
-								AbsoluteLayout.setLeft(view, this.pageWidth);
-								view.width = this.pageWidth;
+					this.positionPanels(this.currentPanel);
+
+					if (this.disablePan === false) {
+						this.applySwipe(this.pageWidth);
+					}
+					if (app.ios) {
+						this.ios.clipsToBound = true;
+					}
+					//handles application orientation change
+					app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
+						//event and page orientation didn't seem to alwasy be on the same page so setting it in the time out addresses this.
+						setTimeout(() => {
+							console.log('orientationChangedEvent');
+							this.width = parseInt(this.slideWidth);
+							this.eachLayoutChild((view: View) => {
+								if (view instanceof StackLayout) {
+									AbsoluteLayout.setLeft(view, this.pageWidth);
+									view.width = this.pageWidth;
+								}
+							});
+
+							if (this.disablePan === false) {
+								this.applySwipe(this.pageWidth);
 							}
-						});
-
-						if (this.disablePan === false) {
-							this.applySwipe(this.pageWidth);
-						}
-						let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
-						if (this.pageIndicators) {
-							this._footer.marginTop = <any>'88%';
-						}
-						this.positionPanels(this.currentPanel);
-					}, 0);
-				});
+							let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
+							if (this.pageIndicators) {
+								this._footer.marginTop = <any>'88%';
+							}
+							this.positionPanels(this.currentPanel);
+						}, 0);
+					});
+				}
 			}
 		});
 	}
@@ -290,7 +294,7 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	public goToSlide(index: number): void {
-		if (this._slideMap.length > 0 && index < this._slideMap.length) {
+		if (this._slideMap && this._slideMap.length > 0 && index < this._slideMap.length) {
 			let previousSlide = this.currentPanel;
 
 			this.setupPanel(this._slideMap[index]);
@@ -484,14 +488,12 @@ export class SlideContainer extends AbsoluteLayout {
 
 		//footerInnerWrap.height = 50;
 		footerInnerWrap.clipToBounds = false;
-
+		footerInnerWrap.className = SLIDE_INDICATOR_WRAP;
 
 
 		AbsoluteLayout.setTop(footerInnerWrap, 0);
 
-		footerInnerWrap.orientation = 'horizontal';
-		footerInnerWrap.verticalAlignment = 'top';
-		footerInnerWrap.horizontalAlignment = 'center';
+
 		footerInnerWrap.width = this.pageWidth / 2;
 
 		let index = 0;
