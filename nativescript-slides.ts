@@ -275,10 +275,9 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this.disablePan === false) {
 			this.applySwipe(this.pageWidth);
 		}
-		console.log('changed active ' + this.currentPanel.index + ' indicators ' + this.pageIndicators);
+		
 		if (this.pageIndicators) {
 			this.setActivePageIndicator(this.currentPanel.index);
-			console.log('changed active ' + this.currentPanel.index);
 		}
 	}
 
