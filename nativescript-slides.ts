@@ -492,7 +492,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 		AbsoluteLayout.setTop(footerInnerWrap, 0);
 
-
+		footerInnerWrap.orientation = 'horizontal';
 		footerInnerWrap.width = this.pageWidth / 2;
 
 		let index = 0;
@@ -503,7 +503,6 @@ export class SlideContainer extends AbsoluteLayout {
 
 		let pageIndicatorsLeftOffset = this.pageWidth / 4;
 		AbsoluteLayout.setLeft(footerInnerWrap, pageIndicatorsLeftOffset);
-
 		footerInnerWrap.marginTop = <any>this._pagerOffset;
 
 		return footerInnerWrap;
