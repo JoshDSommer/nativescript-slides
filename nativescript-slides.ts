@@ -275,7 +275,7 @@ export class SlideContainer extends AbsoluteLayout {
 		if (this.disablePan === false) {
 			this.applySwipe(this.pageWidth);
 		}
-		
+
 		if (this.pageIndicators) {
 			this.setActivePageIndicator(this.currentPanel.index);
 		}
@@ -493,6 +493,7 @@ export class SlideContainer extends AbsoluteLayout {
 		AbsoluteLayout.setTop(footerInnerWrap, 0);
 
 		footerInnerWrap.orientation = 'horizontal';
+		footerInnerWrap.horizontalAlignment = 'center';
 		footerInnerWrap.width = this.pageWidth / 2;
 
 		let index = 0;
