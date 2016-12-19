@@ -222,10 +222,15 @@ export class SlideContainer extends AbsoluteLayout {
 							if (this.disablePan === false) {
 								this.applySwipe(this.pageWidth);
 							}
-							let topOffset = Platform.screen.mainScreen.heightDIPs - 105;
+							
 							if (this.pageIndicators) {
-								this._footer.marginTop = <any>'88%';
-							}
+                                AbsoluteLayout.setTop(this._footer, 0);
+                                var pageIndicatorsLeftOffset = this.pageWidth / 4;
+                                AbsoluteLayout.setLeft(this._footer, pageIndicatorsLeftOffset);
+                                this._footer.width = this.pageWidth / 2;
+                                this._footer.marginTop = this._pagerOffset;
+                            }
+                            
 							this.positionPanels(this.currentPanel);
 						}, 0);
 					});
