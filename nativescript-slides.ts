@@ -224,13 +224,13 @@ export class SlideContainer extends AbsoluteLayout {
 							}
 							
 							if (this.pageIndicators) {
-                                AbsoluteLayout.setTop(this._footer, 0);
-                                var pageIndicatorsLeftOffset = this.pageWidth / 4;
-                                AbsoluteLayout.setLeft(this._footer, pageIndicatorsLeftOffset);
-                                this._footer.width = this.pageWidth / 2;
-                                this._footer.marginTop = this._pagerOffset;
-                            }
-                            
+								AbsoluteLayout.setTop(this._footer, 0);
+								var pageIndicatorsLeftOffset = this.pageWidth / 4;
+								AbsoluteLayout.setLeft(this._footer, pageIndicatorsLeftOffset);
+								this._footer.width = this.pageWidth / 2;
+								this._footer.marginTop = this._pagerOffset;
+							}
+							
 							this.positionPanels(this.currentPanel);
 						}, 0);
 					});
