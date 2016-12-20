@@ -195,6 +195,8 @@ export function onSlideContainerLoaded(args) {
 
 [Andrew Lo](https://github.com/andrewlo)
 
+[Raúl Uranga](https://github.com/rauluranga/)
+
 And thanks to [Nathan Walker](https://github.com/NathanWalker) for setting up the {N} plugin seed that was used to help get this plugin up and running. More info can be found about it here:
 https://github.com/NathanWalker/nativescript-plugin-seed
 
