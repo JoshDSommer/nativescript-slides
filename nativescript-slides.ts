@@ -228,7 +228,7 @@ export class SlideContainer extends AbsoluteLayout {
 								var pageIndicatorsLeftOffset = this.pageWidth / 4;
 								AbsoluteLayout.setLeft(this._footer, pageIndicatorsLeftOffset);
 								this._footer.width = this.pageWidth / 2;
-								this._footer.marginTop = this._pagerOffset;
+								this._footer.marginTop = <any>this._pagerOffset;
 							}
 							
 							this.positionPanels(this.currentPanel);
