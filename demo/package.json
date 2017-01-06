@@ -9,6 +9,7 @@
     }
   },
   "dependencies": {
+    "nativescript-dom": "^1.0.8",
     "nativescript-slides": "file:..",
     "tns-core-modules": "^2.3.0"
   },
