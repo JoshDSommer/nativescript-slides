@@ -62,10 +62,10 @@ export class SlideContainer extends AbsoluteLayout {
 	private _slideMap: ISlideMap[];
 	private _slideWidth: string;
 
-	public static START_EVENT = 'start';
-	public static CHANGED_EVENT = 'changed';
-	public static CANCELLED_EVENT = 'cancelled';
-	public static FINISHED_EVENT = 'finished';
+	public static startEvent = 'start';
+	public static changedEvent = 'changed';
+	public static cancelledEvent = 'cancelled';
+	public static finishedEvent = 'finished';
 
 	/* page indicator stuff*/
 	get pageIndicators(): boolean {
@@ -304,7 +304,7 @@ export class SlideContainer extends AbsoluteLayout {
 			this.setupPanel(this._slideMap[index]);
 
 			this.notify({
-				eventName: SlideContainer.CHANGED_EVENT,
+				eventName: SlideContainer.changedEvent,
 				object: this,
 				eventData: {
 					direction: direction.none,
@@ -362,7 +362,7 @@ export class SlideContainer extends AbsoluteLayout {
 							if (!this.hasNext) {
 								// Notify finsihed
 								this.notify({
-									eventName: SlideContainer.FINISHED_EVENT,
+									eventName: SlideContainer.finishedEvent,
 									object: this
 								});
 							}
@@ -550,7 +550,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	private triggerStartEvent() {
 		this.notify({
-			eventName: SlideContainer.START_EVENT,
+			eventName: SlideContainer.startEvent,
 			object: this,
 			eventData: {
 				currentIndex: this.currentPanel.index
@@ -560,7 +560,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	private triggerChangeEventLeftToRight() {
 		this.notify({
-			eventName: SlideContainer.CHANGED_EVENT,
+			eventName: SlideContainer.changedEvent,
 			object: this,
 			eventData: {
 				direction: direction.left,
@@ -572,7 +572,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	private triggerChangeEventRightToLeft() {
 		this.notify({
-			eventName: SlideContainer.CHANGED_EVENT,
+			eventName: SlideContainer.changedEvent,
 			object: this,
 			eventData: {
 				direction: direction.right,
@@ -584,7 +584,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	private triggerCancelEvent(cancelReason: cancellationReason) {
 		this.notify({
-			eventName: SlideContainer.CANCELLED_EVENT,
+			eventName: SlideContainer.cancelledEvent,
 			object: this,
 			eventData: {
 				currentIndex: this.currentPanel.index,
