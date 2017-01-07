@@ -29,13 +29,13 @@ export declare class SlideContainer extends AbsoluteLayout {
     static finishedEvent: string;
     pageIndicators: boolean;
     pagerOffset: string;
-    readonly hasNext: boolean;
-    readonly hasPrevious: boolean;
+    hasNext: boolean;
+    hasPrevious: boolean;
     loop: boolean;
     disablePan: boolean;
-    readonly pageWidth: number;
+    pageWidth: number;
     angular: boolean;
-    readonly currentIndex: number;
+    currentIndex: number;
     slideWidth: string;
     constructor();
     private setupDefaultValues();
