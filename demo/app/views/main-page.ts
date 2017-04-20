@@ -11,6 +11,9 @@ export function pageLoaded(args: observable.EventData) {
 	var page = <pages.Page>args.object;
 	page.actionBarHidden = true;
 	slideContainer = page.getViewById("slides");
+	
+	// Set dimenions during pageLoad -- doesn't seem to work if waiting 'til later in view lifecycle
+	slideContainer.slideWidth = Platform.screen.mainScreen.widthDIPs;
 }
 
 export function onNavHome() {
