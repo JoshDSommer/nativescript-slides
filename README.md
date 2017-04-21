@@ -1,6 +1,6 @@
 # NativeScript Slides for iOS and Android
 
-## Supports {N} 2.0+ | {N} 3.0 RC3 +
+### Supports {N} 2.0+ | {N} 3.0 RC3 +
 
 [![npm](https://img.shields.io/npm/v/nativescript-slides.svg)](https://www.npmjs.com/package/nativescript-slides)
 [![npm](https://img.shields.io/npm/dt/nativescript-slides.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-slides)
