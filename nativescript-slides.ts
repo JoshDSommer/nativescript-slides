@@ -178,7 +178,11 @@ export class SlideContainer extends AbsoluteLayout {
 				}
 
 				let slides: StackLayout[] = [];
-				this.width = parseInt(this.slideWidth);
+
+				if (!this.slideWidth) {
+					this.slideWidth = <any>this.pageWidth;
+				}
+				this.width = +(this.slideWidth);
 
 				this.eachLayoutChild((view: View) => {
 					if (view instanceof StackLayout) {
@@ -222,7 +226,7 @@ export class SlideContainer extends AbsoluteLayout {
 							if (this.disablePan === false) {
 								this.applySwipe(this.pageWidth);
 							}
-							
+
 							if (this.pageIndicators) {
 								AbsoluteLayout.setTop(this._footer, 0);
 								var pageIndicatorsLeftOffset = this.pageWidth / 4;
@@ -230,7 +234,7 @@ export class SlideContainer extends AbsoluteLayout {
 								this._footer.width = this.pageWidth / 2;
 								this._footer.marginTop = <any>this._pagerOffset;
 							}
-							
+
 							this.positionPanels(this.currentPanel);
 						}, 0);
 					});
