@@ -1,6 +1,6 @@
 {
   "name": "nativescript-slides",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "description": "NativeScript Slides plugin.",
   "main": "nativescript-slides.js",
   "nativescript": {
@@ -18,8 +18,6 @@
     "demo.android": "npm run preparedemo && cd demo && tns run android",
     "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-slides && tns plugin add .. && tns install",
     "setup": "npm install && cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
-    "livesync.ios": "cd demo  && tns livesync ios --watch",
-    "livesync.android": "cd demo  && tns livesync android --watch",
     "ios": "xcproj --project platforms/ios/YourApp.xcodeproj touch; xcproj --project platforms/ios/Pods/Pods.xcodeproj touch; tns livesync ios --emulator --watch"
   },
   "repository": {
