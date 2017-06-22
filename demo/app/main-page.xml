@@ -1,0 +1,51 @@
+<!--
+The markup in NativeScript apps contains a series of user interface components, each
+of which NativeScript renders with a platform-specific iOS or Android native control.
+You can find a full list of user interface components you can use in your app at
+https://docs.nativescript.org/ui/components.
+-->
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:Slides="nativescript-slides" loaded="pageLoaded">
+
+	<GridLayout rows="* auto">
+		<Slides:SlideContainer id="slides" row="0" pageIndicators="true" loop="true"
+							  start="onStart" cancelled="onCancelled" changed="onChanged" finished="onFinished">
+			<Slides:Slide class="slide-1">
+				<Label text="This is Panel 1"  />
+				<Label text="Swipe or use buttons" class="subtext" />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
+			</Slides:Slide>
+			<Slides:Slide class="slide-2">
+				<Label text="This is Panel 2"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
+			</Slides:Slide>
+			<Slides:Slide class="slide-3">
+				<Label text="This is Panel 3"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
+			</Slides:Slide>
+			<Slides:Slide class="slide-4">
+				<Label text="This is Panel 4"  />
+				<GridLayout class="nav" rows="auto" columns="auto, auto">
+					<Button col="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" text="Next" class="next" tap="onNavNext" />
+				</GridLayout>
+			</Slides:Slide>
+			<Slides:Slide class="slide-5">
+				<Label text="This is Panel 5"  />
+				<GridLayout class="nav" rows="auto, auto" columns="auto, auto">
+					<Button col="0" row="0" text="Back" class="prev" tap="onNavBack" />
+					<Button col="1" row="0" text="Next" class="next" tap="onNavNext" />
+					<Button col="0" row="1" text="Home" class="next" tap="onNavHome" />
+				</GridLayout>
+			</Slides:Slide>
+		</Slides:SlideContainer>
+	</GridLayout>
+</Page>
