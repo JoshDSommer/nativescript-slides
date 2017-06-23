@@ -72,6 +72,9 @@ export class SlideContainer extends AbsoluteLayout {
 		return this._pageIndicators;
 	}
 	set pageIndicators(value: boolean) {
+		if (typeof value === 'string') {
+			value = (<any>value == 'true');
+		}
 		this._pageIndicators = value;
 	}
 
@@ -170,7 +173,7 @@ export class SlideContainer extends AbsoluteLayout {
 
 	public constructView(constructor: boolean = false): void {
 		this.on(AbsoluteLayout.loadedEvent, (data: any) => {
-			console.log('LOADDED EVENT');
+			//// console.log('LOADDED EVENT');
 			if (!this._loaded) {
 				this._loaded = true;
 				if (this.angular === true && constructor === true) {
@@ -214,7 +217,7 @@ export class SlideContainer extends AbsoluteLayout {
 					app.on(app.orientationChangedEvent, (args: app.OrientationChangedEventData) => {
 						//event and page orientation didn't seem to alwasy be on the same page so setting it in the time out addresses this.
 						setTimeout(() => {
-							console.log('orientationChangedEvent');
+							// console.log('orientationChangedEvent');
 							this.width = parseInt(this.slideWidth);
 							this.eachLayoutChild((view: View) => {
 								if (view instanceof StackLayout) {
@@ -317,7 +320,7 @@ export class SlideContainer extends AbsoluteLayout {
 				}
 			});
 		} else {
-			console.log('invalid index');
+			// console.log('invalid index');
 		}
 	}
 
