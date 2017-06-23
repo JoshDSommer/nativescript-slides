@@ -1,6 +1,6 @@
 {
   "name": "nativescript-slides",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "description": "NativeScript Slides plugin.",
   "main": "nativescript-slides",
   "scripts": {
@@ -66,6 +66,6 @@
     "tns-core-modules": "^3.0.1"
   },
   "dependencies": {
-    "nativescript-dom": "^1.0.6"
+    "nativescript-dom": "^2.0.0"
   }
 }
