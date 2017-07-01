@@ -49,7 +49,7 @@ export interface ISlideMap {
 
 export class SlideContainer extends AbsoluteLayout {
 	private currentPanel: ISlideMap;
-	private transitioning: boolean;
+	private transitioning: boolean = false;
 	private direction: direction = direction.none;
 	private _loaded: boolean;
 	private _pageWidth: number;
