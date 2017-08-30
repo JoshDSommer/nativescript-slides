@@ -498,7 +498,9 @@ export class SlideContainer extends AbsoluteLayout {
 		let footerInnerWrap = new StackLayout();
 
 		//footerInnerWrap.height = 50;
-		footerInnerWrap.clipToBounds = false;
+		if (app.ios) {
+			footerInnerWrap.clipToBounds = false;
+		}
 		footerInnerWrap.className = SLIDE_INDICATOR_WRAP;
 
 
