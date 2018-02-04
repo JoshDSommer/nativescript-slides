@@ -1,7 +1,7 @@
 require("nativescript-dom");
 import * as app from 'application';
 import * as Platform from 'platform';
-import utils = require('utils/utils');
+import * as utils from 'tns-core-modules/utils/utils';
 import { AbsoluteLayout } from 'ui/layouts/absolute-layout';
 import { StackLayout } from 'ui/layouts/stack-layout';
 import { View } from 'ui/core/view';
