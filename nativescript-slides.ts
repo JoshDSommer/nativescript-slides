@@ -550,7 +550,7 @@ export class SlideContainer extends AbsoluteLayout {
 				mapping.right = this._slideMap[index + 1];
 		});
 
-		if (this.loop) {
+		if (this.loop === true) {
 			this._slideMap[0].left = this._slideMap[this._slideMap.length - 1];
 			this._slideMap[this._slideMap.length - 1].right = this._slideMap[0];
 		}
