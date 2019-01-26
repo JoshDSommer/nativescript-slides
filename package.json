@@ -1,0 +1,26 @@
+{
+  "name": "nativescript-slides",
+  "version": "1.0.0",
+  "description": "[![npm](https://img.shields.io/npm/v/nativescript-slides.svg)](https://www.npmjs.com/package/nativescript-slides) [![npm](https://img.shields.io/npm/dt/nativescript-slides.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-slides)",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc",
+    "demo.ios": "cd src && npm run demo.ios",
+    "demo.android": "cd src && npm run demo.android",
+    "preparedemo": "cd src && npm run preparedemo",
+    "setup": "cd src && npm run setup",
+    "ios": "cd src && npm run ios"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheOriginalJosh/nativescript-slides.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"
+  },
+  "homepage": "https://github.com/TheOriginalJosh/nativescript-slides#readme"
+}
