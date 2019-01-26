@@ -1,6 +1,6 @@
 {
   "name": "nativescript-slides",
-  "version": "2.2.12",
+  "version": "2.3.0",
   "description": "NativeScript Slides plugin.",
   "main": "nativescript-slides",
   "typings": "nativescript-slides.d.ts",
@@ -11,6 +11,7 @@
     }
   },
   "scripts": {
+    "prepublish": "cp -av ../README.md ./",
     "build": "tsc",
     "demo.ios": "npm run preparedemo && cd ../demo && tns run ios",
     "demo.android": "npm run preparedemo && cd ../demo && tns run android",
