@@ -12,10 +12,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "demo.ios": "npm run preparedemo && cd demo && tns run ios",
-    "demo.android": "npm run preparedemo && cd demo && tns run android",
-    "preparedemo": "npm run build && cd demo && npm install .. --save",
-    "setup": "npm install && cd demo && npm install && cd .. && npm run build && cd demo && npm install .. -S && cd ..",
+    "demo.ios": "npm run preparedemo && cd ../demo && tns run ios",
+    "demo.android": "npm run preparedemo && cd ../demo && tns run android",
+    "preparedemo": "npm run build && cd ../demo && npm install .. --save",
+    "setup": "npm install && cd ../demo && npm install && cd ../src && npm run build && cd ../demo && npm install ../src -S && cd ..",
     "ios": "xcproj --project platforms/ios/YourApp.xcodeproj touch; xcproj --project platforms/ios/Pods/Pods.xcodeproj touch; tns livesync ios --emulator --watch"
   },
   "repository": {
