@@ -105,7 +105,16 @@ export class SlideContainer extends AbsoluteLayout {
 	}
 
 	set disablePan(value: boolean) {
+		if (this._disablePan === value) { return; } // Value did not change
+
 		this._disablePan = value;
+		if (this._loaded && this.currentPanel.panel !== undefined) {
+			if (value === true) {
+				this.currentPanel.panel.off('pan');
+			} else if (value === false) {
+				this.applySwipe(this.pageWidth);	
+			}
+		}
 	}
 
 	get pageWidth() {
