@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/TheOriginalJosh/nativescript-slides.git"
+    "url": "https://github.com/JoshDSommer/nativescript-slides.git"
   },
   "keywords": [
     "NativeScript",
@@ -59,13 +59,13 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/TheOriginalJosh/nativescript-slides/issues"
+    "url": "https://github.com/JoshDSommer/nativescript-slides/issues"
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/TheOriginalJosh/nativescript-slides/blob/master/LICENSE"
+    "url": "https://github.com/JoshDSommer/nativescript-slides/blob/master/LICENSE"
   },
-  "homepage": "https://github.com/TheOriginalJosh/nativescript-slides",
+  "homepage": "https://github.com/JoshDSommer/nativescript-slides",
   "readmeFilename": "README.md",
   "devDependencies": {
     "typescript": "^2.2.2",
