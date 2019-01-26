@@ -7,12 +7,12 @@
     "id": "org.nativescript.demo"
   },
   "dependencies": {
-    "nativescript-slides": "file:../src",
+    "nativescript-slides": "file:..",
     "nativescript-theme-core": "~1.0.2",
-    "tns-core-modules": "~3.1.0"
+    "tns-core-modules": "~5.1.2"
   },
   "devDependencies": {
-    "nativescript-dev-typescript": "~0.5.0",
-    "typescript": "~2.2.1"
+    "nativescript-dev-typescript": "~0.7.9",
+    "typescript": "~3.1.1"
   }
 }
